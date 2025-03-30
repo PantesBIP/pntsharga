@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Bagian head sama seperti sebelumnya -->
+</head>
+<body>
+    <!-- Bagian navbar sama seperti sebelumnya -->
+
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="card">
+                    <div class="card-header text-center">
+                        <h3><i class="fas fa-table me-2"></i> Daftar Harga Emas</h3>
+                        <p class="mb-0">Terakhir diperbarui: <span id="lastUpdated">Loading...</span></p>
+                    </div>
+                    <div class="card-body">
+                        <ul class="nav nav-tabs" id="hargaTabs" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link active" id="emas-tab" data-bs-toggle="tab" data-bs-target="#emas" type="button" role="tab">Harga Emas</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="antam-tab" data-bs-toggle="tab" data-bs-target="#antam" type="button" role="tab">Harga Antam</button>
+                            </li>
+                        </ul>
+                        
+                        <div class="tab-content" id="hargaTabContent">
+                            <div class="tab-pane fade show active" id="emas" role="tabpanel">
+                                <div class="table-responsive">
+                                    <table class="harga-table" id="emasTable">
+                                        <thead>
+                                            <tr>
+                                                <th>Kategori</th>
+                                                <th>Kode</th>
+                                                <th>Keterangan</th>
+                                                <th>Harga per gram</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="emasTableBody">
+                                            <tr>
+                                                <td colspan="4" class="text-center">Memuat data...</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            
+                            <div class="tab-pane fade" id="antam" role="tabpanel">
+                                <div class="table-responsive">
+                                    <table class="harga-table" id="antamTable">
+                                        <thead>
+                                            <tr>
+                                                <th>Kode</th>
+                                                <th>Berat</th>
+                                                <th>Harga</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="antamTableBody">
+                                            <tr>
+                                                <td colspan="3" class="text-center">Memuat data...</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bagian footer sama seperti sebelumnya -->
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            // Fungsi untuk memuat data dari JSON
+            function loadData() {
+                $.getJSON('data-harga.json')
+                    .done(function(data) {
+                        // Update last updated time
+                        $('#lastUpdated').text(data.lastUpdated);
+                        
+                        // Isi tabel emas
+                        const emasTableBody = $('#emasTableBody');
+                        emasTableBody.empty();
+                        
+                        // Loop melalui setiap kategori
+                        $.each(data.hargaEmas, function(kategori, items) {
+                            $.each(items, function(index, item) {
+                                emasTableBody.append(`
+                                    <tr>
+                                        <td>${kategori.toUpperCase()}</td>
+                                        <td>${item.kode}</td>
+                                        <td>${item.keterangan}</td>
+                                        <td class="harga-highlight">Rp ${item.harga.toLocaleString('id-ID')}</td>
+                                    </tr>
+                                `);
+                            });
+                        });
+                        
+                        // Isi tabel Antam
+                        const antamTableBody = $('#antamTableBody');
+                        antamTableBody.empty();
+                        
+                        $.each(data.hargaAntam, function(index, item) {
+                            antamTableBody.append(`
+                                <tr>
+                                    <td>${item.kode}</td>
+                                    <td>${item.berat}</td>
+                                    <td class="harga-highlight">Rp ${item.harga.toLocaleString('id-ID')}</td>
+                                </tr>
+                            `);
+                        });
+                    })
+                    .fail(function(jqxhr, textStatus, error) {
+                        console.error("Error loading data:", textStatus, error);
+                        $('#lastUpdated').text('Gagal memuat data');
+                        $('#emasTableBody, #antamTableBody').html(`
+                            <tr>
+                                <td colspan="4" class="text-center text-danger">Gagal memuat data harga</td>
+                            </tr>
+                        `);
+                    });
+            }
+            
+            // Panggil fungsi load data
+            loadData();
+            
+            // Aktifkan tab Bootstrap
+            const tabElms = document.querySelectorAll('button[data-bs-toggle="tab"]');
+            tabElms.forEach(tabElm => {
+                tabElm.addEventListener('click', event => {
+                    event.target.classList.add('active');
+                });
+            });
+        });
+    </script>
+</body>
+</html>
