@@ -399,3 +399,27 @@ main {
     }
 }
 }
+.table-responsive {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    background-color: var(--table-bg);
+}
+
+.price-table {
+    width: 100%;
+    min-width: 500px; /* Lebar minimum untuk memastikan konten tidak terlalu sempit */
+}
+
+@media (max-width: 480px) {
+    .price-table {
+        font-size: 0.85rem;
+    }
+    
+    .price-table th, 
+    .price-table td {
+        padding: 6px 8px;
+    }
+}
