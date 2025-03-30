@@ -1,17 +1,21 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // Mobile menu toggle
+   // Mobile menu toggle
     const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
     const gamerNav = document.querySelector('.gamer-nav');
     
-    mobileMenuBtn.addEventListener('click', function() {
+    mobileMenuBtn.addEventListener('click', function(e) {
+        e.stopPropagation();
         gamerNav.classList.toggle('active');
     });
 
     // Close menu when clicking outside
-    document.addEventListener('click', function(e) {
-        if (!e.target.closest('.gamer-nav') && !e.target.closest('.mobile-menu-btn')) {
-            gamerNav.classList.remove('active');
-        }
+    document.addEventListener('click', function() {
+        gamerNav.classList.remove('active');
+    });
+
+    // Prevent menu from closing when clicking inside it
+    gamerNav.addEventListener('click', function(e) {
+        e.stopPropagation();
     });
 
     // Card click handlers
