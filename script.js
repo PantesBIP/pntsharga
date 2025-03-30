@@ -7,6 +7,13 @@ document.addEventListener('DOMContentLoaded', function() {
         gamerNav.classList.toggle('active');
     });
 
+    // Close menu when clicking outside
+    document.addEventListener('click', function(e) {
+        if (!e.target.closest('.gamer-nav') && !e.target.closest('.mobile-menu-btn')) {
+            gamerNav.classList.remove('active');
+        }
+    });
+
     // Card click handlers
     const cards = document.querySelectorAll('.card');
     const priceTableContainer = document.getElementById('priceTableContainer');
@@ -23,31 +30,47 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Function to load price data via AJAX
+    // Function to load price data from JSON file
     function loadPriceData(type) {
+        // Show loading state
+        priceTableContainer.innerHTML = '<div class="loading-spinner"><i class="fas fa-spinner fa-spin"></i><p>Memuat data...</p></div>';
+        
+        // Fetch data from JSON file
         fetch('data.json')
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
             .then(data => {
-                const priceData = data[type];
-                displayPriceTable(type, priceData);
+                displayPriceTable(type, data[type]);
             })
             .catch(error => {
                 console.error('Error loading price data:', error);
                 priceTableContainer.innerHTML = `
                     <div class="error-message">
                         <i class="fas fa-exclamation-triangle"></i>
-                        <p>Gagal memuat data harga. Silakan coba lagi.</p>
+                        <p>Gagal memuat data. Silakan coba lagi.</p>
                     </div>
                 `;
             });
     }
 
-  // Function to display price table
-function displayPriceTable(type, data) {
-    // Buat container scrollable untuk mobile
-    let tableHTML = `
-        <div class="table-responsive">
-            <table class="price-table show fade-in">
+    // Function to display price table
+    function displayPriceTable(type, data) {
+        if (!data || data.length === 0) {
+            priceTableContainer.innerHTML = `
+                <div class="error-message">
+                    <i class="fas fa-exclamation-circle"></i>
+                    <p>Data tidak tersedia</p>
+                </div>
+            `;
+            return;
+        }
+
+        let tableHTML = `
+            <table class="price-table fade-in">
                 <thead>
                     <tr>
                         <th>Kode</th>
@@ -56,29 +79,28 @@ function displayPriceTable(type, data) {
                     </tr>
                 </thead>
                 <tbody>
-    `;
-
-    data.forEach(item => {
-        tableHTML += `
-            <tr>
-                <td>${item.code}</td>
-                <td class="highlight">${formatCurrency(item.sellPrice)}</td>
-                <td>${formatCurrency(item.buybackPrice)}</td>
-            </tr>
         `;
-    });
 
-    tableHTML += `
+        data.forEach(item => {
+            tableHTML += `
+                <tr>
+                    <td>${item.code}</td>
+                    <td class="highlight">${formatCurrency(item.sellPrice)}</td>
+                    <td>${formatCurrency(item.buybackPrice)}</td>
+                </tr>
+            `;
+        });
+
+        tableHTML += `
                 </tbody>
             </table>
-        </div>
-        <div class="table-footer">
-            <p>Terakhir diperbarui: ${new Date().toLocaleString()}</p>
-        </div>
-    `;
+            <div class="table-footer">
+                <p>Terakhir diperbarui: ${new Date().toLocaleString('id-ID')}</p>
+            </div>
+        `;
 
-    priceTableContainer.innerHTML = tableHTML;
-}
+        priceTableContainer.innerHTML = tableHTML;
+    }
 
     // Helper function to format currency
     function formatCurrency(amount) {
@@ -88,4 +110,8 @@ function displayPriceTable(type, data) {
             minimumFractionDigits: 0
         }).format(amount);
     }
+
+    // Initialize with first card data
+    loadPriceData('emas');
+    cards[0].classList.add('active');
 });
