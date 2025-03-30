@@ -1,1 +1,48 @@
-
+{
+  "lastUpdated": "2024-01-01 12:00:00",
+  "hargaEmas": {
+    "muda": [
+      {
+        "kode": "38 Juene",
+        "keterangan": "7K Juene",
+        "harga": 647000
+      },
+      {
+        "kode": "44 Kuning",
+        "keterangan": "8K Kuning",
+        "harga": 745500
+      }
+    ],
+    "tua": [
+      {
+        "kode": "75 16K",
+        "keterangan": "16K Kuning",
+        "harga": 1294000
+      },
+      {
+        "kode": "81-89 17K",
+        "keterangan": "17K Putih / Amero",
+        "harga": 1447000
+      }
+    ],
+    "italy": [
+      {
+        "kode": "Italy",
+        "keterangan": "Italy",
+        "harga": 1000000
+      }
+    ]
+  },
+  "hargaAntam": [
+    {
+      "kode": "Antam0.5",
+      "berat": "0.5 gram",
+      "harga": 1100000
+    },
+    {
+      "kode": "Antam1",
+      "berat": "1 gram",
+      "harga": 2100000
+    }
+  ]
+}
