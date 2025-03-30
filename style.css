@@ -347,4 +347,55 @@ main {
 
 .fade-in {
     animation: fadeIn 0.5s ease-in-out;
+
+    /* Update ukuran card untuk mobile */
+@media (max-width: 768px) {
+    .cards-section {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+    }
+    
+    .card {
+        flex-direction: column;
+        height: 120px; /* Lebih pendek */
+    }
+    
+    .card-image {
+        width: 100%;
+        height: 60px; /* Lebih kecil */
+    }
+    
+    .card-content {
+        padding: 8px;
+    }
+    
+    .card-content h3 {
+        font-size: 1rem;
+        margin-bottom: 2px;
+    }
+    
+    .card-label {
+        font-size: 0.7rem;
+        padding: 2px 6px;
+    }
+}
+
+/* Perbaikan tabel untuk mobile */
+@media (max-width: 600px) {
+    .price-table th, 
+    .price-table td {
+        padding: 8px 10px;
+        font-size: 0.9rem;
+    }
+    
+    .table-container {
+        padding: 10px;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    .price-table {
+        min-width: 500px; /* Memastikan tabel tidak terlalu kecil */
+    }
+}
 }
