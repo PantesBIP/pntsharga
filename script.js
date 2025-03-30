@@ -42,9 +42,11 @@ document.addEventListener('DOMContentLoaded', function() {
             });
     }
 
-    // Function to display price table
-    function displayPriceTable(type, data) {
-        let tableHTML = `
+  // Function to display price table
+function displayPriceTable(type, data) {
+    // Buat container scrollable untuk mobile
+    let tableHTML = `
+        <div class="table-responsive">
             <table class="price-table show fade-in">
                 <thead>
                     <tr>
@@ -54,28 +56,29 @@ document.addEventListener('DOMContentLoaded', function() {
                     </tr>
                 </thead>
                 <tbody>
-        `;
+    `;
 
-        data.forEach(item => {
-            tableHTML += `
-                <tr>
-                    <td>${item.code}</td>
-                    <td class="highlight">${formatCurrency(item.sellPrice)}</td>
-                    <td>${formatCurrency(item.buybackPrice)}</td>
-                </tr>
-            `;
-        });
-
+    data.forEach(item => {
         tableHTML += `
+            <tr>
+                <td>${item.code}</td>
+                <td class="highlight">${formatCurrency(item.sellPrice)}</td>
+                <td>${formatCurrency(item.buybackPrice)}</td>
+            </tr>
+        `;
+    });
+
+    tableHTML += `
                 </tbody>
             </table>
-            <div class="table-footer">
-                <p>Terakhir diperbarui: ${new Date().toLocaleString()}</p>
-            </div>
-        `;
+        </div>
+        <div class="table-footer">
+            <p>Terakhir diperbarui: ${new Date().toLocaleString()}</p>
+        </div>
+    `;
 
-        priceTableContainer.innerHTML = tableHTML;
-    }
+    priceTableContainer.innerHTML = tableHTML;
+}
 
     // Helper function to format currency
     function formatCurrency(amount) {
