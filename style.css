@@ -599,3 +599,39 @@ main {
         gap: 5px;
     }
 }
+
+/* Price Change Indicators */
+.price-change {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 3px 6px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.price-change.up {
+    background-color: rgba(76, 175, 80, 0.2);
+    color: #4CAF50;
+}
+
+.price-change.down {
+    background-color: rgba(244, 67, 54, 0.2);
+    color: #F44336;
+}
+
+.price-change.neutral {
+    background-color: rgba(158, 158, 158, 0.2);
+    color: #9E9E9E;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .price-table th:nth-child(3),
+    .price-table th:nth-child(5),
+    .price-table td:nth-child(3),
+    .price-table td:nth-child(5) {
+        display: none;
+    }
+}
