@@ -22,8 +22,8 @@
                 <ul>
                     <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
                     <li><a href="trend.html" class="active"><i class="fas fa-chart-line"></i> Trend</a></li>
-                    <li><a href="#"><i class="fas fa-book"></i> Panduan</a></li>
-                    <li><a href="#"><i class="fas fa-info-circle"></i> Tentang</a></li>
+                   <!--- <li><a href="#"><i class="fas fa-book"></i> Panduan</a></li>
+                    <li><a href="#"><i class="fas fa-info-circle"></i> Tentang</a></li> --->
                 </ul>
             </nav>
             
@@ -46,19 +46,6 @@
                 </div>
             </div>
         </section>
-
-        <section class="trend-section">
-            <h2><i class="fas fa-chart-bar"></i> Trend Harga Emas Antam</h2>
-            <div class="chart-container">
-                <!-- TradingView Widget -->
-                <div class="tradingview-widget-container">
-                    <div id="antam-chart" style="height: 500px;"></div>
-                    <div class="tradingview-widget-copyright">
-                        <a href="https://www.tradingview.com/" rel="noopener nofollow" target="_blank"></a>
-                    </div>
-                </div>
-            </div>
-        </section>
     </main>
 
     <footer class="gamer-footer">
@@ -66,21 +53,20 @@
             <div class="footer-section">
                 <h4>Kontak Kami</h4>
                 <ul>
-                    <li><i class="fas fa-envelope"></i> info@pantesbip.com</li>
-                    <li><i class="fas fa-phone"></i> +62 123 4567 890</li>
+                    <li><i class="fas fa-phone"></i> +62 896 5673 7562</li>
                 </ul>
             </div>
             <div class="footer-section">
                 <h4>Sosial Media</h4>
                 <div class="social-links">
-                    <a href="#"><i class="fab fa-instagram"></i></a>
-                    <a href="#"><i class="fab fa-twitter"></i></a>
-                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="www.instagram.com/kevinchandramw_"><i class="fab fa-instagram"></i></a>
+                    <a href="wa.me/+6289656737562"><i class="fab fa-whatsapp"></i></a>
+
                 </div>
             </div>
             <div class="footer-section">
                 <h4>Credit</h4>
-                <p>© 2023 PantesBIP. All rights reserved.</p>
+                <p>© 2025 KEVIN Pantes BIP All rights reserved.</p>
             </div>
         </div>
     </footer>
@@ -105,85 +91,6 @@
             "studies": ["RSI@tv-basicstudies"]
         });
 
-        // Chart Emas Antam (simulasi karena tidak ada di TradingView)
-        new TradingView.widget({
-            "autosize": true,
-            "symbol": "IDX:GOLD",
-            "interval": "D",
-            "timezone": "Asia/Jakarta",
-            "theme": "dark",
-            "style": "1",
-            "locale": "id",
-            "toolbar_bg": "#1a1a2e",
-            "enable_publishing": false,
-            "hide_top_toolbar": false,
-            "hide_side_toolbar": false,
-            "allow_symbol_change": true,
-            "container_id": "antam-chart",
-            "studies": ["MACD@tv-basicstudies"]
-        });
-
-        // Fetch berita emas
-        document.addEventListener('DOMContentLoaded', function() {
-            fetchGoldNews();
-        });
-
-        async function fetchGoldNews() {
-            try {
-                // Simulasi API berita (dalam implementasi nyata, gunakan API seperti NewsAPI)
-                const newsContainer = document.getElementById('newsContainer');
-                
-                // Berita dummy (ganti dengan API nyata)
-                const dummyNews = [
-                    {
-                        title: "Harga Emas Dunia Menguat Jelang Rapat The Fed",
-                        source: "CNBC Indonesia",
-                        date: "1 jam yang lalu",
-                        summary: "Harga emas dunia menunjukkan penguatan signifikan menjelang rapat Federal Reserve pekan ini...",
-                        url: "#"
-                    },
-                    {
-                        title: "Antam Catat Kenaikan Harga Emas 0,5% Pekan Ini",
-                        source: "Kontan",
-                        date: "3 jam yang lalu",
-                        summary: "Harga emas batangan PT Aneka Tambang Tbk (Antam) tercatat naik 0,5% dalam sepekan terakhir...",
-                        url: "#"
-                    },
-                    {
-                        title: "Analis: Emas Masih Jadi Safe Haven di Tengah Gejolak Pasar",
-                        source: "Investor Daily",
-                        date: "5 jam yang lalu",
-                        summary: "Para analis menyebut emas masih menjadi instrumen safe haven yang diminati investor...",
-                        url: "#"
-                    }
-                ];
-
-                let newsHTML = '';
-                dummyNews.forEach(news => {
-                    newsHTML += `
-                        <div class="news-item">
-                            <h3><a href="${news.url}" target="_blank">${news.title}</a></h3>
-                            <div class="news-meta">
-                                <span class="news-source">${news.source}</span>
-                                <span class="news-date">${news.date}</span>
-                            </div>
-                            <p class="news-summary">${news.summary}</p>
-                        </div>
-                    `;
-                });
-
-                newsContainer.innerHTML = newsHTML;
-                
-            } catch (error) {
-                console.error('Error fetching news:', error);
-                document.getElementById('newsContainer').innerHTML = `
-                    <div class="error-message">
-                        <i class="fas fa-exclamation-triangle"></i>
-                        <p>Gagal memuat berita. Silakan coba lagi nanti.</p>
-                    </div>
-                `;
-            }
-        }
     </script>
 </body>
 </html>
