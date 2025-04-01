@@ -23,7 +23,7 @@
         {"code": "ANTM-10", "sellPrice": 18181000, "buybackPrice": 17890000},
         {"code": "ANTM-25", "sellPrice": 45326000, "buybackPrice": 44725000},
         {"code": "ANTM-50", "sellPrice": 90572000, "buybackPrice": 89450000},
-        {"code": "ANTM-100", "sellPrice": 18600000, "buybackPrice": 178900000}
+        {"code": "ANTM-100", "sellPrice": 180600000, "buybackPrice": 178900000}
     ],
     "archi": [
         {"code": "ARCHI-0.5", "sellPrice": 925000, "buybackPrice": 895000},
