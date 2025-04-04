@@ -228,3 +228,142 @@ function renderChangeIndicator(change, percentage) {
     loadPriceData('emas');
     cards[0].classList.add('active');
 });
+
+
+
+// Carousel functionality
+function initCarousel() {
+    const carousel = document.querySelector('.carousel');
+    const slides = document.querySelectorAll('.carousel-slide');
+    const prevBtn = document.querySelector('.carousel-control.prev');
+    const nextBtn = document.querySelector('.carousel-control.next');
+    const indicatorsContainer = document.querySelector('.carousel-indicators');
+    
+    let currentIndex = 0;
+    const slideCount = slides.length;
+    
+    // Create indicators
+    slides.forEach((_, index) => {
+        const indicator = document.createElement('div');
+        indicator.classList.add('carousel-indicator');
+        if (index === 0) indicator.classList.add('active');
+        indicator.addEventListener('click', () => goToSlide(index));
+        indicatorsContainer.appendChild(indicator);
+    });
+    
+    const indicators = document.querySelectorAll('.carousel-indicator');
+    
+    // Update carousel position
+    function updateCarousel() {
+        carousel.style.transform = `translateX(-${currentIndex * 100}%)`;
+        
+        // Update active classes
+        slides.forEach((slide, index) => {
+            slide.classList.toggle('active', index === currentIndex);
+        });
+        
+        indicators.forEach((indicator, index) => {
+            indicator.classList.toggle('active', index === currentIndex);
+        });
+    }
+    
+    // Go to specific slide
+    function goToSlide(index) {
+        currentIndex = (index + slideCount) % slideCount;
+        updateCarousel();
+    }
+    
+    // Next slide
+    function nextSlide() {
+        goToSlide(currentIndex + 1);
+    }
+    
+    // Previous slide
+    function prevSlide() {
+        goToSlide(currentIndex - 1);
+    }
+    
+    // Event listeners
+    nextBtn.addEventListener('click', nextSlide);
+    prevBtn.addEventListener('click', prevSlide);
+    
+    // Keyboard navigation
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowRight') {
+            nextSlide();
+        } else if (e.key === 'ArrowLeft') {
+            prevSlide();
+        }
+    });
+    
+    // Auto-advance (optional)
+    // setInterval(nextSlide, 5000);
+    
+    // Load data for tables
+    loadCarouselData();
+}
+
+// Load data for carousel tables
+async function loadCarouselData() {
+    try {
+        const response = await fetch('data.json');
+        const data = await response.json();
+        
+        // Fill emas table
+        fillTable(1, data.emas, 'Harga Emas Berbagai Karat');
+        
+        // Fill antam table
+        fillTable(2, data.antam, 'Harga Logam Mulia Antam');
+        
+        // Fill archi table
+        fillTable(3, data.archi, 'Harga Logam Mulia Archi');
+        
+    } catch (error) {
+        console.error('Error loading carousel data:', error);
+    }
+}
+
+// Helper function to fill table
+function fillTable(slideIndex, data, title) {
+    const slide = document.querySelectorAll('.carousel-slide')[slideIndex];
+    const table = slide.querySelector('.price-table');
+    const titleElement = slide.querySelector('h3');
+    
+    titleElement.textContent = title;
+    
+    if (!data || data.length === 0) {
+        table.innerHTML = '<tr><td colspan="3">Data tidak tersedia</td></tr>';
+        return;
+    }
+    
+    let tableHTML = `
+        <thead>
+            <tr>
+                <th>Kode</th>
+                <th>Harga Jual</th>
+                <th>Harga Buyback</th>
+            </tr>
+        </thead>
+        <tbody>
+    `;
+    
+    data.forEach(item => {
+        tableHTML += `
+            <tr>
+                <td>${item.code}</td>
+                <td class="highlight">${formatCurrency(item.sellPrice)}</td>
+                <td>${item.buybackPrice ? formatCurrency(item.buybackPrice) : '-'}</td>
+            </tr>
+        `;
+    });
+    
+    tableHTML += '</tbody>';
+    table.innerHTML = tableHTML;
+}
+
+// Panggil initCarousel setelah DOM selesai dimuat
+document.addEventListener('DOMContentLoaded', function() {
+    // ... kode yang sudah ada ...
+    
+    initCarousel();
+});
