@@ -30,7 +30,7 @@
         {"code": "ARCHI-0.5", "sellPrice": 875000, "buybackPrice": 845000},
         {"code": "ARCHI-1", "sellPrice": 1723500, "buybackPrice": 1693500},
         {"code": "ARCHI-2", "sellPrice": 3421000, "buybackPrice": 3361000},
-        {"code": "ARCHI-5", "sellPrice": 8696500, "buybackPrice": 8346500},
+        {"code": "ARCHI-5", "sellPrice": 8496500, "buybackPrice": 8346500},
         {"code": "ARCHI-10", "sellPrice": 16869500, "buybackPrice": 16569500},
         {"code": "ARCHI-25", "sellPrice": 42075000, "buybackPrice": 41325000},
         {"code": "ARCHI-50", "sellPrice": 84051500, "buybackPrice": 82551500},
