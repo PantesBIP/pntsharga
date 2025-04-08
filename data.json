@@ -21,7 +21,7 @@
         {"code": "ANTM-2", "sellPrice": 3540000, "buybackPrice": 3440000},
         {"code": "ANTM-3", "sellPrice": 5284000, "buybackPrice": 5160000},
         {"code": "ANTM-5", "sellPrice": 8774000, "buybackPrice": 8600000},
-        {"code": "ANTM-10", "sellPrice": 18331000, "buybackPrice": 18040000},
+        {"code": "ANTM-10", "sellPrice": 17491000, "buybackPrice": 17200000},
         {"code": "ANTM-25", "sellPrice": 43601000, "buybackPrice": 4300000},
         {"code": "ANTM-50", "sellPrice": 87112000, "buybackPrice": 86000000},
         {"code": "ANTM-100", "sellPrice": 178700000, "buybackPrice": 172000000}
