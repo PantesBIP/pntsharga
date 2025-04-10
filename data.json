@@ -1,30 +1,30 @@
 {
     "emas": [
-        {"code": "16KXB", "sellPrice": 1290000, "buybackPrice": 1279500},
-        {"code": "17KXB-AMER", "sellPrice": 1424000, "buybackPrice": 1423500},
+        {"code": "16KXB", "sellPrice": 1297000, "buybackPrice": 1287000},
+        {"code": "17KXB-AMER", "sellPrice": 1431500, "buybackPrice": 1421000},
         {"code": "8K-KUNING", "sellPrice": 770000, "buybackPrice": 0},
         {"code": "8K-PUTIH", "sellPrice": 800000, "buybackPrice": 0},
         {"code": "9K-KUNING", "sellPrice": 825000, "buybackPrice": 0},
         {"code": "9K-PUTIH", "sellPrice": 845000, "buybackPrice": 0},
-        {"code": "9K-VOILA", "sellPrice": 921500, "buybackPrice": 0},
-        {"code": "9K-ILY", "sellPrice": 904500, "buybackPrice": 0},
-        {"code": "7K-JUENE", "sellPrice": 653500, "buybackPrice": 0},
-        {"code": "8K-BG", "sellPrice": 770500, "buybackPrice": 0},
-        {"code": "16K-LPM", "sellPrice": 1340000, "buybackPrice": 1330000},
-        {"code": "18K-HALPM", "sellPrice": 1474000, "buybackPrice": 1464000},
+        {"code": "9K-VOILA", "sellPrice": 926500, "buybackPrice": 0},
+        {"code": "9K-ILY", "sellPrice": 909500, "buybackPrice": 0},
+        {"code": "7K-JUENE", "sellPrice": 657000, "buybackPrice": 0},
+        {"code": "8K-BG", "sellPrice": 775000, "buybackPrice": 0},
+        {"code": "16K-LPM", "sellPrice": 1347500, "buybackPrice": 1330000},
+        {"code": "18K-HALPM", "sellPrice": 1482000, "buybackPrice": 1464000},
         {"code": "ITALY", "sellPrice": 0, "buybackPrice": 0},
-        {"code": "SDWLPM-92", "sellPrice": 1533000, "buybackPrice": 1522500}
+        {"code": "SDWLPM-92", "sellPrice": 1541000, "buybackPrice": 1522500}
     ],
     "antam": [
-        {"code": "ANTM-0.5", "sellPrice": 993000, "buybackPrice": 923000},
-        {"code": "ANTM-1", "sellPrice": 1869000, "buybackPrice": 1789000},
-        {"code": "ANTM-2", "sellPrice": 3680000, "buybackPrice": 3578000},
-        {"code": "ANTM-3", "sellPrice": 5490000, "buybackPrice": 5367000},
-        {"code": "ANTM-5", "sellPrice": 9025000, "buybackPrice": 8945000},
-        {"code": "ANTM-10", "sellPrice": 18175000, "buybackPrice": 17890000},
-        {"code": "ANTM-25", "sellPrice": 45310000, "buybackPrice": 44725000},
-        {"code": "ANTM-50", "sellPrice": 90540000, "buybackPrice": 89450000},
-        {"code": "ANTM-100", "sellPrice": 180000000, "buybackPrice": 178900000}
+        {"code": "ANTM-0.5", "sellPrice": 1003000, "buybackPrice": 933000},
+        {"code": "ANTM-1", "sellPrice": 1879000, "buybackPrice": 1799000},
+        {"code": "ANTM-2", "sellPrice": 3700000, "buybackPrice": 3578000},
+        {"code": "ANTM-3", "sellPrice": 5550000, "buybackPrice": 5520000},
+        {"code": "ANTM-5", "sellPrice": 9525000, "buybackPrice": 8995000},
+        {"code": "ANTM-10", "sellPrice": 18275000, "buybackPrice": 17990000},
+        {"code": "ANTM-25", "sellPrice": 45560000, "buybackPrice": 44975000},
+        {"code": "ANTM-50", "sellPrice": 91040000, "buybackPrice": 89950000},
+        {"code": "ANTM-100", "sellPrice": 181000000, "buybackPrice": 179900000}
     ],
     "archi": [
         {"code": "ARCHI-0.5", "sellPrice": 935000, "buybackPrice": 905000},
@@ -32,8 +32,8 @@
         {"code": "ARCHI-2", "sellPrice": 3560500, "buybackPrice": 3500500},
         {"code": "ARCHI-5", "sellPrice": 8844500, "buybackPrice": 8694500},
         {"code": "ARCHI-10", "sellPrice": 17564500, "buybackPrice": 17264500},
-        {"code": "ARCHI-25", "sellPrice": 42687000, "buybackPrice": 41187000},
-        {"code": "ARCHI-50", "sellPrice": 85237500, "buybackPrice": 82273500},
-        {"code": "ARCHI-100", "sellPrice": 170450000, "buybackPrice": 164450000}
+        {"code": "ARCHI-25", "sellPrice": 43812000, "buybackPrice": 43062000},
+        {"code": "ARCHI-50", "sellPrice": 87523000, "buybackPrice": 86023000},
+        {"code": "ARCHI-100", "sellPrice": 174950000, "buybackPrice": 171950000}
     ]
 }
