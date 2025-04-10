@@ -28,10 +28,10 @@
     ],
     "archi": [
         {"code": "ARCHI-0.5", "sellPrice": 935000, "buybackPrice": 905000},
-        {"code": "ARCHI-1", "sellPrice": 1747500, "buybackPrice": 1697500},
-        {"code": "ARCHI-2", "sellPrice": 3470500, "buybackPrice": 3350500},
-        {"code": "ARCHI-5", "sellPrice": 8619500, "buybackPrice": 8319500},
-        {"code": "ARCHI-10", "sellPrice": 17114500, "buybackPrice": 16514500},
+        {"code": "ARCHI-1", "sellPrice": 1792000, "buybackPrice": 1762000},
+        {"code": "ARCHI-2", "sellPrice": 3560500, "buybackPrice": 3500500},
+        {"code": "ARCHI-5", "sellPrice": 8844500, "buybackPrice": 8694500},
+        {"code": "ARCHI-10", "sellPrice": 17564500, "buybackPrice": 17264500},
         {"code": "ARCHI-25", "sellPrice": 42687000, "buybackPrice": 41187000},
         {"code": "ARCHI-50", "sellPrice": 85237500, "buybackPrice": 82273500},
         {"code": "ARCHI-100", "sellPrice": 170450000, "buybackPrice": 164450000}
