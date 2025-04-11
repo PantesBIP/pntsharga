@@ -16,7 +16,7 @@
         {"code": "SDWLPM-92", "sellPrice": 1578500, "buybackPrice": 1568000}
     ],
     "antam": [
-        {"code": "ANTM-0.5", "sellPrice": 10350000, "buybackPrice": 940000},
+        {"code": "ANTM-0.5", "sellPrice": 1035000, "buybackPrice": 940000},
         {"code": "ANTM-1", "sellPrice": 1930000, "buybackPrice": 1835000},
         {"code": "ANTM-2", "sellPrice": 3807000, "buybackPrice": 3677000},
         {"code": "ANTM-3", "sellPrice": 5685000, "buybackPrice": 5520000},
