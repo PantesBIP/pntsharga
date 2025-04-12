@@ -1,13 +1,13 @@
 {
     "emas": [
-        {"code": "16KXB", "sellPrice": 1352500, "buybackPrice": 1352500},
+        {"code": "16KXB", "sellPrice": 1363000, "buybackPrice": 1352500},
         {"code": "17KXB-AMER", "sellPrice": 1504500, "buybackPrice": 1494500},
         {"code": "8K-KUNING", "sellPrice": 780000, "buybackPrice": 0},
         {"code": "8K-PUTIH", "sellPrice": 815000, "buybackPrice": 0},
         {"code": "9K-KUNING", "sellPrice": 845000, "buybackPrice": 0},
         {"code": "9K-PUTIH", "sellPrice": 870000, "buybackPrice": 0},
         {"code": "9K-VOILA", "sellPrice": 973500, "buybackPrice": 0},
-        {"code": "9K-ILY", "sellPrice": 956000, "buybackPrice": 0},
+        {"code": "9K-ILY", "sellPrice": 955800, "buybackPrice": 0},
         {"code": "7K-JUENE", "sellPrice": 690500, "buybackPrice": 0},
         {"code": "8K-BG", "sellPrice": 814500, "buybackPrice": 0},
         {"code": "16K-LPM", "sellPrice": 1416000, "buybackPrice": 1406000},
