@@ -1,19 +1,19 @@
 {
     "emas": [
-        {"code": "16KXB", "sellPrice": 1340000, "buybackPrice": 1329500},
-        {"code": "17KXB-AMER", "sellPrice": 1479000, "buybackPrice": 1469000},
+        {"code": "16KXB", "sellPrice": 1358000, "buybackPrice": 1347500},
+        {"code": "17KXB-AMER", "sellPrice": 1499000, "buybackPrice": 1488500},
         {"code": "8K-KUNING", "sellPrice": 815000, "buybackPrice": 0},
         {"code": "8K-PUTIH", "sellPrice": 850000, "buybackPrice": 0},
         {"code": "9K-KUNING", "sellPrice": 865000, "buybackPrice": 0},
         {"code": "9K-PUTIH", "sellPrice": 885000, "buybackPrice": 0},
-        {"code": "9K-VOILA", "sellPrice": 957000, "buybackPrice": 0},
-        {"code": "9K-ILY", "sellPrice": 940000, "buybackPrice": 0},
-        {"code": "7K-JUENE", "sellPrice": 679000, "buybackPrice": 0},
-        {"code": "8K-BG", "sellPrice": 800500, "buybackPrice": 0},
-        {"code": "16K-LPM", "sellPrice": 1392000, "buybackPrice": 1382000},
-        {"code": "18K-HALPM", "sellPrice": 1531500, "buybackPrice": 1521000},
+        {"code": "9K-VOILA", "sellPrice": 970000, "buybackPrice": 0},
+        {"code": "9K-ILY", "sellPrice": 952500, "buybackPrice": 0},
+        {"code": "7K-JUENE", "sellPrice": 687500, "buybackPrice": 0},
+        {"code": "8K-BG", "sellPrice": 811000, "buybackPrice": 0},
+        {"code": "16K-LPM", "sellPrice": 1410500, "buybackPrice": 1400000},
+        {"code": "18K-HALPM", "sellPrice": 1551500, "buybackPrice": 1541000},
         {"code": "ITALY", "sellPrice": 0, "buybackPrice": 0},
-        {"code": "SDWLPM-92", "sellPrice": 1592500, "buybackPrice": 1582000}
+        {"code": "SDWLPM-92", "sellPrice": 1613500, "buybackPrice": 1603000}
     ],
     "antam": [
         {"code": "ANTM-0.5", "sellPrice": 1095000, "buybackPrice": 1000000},
