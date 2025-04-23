@@ -1,17 +1,17 @@
 {
   "emas": [
-    {"code": "16K-BG-HALA", "sellPrice": 1398000, "buybackPrice": 1388000},
-    {"code": "17K-AMER", "sellPrice": 1543000, "buybackPrice": 1533000},
+    {"code": "16K-BG-HALA", "sellPrice": 1398000, "buybackPrice": 1387500},
+    {"code": "17K-AMER", "sellPrice": 1543000, "buybackPrice": 1533500},
     {"code": "8K-KUNING", "sellPrice": 835000, "buybackPrice": 0},
-    {"code": "9K-PUTH", "sellPrice": 871000, "buybackPrice": 0},
-    {"code": "9K-KUNING", "sellPrice": 908000, "buybackPrice": 0},
+    {"code": "9K-PUTH", "sellPrice": 871500, "buybackPrice": 0},
+    {"code": "9K-KUNING", "sellPrice": 907500, "buybackPrice": 0},
     {"code": "9K-PUTH-2", "sellPrice": 944000, "buybackPrice": 0},
     {"code": "7K-JUENE", "sellPrice": 708000, "buybackPrice": 0},
-    {"code": "11Y-AURUM", "sellPrice": 980000, "buybackPrice": 0},
+    {"code": "11Y-AURUM", "sellPrice": 980500, "buybackPrice": 0},
     {"code": "16-BG", "sellPrice": 1425000, "buybackPrice": 0},
     {"code": "16-DG-JOLLY", "sellPrice": 1443000, "buybackPrice": 0},
     {"code": "16K-LPM", "sellPrice": 1452000, "buybackPrice": 1442000},
-    {"code": "18K-HALA-LPM", "sellPrice": 1597000, "buybackPrice": 1587000},
+    {"code": "18K-HALA-LPM", "sellPrice": 1597500, "buybackPrice": 1587000},
     {"code": "SDW-LPM-92", "sellPrice": 1688000, "buybackPrice": 1677500}
   ],
    "antam": [
