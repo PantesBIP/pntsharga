@@ -1,20 +1,19 @@
 {
-    "emas": [
-        {"code": "16KXB", "sellPrice": 1463000, "buybackPrice": 1453000},
-        {"code": "17KXB-AMER", "sellPrice": 1615000, "buybackPrice": 1605000},
-        {"code": "8K-KUNING", "sellPrice": 874000, "buybackPrice": 0},
-        {"code": "8K-PUTIH", "sellPrice": 912000, "buybackPrice": 0},
-        {"code": "9K-KUNING", "sellPrice": 950000, "buybackPrice": 0},
-        {"code": "9K-PUTIH", "sellPrice": 988000, "buybackPrice": 0},
-        {"code": "9K-VOILA", "sellPrice": 1045000, "buybackPrice": 0},
-        {"code": "9K-ILY", "sellPrice": 1045000, "buybackPrice": 0},
-        {"code": "7K-JUENE", "sellPrice": 741000, "buybackPrice": 0},
-        {"code": "8K-BG", "sellPrice": 874000, "buybackPrice": 0},
-        {"code": "16K-LPM", "sellPrice": 1520000, "buybackPrice": 1510000},
-        {"code": "18K-HALPM", "sellPrice": 1672000, "buybackPrice": 1662000},
-        {"code": "ITALY", "sellPrice": 0, "buybackPrice": 0},
-        {"code": "SDWLPM-92", "sellPrice": 1767000, "buybackPrice": 1757000}
-    ],
+  "emas": [
+    {"code": "16K-BG-HALA", "sellPrice": 1398000, "buybackPrice": 1388000},
+    {"code": "17K-AMER", "sellPrice": 1543000, "buybackPrice": 1533000},
+    {"code": "8K-KUNING", "sellPrice": 835000, "buybackPrice": 0},
+    {"code": "9K-PUTH", "sellPrice": 871000, "buybackPrice": 0},
+    {"code": "9K-KUNING", "sellPrice": 908000, "buybackPrice": 0},
+    {"code": "9K-PUTH-2", "sellPrice": 944000, "buybackPrice": 0},
+    {"code": "7K-JUENE", "sellPrice": 708000, "buybackPrice": 0},
+    {"code": "11Y-AURUM", "sellPrice": 980000, "buybackPrice": 0},
+    {"code": "16-BG", "sellPrice": 1425000, "buybackPrice": 0},
+    {"code": "16-DG-JOLLY", "sellPrice": 1443000, "buybackPrice": 0},
+    {"code": "16K-LPM", "sellPrice": 1452000, "buybackPrice": 1442000},
+    {"code": "18K-HALA-LPM", "sellPrice": 1597000, "buybackPrice": 1587000},
+    {"code": "SDW-LPM-92", "sellPrice": 1688000, "buybackPrice": 1677500}
+  ],
   "antam": [
         {"code": "ANTM-0.5", "sellPrice": 1270000, "buybackPrice": 1175000},
         {"code": "ANTM-1", "sellPrice": 2334000, "buybackPrice": 2144000},
