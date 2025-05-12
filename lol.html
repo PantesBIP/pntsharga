@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Data dari Google Sheets</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    table { border-collapse: collapse; width: 100%; }
+    th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+    th { background-color: #f2f2f2; }
+  </style>
+</head>
+<body>
+  <h1>Data dari Google Spreadsheet</h1>
+  <table id="data-table">
+    <thead>
+      <tr>
+        <th>Nama</th>
+        <th>Umur</th>
+        <th>Kota</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <script>
+    // Ganti LINK_CSV dengan link publik spreadsheet Anda
+    const csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQFH0squhL_c2KoNryfBrysWZEKTTUpthg_1XVE-fT3r7-ew1_lkbFqENefrlBLHClis53FyDdNiUkh/pub?gid=0&single=true&output=csv';
+
+    fetch(csvUrl)
+      .then(response => response.text())
+      .then(data => {
+        const rows = data.split('\n').slice(1); // Abaikan header
+        const tableBody = document.querySelector('#data-table tbody');
+
+        rows.forEach(row => {
+          const [nama, umur, kota] = row.split(',');
+          const tr = document.createElement('tr');
+          tr.innerHTML = `
+            <td>${nama}</td>
+            <td>${umur}</td>
+            <td>${kota}</td>
+          `;
+          tableBody.appendChild(tr);
+        });
+      })
+      .catch(error => console.error('Error:', error));
+  </script>
+</body>
+</html>
