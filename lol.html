@@ -36,7 +36,7 @@
         const tableBody = document.querySelector('#data-table tbody');
 
         rows.forEach(row => {
-          const [nama, umur, kota] = row.split(',');
+          const [kode_sales, nama_sales, pcs, berat] = row.split(',');
           const tr = document.createElement('tr');
           tr.innerHTML = `
             <td>${kode_slaes}</td>
