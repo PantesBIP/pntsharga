@@ -1,0 +1,32 @@
+.change.up {
+    color: #4CAF50;
+}
+
+.change.down {
+    color: #F44336;
+}
+
+.change.neutral {
+    color: #FFC107;
+}
+
+.price-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.price-table th, .price-table td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.price-table th {
+    background-color: #2c3e50;
+    color: white;
+}
+
+.price-table tr:hover {
+    background-color: #f5f5f5;
+}
