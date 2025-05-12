@@ -1,8 +1,3 @@
-// URL Spreadsheet yang sudah dipublish (format CSV)
-const SPREADSHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQFH0squhL_c2KoNryfBrysWZEKTTUpthg_1XVE-fT3r7-ew1_lkbFqENefrlBLHClis53FyDdNiUkh/pub?gid=216173443&single=true&output=csv";
-
-
-
 // Helper functions
 function formatCurrency(amount) {
     return new Intl.NumberFormat('id-ID', {
@@ -17,82 +12,44 @@ function renderChangeIndicator(change, percentage) {
     const isPositive = change > 0;
     const arrow = isPositive ? '↑' : '↓';
     const absPercentage = Math.abs(percentage);
-    return <span class="price-change ${isPositive ? 'up' : 'down'}">${arrow} ${absPercentage}%</span>;
+    return `<span class="price-change ${isPositive ? 'up' : 'down'}">${arrow} ${absPercentage}%</span>`;
 }
 
-// Fungsi untuk memproses data CSV dari Google Sheets
-async function fetchPriceData() {
-    try {
-        const response = await fetch(SPREADSHEET_URL);
-        const csvData = await response.text();
-        return processCSVData(csvData);
-    } catch (error) {
-        console.error('Error fetching data:', error);
-        return null;
-    }
-}
-
-function processCSVData(csv) {
-    const result = {
-        current: { emas: [], antam: [], archi: [] },
-        old: { emas: [], antam: [], archi: [] }
-    };
-    
-    const   rows = csv.split("\n")).slice(1);
-    
-    rows.forEach(row => {
-        const columns = row.split(",");
-        const tipe = columns[0]?.trim();
-        const kode = columns[1]?.trim();
-        const harga_jual = columns[2]?.trim();
-        const buyback = columns[3]?.trim();
-        const harga_jual_lama = columns[4]?.trim();
-        const buyback_lama = columns[5]?.trim();
-        
-        if (tipe && result.current[tipe]) {
-            // Data saat ini
-            result.current[tipe].push({
-                code: kode,
-                sellPrice: parseInt(harga_jual) || 0,
-                buybackPrice: parseInt(buyback) || 0
-            });
-            
-            // Data lama
-            result.old[tipe].push({
-                code: kode,
-                sellPrice: parseInt(harga_jual_lama) || 0,
-                buybackPrice: parseInt(buyback_lama) || 0
-            });
-        }
+function parseCSVToJSON(csvText) {
+    const lines = csvText.trim().split('\n');
+    const headers = lines[0].split(',').map(h => h.trim());
+    return lines.slice(1).map(line => {
+        const values = line.split(',').map(v => v.trim());
+        const obj = {};
+        headers.forEach((header, index) => {
+            obj[header] = values[index] || '';
+        });
+        return obj;
     });
-    
-    return result;
 }
 
-document.addEventListener('DOMContentLoaded', function() {
-    // Mobile menu toggle
+document.addEventListener('DOMContentLoaded', function () {
     const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
     const gamerNav = document.querySelector('.gamer-nav');
-    
-    mobileMenuBtn.addEventListener('click', function(e) {
+
+    mobileMenuBtn.addEventListener('click', function (e) {
         e.stopPropagation();
         gamerNav.classList.toggle('active');
     });
 
-    document.addEventListener('click', function() {
+    document.addEventListener('click', function () {
         gamerNav.classList.remove('active');
     });
 
-    gamerNav.addEventListener('click', function(e) {
+    gamerNav.addEventListener('click', function (e) {
         e.stopPropagation();
     });
 
-    // Card click handlers
     const cards = document.querySelectorAll('.card');
     const priceTableContainer = document.getElementById('priceTableContainer');
-    
+
     cards.forEach(card => {
-        card.addEventListener('click', function() {
+        card.addEventListener('click', function () {
             const type = this.getAttribute('data-type');
             loadMainPriceData(type);
             cards.forEach(c => c.classList.remove('active'));
@@ -100,27 +57,38 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Initialize
     loadMainPriceData('emas');
     cards[0].classList.add('active');
     initCarousel();
 });
 
-// Main price table functions
+// Load and parse CSV from Google Sheets
 async function loadMainPriceData(type) {
     const priceTableContainer = document.getElementById('priceTableContainer');
     priceTableContainer.innerHTML = '<div class="loading-spinner"><i class="fas fa-spinner fa-spin"></i><p>Memuat data...</p></div>';
-    
+
     try {
-        const priceData = await fetchPriceData();
-        
-        if (!priceData) {
-            throw new Error('Gagal mengambil data');
-        }
-        
-        displayMainPriceTable(type, priceData.current[type], priceData.old[type]);
+        const response = await fetch('https://docs.google.com/spreadsheets/d/e/2PACX-1vQFH0squhL_c2KoNryfBrysWZEKTTUpthg_1XVE-fT3r7-ew1_lkbFqENefrlBLHClis53FyDdNiUkh/pub?gid=216173443&single=true&output=csv');
+        const csvText = await response.text();
+        const data = parseCSVToJSON(csvText);
+
+        const filteredData = data.filter(row => row.tipe.toLowerCase() === type.toLowerCase());
+
+        const currentData = filteredData.map(row => ({
+            code: row.kode,
+            sellPrice: parseInt(row.harga_jual) || 0,
+            buybackPrice: parseInt(row.buyback) || 0
+        }));
+
+        const oldData = filteredData.map(row => ({
+            code: row.kode,
+            sellPrice: parseInt(row.harga_jual_lama) || 0,
+            buybackPrice: parseInt(row.buyback_lama) || 0
+        }));
+
+        displayMainPriceTable(type, currentData, oldData);
     } catch (error) {
-        console.error('Error loading price data:', error);
+        console.error('Error loading CSV data:', error);
         priceTableContainer.innerHTML = `
             <div class="error-message">
                 <i class="fas fa-exclamation-triangle"></i>
@@ -132,7 +100,7 @@ async function loadMainPriceData(type) {
 
 function displayMainPriceTable(type, currentData, oldData) {
     const priceTableContainer = document.getElementById('priceTableContainer');
-    
+
     if (!currentData || currentData.length === 0) {
         priceTableContainer.innerHTML = `
             <div class="error-message">
@@ -158,18 +126,18 @@ function displayMainPriceTable(type, currentData, oldData) {
     `;
 
     currentData.forEach(item => {
-        const oldItem = oldData?.find(old => old.code === item.code) || {};
-        
+        const oldItem = oldData.find(old => old.code === item.code) || {};
+
         const sellChange = item.sellPrice - (oldItem.sellPrice || item.sellPrice);
-        const sellPercentage = oldItem.sellPrice 
+        const sellPercentage = oldItem.sellPrice
             ? ((sellChange) / oldItem.sellPrice * 100).toFixed(2)
             : 0;
-        
+
         const buybackChange = item.buybackPrice - (oldItem.buybackPrice || item.buybackPrice);
-        const buybackPercentage = oldItem.buybackPrice 
+        const buybackPercentage = oldItem.buybackPrice
             ? ((buybackChange) / oldItem.buybackPrice * 100).toFixed(2)
             : 0;
-        
+
         tableHTML += `
             <tr>
                 <td>${item.code}</td>
@@ -199,11 +167,10 @@ function initCarousel() {
     const prevBtn = document.querySelector('.carousel-control.prev');
     const nextBtn = document.querySelector('.carousel-control.next');
     const indicatorsContainer = document.querySelector('.carousel-indicators');
-    
+
     let currentIndex = 0;
     const slideCount = slides.length;
-    
-    // Create indicators
+
     slides.forEach((_, index) => {
         const indicator = document.createElement('div');
         indicator.classList.add('carousel-indicator');
@@ -211,11 +178,11 @@ function initCarousel() {
         indicator.addEventListener('click', () => goToSlide(index));
         indicatorsContainer.appendChild(indicator);
     });
-    
+
     const indicators = document.querySelectorAll('.carousel-indicator');
-    
+
     function updateCarousel() {
-        carousel.style.transform = translateX(-${currentIndex * 100}%);
+        carousel.style.transform = `translateX(-${currentIndex * 100}%)`;
         slides.forEach((slide, index) => {
             slide.classList.toggle('active', index === currentIndex);
         });
@@ -223,35 +190,50 @@ function initCarousel() {
             indicator.classList.toggle('active', index === currentIndex);
         });
     }
-    
+
     function goToSlide(index) {
         currentIndex = (index + slideCount) % slideCount;
         updateCarousel();
     }
-    
+
     nextBtn.addEventListener('click', () => goToSlide(currentIndex + 1));
     prevBtn.addEventListener('click', () => goToSlide(currentIndex - 1));
-    
+
     document.addEventListener('keydown', (e) => {
         if (e.key === 'ArrowRight') goToSlide(currentIndex + 1);
         if (e.key === 'ArrowLeft') goToSlide(currentIndex - 1);
     });
-    
+
     loadCarouselData();
 }
 
 async function loadCarouselData() {
     try {
-        const priceData = await fetchPriceData();
-        
-        if (!priceData) {
-            throw new Error('Gagal mengambil data');
-        }
-        
-        fillCarouselTable(0, priceData.current.emas, 'Harga Emas Berbagai Karat');
-        fillCarouselTable(1, priceData.current.antam, 'Harga Logam Mulia Antam');
-        fillCarouselTable(2, priceData.current.archi, 'Harga Logam Mulia Archi');
-        
+        const response = await fetch('https://docs.google.com/spreadsheets/d/e/2PACX-1vQFH0squhL_c2KoNryfBrysWZEKTTUpthg_1XVE-fT3r7-ew1_lkbFqENefrlBLHClis53FyDdNiUkh/pub?gid=216173443&single=true&output=csv');
+        const csvText = await response.text();
+        const data = parseCSVToJSON(csvText);
+
+        const kelompok = {
+            emas: [],
+            antam: [],
+            archi: []
+        };
+
+        data.forEach(row => {
+            const item = {
+                code: row.kode,
+                sellPrice: parseInt(row.harga_jual) || 0,
+                buybackPrice: parseInt(row.buyback) || 0
+            };
+            const tipe = row.tipe.toLowerCase();
+            if (kelompok[tipe]) {
+                kelompok[tipe].push(item);
+            }
+        });
+
+        fillCarouselTable(1, kelompok.emas, 'Harga Emas Berbagai Karat');
+        fillCarouselTable(2, kelompok.antam, 'Harga Logam Mulia Antam');
+        fillCarouselTable(3, kelompok.archi, 'Harga Logam Mulia Archi');
     } catch (error) {
         console.error('Error loading carousel data:', error);
         document.querySelectorAll('.table-responsive').forEach(table => {
@@ -266,12 +248,12 @@ async function loadCarouselData() {
 function fillCarouselTable(slideIndex, data, title) {
     const slide = document.querySelectorAll('.carousel-slide')[slideIndex];
     if (!slide) return;
-    
+
     const tableContainer = slide.querySelector('.table-responsive');
     const titleElement = slide.querySelector('h3');
-    
+
     titleElement.textContent = title;
-    
+
     if (!data || data.length === 0) {
         tableContainer.innerHTML = '<div class="error-message">Data tidak tersedia</div>';
         return;
@@ -288,7 +270,7 @@ function fillCarouselTable(slideIndex, data, title) {
             </thead>
             <tbody>
     `;
-    
+
     data.forEach(item => {
         tableHTML += `
             <tr>
@@ -298,21 +280,11 @@ function fillCarouselTable(slideIndex, data, title) {
             </tr>
         `;
     });
-    
+
     tableHTML += `
             </tbody>
         </table>
     `;
-    
+
     tableContainer.innerHTML = tableHTML;
 }
-
-// Auto-refresh data setiap 5 menit
-setInterval(() => {
-    const activeCard = document.querySelector('.card.active');
-    if (activeCard) {
-        const type = activeCard.getAttribute('data-type');
-        loadMainPriceData(type);
-    }
-    loadCarouselData();
-}, 5 * 60 * 1000);
