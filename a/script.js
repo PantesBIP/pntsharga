@@ -17,7 +17,7 @@ function renderChangeIndicator(change, percentage) {
     const isPositive = change > 0;
     const arrow = isPositive ? '↑' : '↓';
     const absPercentage = Math.abs(percentage);
-    return `<span class="price-change ${isPositive ? 'up' : 'down'}">${arrow} ${absPercentage}%</span>`;
+    return <span class="price-change ${isPositive ? 'up' : 'down'}">${arrow} ${absPercentage}%</span>;
 }
 
 // Fungsi untuk memproses data CSV dari Google Sheets
@@ -215,7 +215,7 @@ function initCarousel() {
     const indicators = document.querySelectorAll('.carousel-indicator');
     
     function updateCarousel() {
-        carousel.style.transform = `translateX(-${currentIndex * 100}%)`;
+        carousel.style.transform = translateX(-${currentIndex * 100}%);
         slides.forEach((slide, index) => {
             slide.classList.toggle('active', index === currentIndex);
         });
