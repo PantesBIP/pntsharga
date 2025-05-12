@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Data dari Google Sheets</title>
+  <title>Penjualan Bulan Mei</title>
   <style>
     body { font-family: Arial, sans-serif; margin: 20px; }
     table { border-collapse: collapse; width: 100%; }
@@ -16,9 +16,10 @@
   <table id="data-table">
     <thead>
       <tr>
-        <th>Nama</th>
-        <th>Umur</th>
-        <th>Kota</th>
+        <th>Kode Sales</th>
+        <th>Nama Sales</th>
+        <th>PCS</th>
+         <th>Berat</th>
       </tr>
     </thead>
     <tbody></tbody>
@@ -38,9 +39,10 @@
           const [nama, umur, kota] = row.split(',');
           const tr = document.createElement('tr');
           tr.innerHTML = `
-            <td>${nama}</td>
-            <td>${umur}</td>
-            <td>${kota}</td>
+            <td>${kode_slaes}</td>
+            <td>${nama_sales}</td>
+            <td>${pcs}</td>
+            <td>${berat}</td>
           `;
           tableBody.appendChild(tr);
         });
