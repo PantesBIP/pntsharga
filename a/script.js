@@ -38,25 +38,30 @@ function processCSVData(csv) {
         old: { emas: [], antam: [], archi: [] }
     };
     
-    const data = Papa.parse(csv, { header: true }).data;
+    const   rows = csv.split("\n")).slice(1);
     
-    data.forEach(row => {
-        if (!row.tipe) return;
+    rows.forEach(row => {
+        const columns = row.split(",");
+        const tipe = columns[0]?.trim();
+        const kode = columns[1]?.trim();
+        const harga_jual = columns[2]?.trim();
+        const buyback = columns[3]?.trim();
+        const harga_jual_lama = columns[4]?.trim();
+        const buyback_lama = columns[5]?.trim();
         
-        const tipe = row.tipe.trim();
-        if (result.current[tipe]) {
-            // Current data
+        if (tipe && result.current[tipe]) {
+            // Data saat ini
             result.current[tipe].push({
-                code: row.kode.trim(),
-                sellPrice: parseInt(row.harga_jual) || 0,
-                buybackPrice: parseInt(row.buyback) || 0
+                code: kode,
+                sellPrice: parseInt(harga_jual) || 0,
+                buybackPrice: parseInt(buyback) || 0
             });
             
-            // Old data
+            // Data lama
             result.old[tipe].push({
-                code: row.kode.trim(),
-                sellPrice: parseInt(row.harga_jual_lama) || 0,
-                buybackPrice: parseInt(row.buyback_lama) || 0
+                code: kode,
+                sellPrice: parseInt(harga_jual_lama) || 0,
+                buybackPrice: parseInt(buyback_lama) || 0
             });
         }
     });
