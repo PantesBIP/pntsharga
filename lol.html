@@ -1,51 +1,171 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Penjualan Bulan Mei</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
   <style>
-    body { font-family: Arial, sans-serif; margin: 20px; }
-    table { border-collapse: collapse; width: 100%; margin-bottom: 30px; }
-    th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
-    th { background-color: #f2f2f2; }
-    h2 { margin-top: 30px; }
-    .table-container { display: flex; flex-direction: column; gap: 30px; }
+    :root {
+      --primary-color: #4361ee;
+      --secondary-color: #3f37c9;
+      --accent-color: #4895ef;
+      --light-color: #f8f9fa;
+      --dark-color: #212529;
+      --success-color: #4cc9f0;
+    }
+    
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #f5f7fa;
+      color: var(--dark-color);
+      line-height: 1.6;
+      padding: 20px;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    
+    header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    
+    h1 {
+      color: var(--primary-color);
+      font-size: 2.2rem;
+      margin-bottom: 10px;
+    }
+    
+    .tables-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: space-between;
+    }
+    
+    .table-wrapper {
+      flex: 1;
+      min-width: 300px;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      transition: transform 0.3s ease;
+    }
+    
+    .table-wrapper:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    }
+    
+    .table-title {
+      color: var(--secondary-color);
+      margin-bottom: 15px;
+      font-size: 1.3rem;
+      text-align: center;
+      padding-bottom: 10px;
+      border-bottom: 2px solid var(--accent-color);
+    }
+    
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+    }
+    
+    th {
+      background-color: var(--primary-color);
+      color: white;
+      padding: 10px;
+      text-align: left;
+    }
+    
+    td {
+      padding: 8px 10px;
+      border-bottom: 1px solid #e0e0e0;
+    }
+    
+    tr:nth-child(even) {
+      background-color: #f8f9fa;
+    }
+    
+    tr:hover {
+      background-color: #e9ecef;
+    }
+    
+    .rank-1 {
+      background-color: #fff3cd !important;
+      font-weight: 500;
+    }
+    
+    .rank-2 {
+      background-color: #e2e3e5 !important;
+    }
+    
+    .rank-3 {
+      background-color: #d1e7dd !important;
+    }
+    
+    @media (max-width: 768px) {
+      .tables-container {
+        flex-direction: column;
+      }
+      
+      .table-wrapper {
+        width: 100%;
+      }
+      
+      h1 {
+        font-size: 1.8rem;
+      }
+    }
   </style>
 </head>
 <body>
-  <h1>Penjualan Bulan Mei</h1>
-  
-  <div class="table-container">
-    <div>
-      <h2>Ranking Penjualan (PCS)</h2>
-      <table id="pcs-table">
-        <thead>
-          <tr>
-            <th>Rank</th>
-            <th>Kode Sales</th>
-            <th>Nama Sales</th>
-            <th>PCS</th>
-          </tr>
-        </thead>
-        <tbody></tbody>
-      </table>
-    </div>
+  <div class="container">
+    <header>
+      <h1>📊 Penjualan Bulan Mei</h1>
+      <p>Performance Sales Team</p>
+    </header>
     
-    <div>
-      <h2>Ranking Penjualan (Gram)</h2>
-      <table id="gram-table">
-        <thead>
-          <tr>
-            <th>Rank</th>
-            <th>Kode Sales</th>
-            <th>Nama Sales</th>
-            <th>Berat (Gram)</th>
-          </tr>
-        </thead>
-        <tbody></tbody>
-      </table>
+    <div class="tables-container">
+      <div class="table-wrapper">
+        <h2 class="table-title">🏆 Ranking Penjualan (PCS)</h2>
+        <table id="pcs-table">
+          <thead>
+            <tr>
+              <th>Rank</th>
+              <th>Sales</th>
+              <th>PCS</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      
+      <div class="table-wrapper">
+        <h2 class="table-title">⚖ Ranking Penjualan (Gram)</h2>
+        <table id="gram-table">
+          <thead>
+            <tr>
+              <th>Rank</th>
+              <th>Sales</th>
+              <th>Gram</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
     </div>
   </div>
 
@@ -66,7 +186,7 @@
             pcs: parseInt(pcs) || 0,
             berat: parseInt(berat) || 0
           };
-        });
+        }).filter(sales => sales.kode_sales); // Filter baris kosong
         
         // Urutkan berdasarkan PCS (descending)
         const sortedByPcs = [...salesData].sort((a, b) => b.pcs - a.pcs);
@@ -78,11 +198,11 @@
         const pcsTableBody = document.querySelector('#pcs-table tbody');
         sortedByPcs.forEach((sales, index) => {
           const tr = document.createElement('tr');
+          if(index < 3) tr.classList.add(rank-${index+1});
           tr.innerHTML = `
             <td>${index + 1}</td>
-            <td>${sales.kode_sales}</td>
-            <td>${sales.nama_sales}</td>
-            <td>${sales.pcs}</td>
+            <td><strong>${sales.kode_sales}</strong><br>${sales.nama_sales}</td>
+            <td>${sales.pcs.toLocaleString()}</td>
           `;
           pcsTableBody.appendChild(tr);
         });
@@ -91,11 +211,11 @@
         const gramTableBody = document.querySelector('#gram-table tbody');
         sortedByGram.forEach((sales, index) => {
           const tr = document.createElement('tr');
+          if(index < 3) tr.classList.add(rank-${index+1});
           tr.innerHTML = `
             <td>${index + 1}</td>
-            <td>${sales.kode_sales}</td>
-            <td>${sales.nama_sales}</td>
-            <td>${sales.berat}</td>
+            <td><strong>${sales.kode_sales}</strong><br>${sales.nama_sales}</td>
+            <td>${sales.berat.toLocaleString()}</td>
           `;
           gramTableBody.appendChild(tr);
         });
