@@ -169,7 +169,7 @@
     </div>
   </div>
 
-  <script>
+<script>
     const csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQFH0squhL_c2KoNryfBrysWZEKTTUpthg_1XVE-fT3r7-ew1_lkbFqENefrlBLHClis53FyDdNiUkh/pub?gid=0&single=true&output=csv';
 
     fetch(csvUrl)
@@ -192,7 +192,7 @@
             kode_sales: columns[0]?.trim() || '',
             nama_sales: columns[1]?.trim() || '',
             pcs: parseInt(columns[2]) || 0,
-            berat: parseInt(columns[3]) || 0
+            berat: parseFloat(columns[3]) || 0  // Changed to parseFloat to preserve decimals
           };
         }).filter(sales => sales.kode_sales); // Filter entries with no sales code
         
@@ -229,7 +229,7 @@
           tr.innerHTML = `
             <td>${index + 1}</td>
             <td><strong>${sales.kode_sales}</strong><br>${sales.nama_sales}</td>
-            <td>${sales.berat.toLocaleString()}</td>
+            <td>${sales.berat.toLocaleString('id-ID', { minimumFractionDigits: 3, maximumFractionDigits: 3 })}</td>
           `;
           gramTableBody.appendChild(tr);
         });
