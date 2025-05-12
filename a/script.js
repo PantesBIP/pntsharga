@@ -17,16 +17,21 @@ function renderChangeIndicator(change, percentage) {
 
 function parseCSVToJSON(csvText) {
     const lines = csvText.trim().split('\n');
-    const headers = lines[0].split(',').map(h => h.trim());
+    const headers = lines[0].split(',').map(h => h.toLowerCase().replace(/\s+/g, '_'));
     return lines.slice(1).map(line => {
         const values = line.split(',').map(v => v.trim());
         const obj = {};
         headers.forEach((header, index) => {
-            obj[header] = values[index] || '';
+            let value = values[index] || '';
+            if (['harga_jual', 'harga_jual_lama', 'buyback', 'buyback_lama'].includes(header)) {
+                value = parseInt(value.replace(/[^0-9]/g, ''), 10) || 0; // Buang koma, ubah ke angka
+            }
+            obj[header] = value;
         });
         return obj;
     });
 }
+
 
 document.addEventListener('DOMContentLoaded', function () {
     const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
