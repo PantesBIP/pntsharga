@@ -1,37 +1,7 @@
 // URL Spreadsheet yang sudah dipublish (format CSV)
 const SPREADSHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQFH0squhL_c2KoNryfBrysWZEKTTUpthg_1XVE-fT3r7-ew1_lkbFqENefrlBLHClis53FyDdNiUkh/pub?gid=216173443&single=true&output=csv";
 
-function processCSVData(csv) {
-    const result = {
-        current: { emas: [], antam: [], archi: [] },
-        old: { emas: [], antam: [], archi: [] }
-    };
-    
-    const data = Papa.parse(csv, { header: true }).data;
-    
-    data.forEach(row => {
-        if (!row.tipe) return;
-        
-        const tipe = row.tipe.trim();
-        if (result.current[tipe]) {
-            // Current data
-            result.current[tipe].push({
-                code: row.kode.trim(),
-                sellPrice: parseInt(row.harga_jual) || 0,
-                buybackPrice: parseInt(row.buyback) || 0
-            });
-            
-            // Old data
-            result.old[tipe].push({
-                code: row.kode.trim(),
-                sellPrice: parseInt(row.harga_jual_lama) || 0,
-                buybackPrice: parseInt(row.buyback_lama) || 0
-            });
-        }
-    });
-    
-    return result;
-}
+
 
 // Helper functions
 function formatCurrency(amount) {
@@ -68,26 +38,25 @@ function processCSVData(csv) {
         old: { emas: [], antam: [], archi: [] }
     };
     
-    const rows = csv.split("\n").slice(1); // Skip header
+    const data = Papa.parse(csv, { header: true }).data;
     
-    rows.forEach(row => {
-        const [tipe, kode, harga_jual, buyback, harga_jual_lama, buyback_lama] = row.split(",");
+    data.forEach(row => {
+        if (!row.tipe) return;
         
-        if (tipe && result.current[tipe.trim()]) {
-            const type = tipe.trim();
-            
-            // Data saat ini
-            result.current[type].push({
-                code: kode.trim(),
-                sellPrice: parseInt(harga_jual) || 0,
-                buybackPrice: parseInt(buyback) || 0
+        const tipe = row.tipe.trim();
+        if (result.current[tipe]) {
+            // Current data
+            result.current[tipe].push({
+                code: row.kode.trim(),
+                sellPrice: parseInt(row.harga_jual) || 0,
+                buybackPrice: parseInt(row.buyback) || 0
             });
             
-            // Data lama
-            result.old[type].push({
-                code: kode.trim(),
-                sellPrice: parseInt(harga_jual_lama) || 0,
-                buybackPrice: parseInt(buyback_lama) || 0
+            // Old data
+            result.old[tipe].push({
+                code: row.kode.trim(),
+                sellPrice: parseInt(row.harga_jual_lama) || 0,
+                buybackPrice: parseInt(row.buyback_lama) || 0
             });
         }
     });
