@@ -8,8 +8,8 @@
   --card-bg: #1a1a2e;
   --table-bg: #16213e;
   --table-header: #0f3460;
-  --table-row-odd: #1a1a2e;
-  --table-row-even: #16213e;
+  --table-row-odd: #ffffff;
+  --table-row-even: #ffffff;
   --highlight: rgba(255, 215, 0, 0.1);
 }
 
