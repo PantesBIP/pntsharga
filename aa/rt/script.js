@@ -93,22 +93,23 @@ function parseCSVToJSON(csvText) {
   });
 }
 
-// Load running text data
+// Modifikasi fungsi loadRunningTextData untuk format sederhana
 async function loadRunningTextData() {
   try {
     const response = await fetch(getSheetUrl('runningText'));
     if (!response.ok) throw new Error('Network response was not ok');
     
     const csvText = await response.text();
-    const data = Papa.parse(csvText, { header: true }).data;
+    const results = Papa.parse(csvText, { header: false }); // Parse tanpa header
     
-    runningTextData = data
-      .filter(row => row.text && row.text.trim() !== '')
-      .map(row => ({
-        text: row.text,
-        icon: row.icon || 'fa-info-circle',
-        color: row.color || '#ffd700'
-      }));
+    // Ambil semua baris kecuali header (A1)
+    const textItems = results.data.slice(1).map(row => row[0]).filter(text => text && text.trim() !== '');
+    
+    runningTextData = textItems.map(text => ({
+      text: text,
+      icon: getIconForText(text), // Fungsi untuk menentukan icon otomatis
+      color: getRandomColor() // Warna acak untuk variasi
+    }));
     
     updateRunningText();
   } catch (error) {
@@ -119,6 +120,28 @@ async function loadRunningTextData() {
     ];
     updateRunningText();
   }
+
+  // Fungsi helper untuk menentukan icon berdasarkan teks
+function getIconForText(text) {
+  const lowerText = text.toLowerCase();
+  
+  if (lowerText.includes('harga') || lowerText.includes('update')) {
+    return 'fa-sync-alt';
+  } else if (lowerText.includes('beli') || lowerText.includes('jual')) {
+    return 'fa-shopping-cart';
+  } else if (lowerText.includes('konsultasi') || lowerText.includes('info')) {
+    return 'fa-comments';
+  } else if (lowerText.includes('promo') || lowerText.includes('diskon')) {
+    return 'fa-tag';
+  }
+  
+  return 'fa-info-circle'; // Default icon
+}
+
+// Fungsi untuk generate warna acak yang menarik
+function getRandomColor() {
+  const colors = ['#ffd700', '#00ffff', '#ff6b6b', '#51cf66', '#fcc419', '#748ffc'];
+  return colors[Math.floor(Math.random() * colors.length)];
 }
 
 // Update running text display
