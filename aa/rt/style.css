@@ -492,3 +492,10 @@ main {
     transform: scale(1.05);
     text-shadow: 0 0 8px rgba(255, 215, 0, 0.3);
 }
+.running-text span {
+  margin-right: 40px;
+  display: inline-flex;
+  align-items: center;
+  font-weight: 500;
+  transition: text-shadow 0.3s ease;
+}
