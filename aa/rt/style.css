@@ -433,6 +433,32 @@ main {
   }
 }
 
+.running-text {
+  display: flex;
+  align-items: center;
+  animation: marquee 30s linear infinite;
+  padding: 0 10px;
+}
+
+.running-text span {
+  margin-right: 40px;
+  display: inline-flex;
+  align-items: center;
+  font-weight: 500;
+  white-space: nowrap;
+  transition: all 0.3s ease;
+}
+
+.running-text i {
+  margin-right: 8px;
+  font-size: 0.9em;
+}
+
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
 /* Running Text Styles */
 .running-text-container {
     flex: 1;
