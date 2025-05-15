@@ -41,7 +41,7 @@ function initializeMobileMenu() {
 // Load and parse CSV from Google Sheets for price data
 async function loadPriceData() {
     try {
-        const response = await fetch('https://docs.google.com/spreadsheets/d/e/2PACX-1vQFH0squhL_c2KoNryfBrysWZEKTTUpthg_1XVE-fT3r7-ew1_lkbFqENefrlBLHClis53FyDdNiUkh/pub?output=csv');
+        const response = await fetch('https://docs.google.com/spreadsheets/d/e/2PACX-1vQFH0squhL_c2KoNryfBrysWZEKTTUpthg_1XVE-fT3r7-ew1_lkbFqENefrlBLHClis53FyDdNiUkh/pub?gid=0&single=true&output=csv');
         const csvText = await response.text();
         const data = parseCSVToJSON(csvText);
 
@@ -80,7 +80,7 @@ function parseCSVToJSON(csvText) {
 async function loadRunningTextData() {
     try {
         // Replace with your actual running text spreadsheet URL
-        const response = await fetch('https://docs.google.com/spreadsheets/d/e/2PACX-1vQFH0squhL_c2KoNryfBrysWZEKTTUpthg_1XVE-fT3r7-ew1_lkbFqENefrlBLHClis53FyDdNiUkh/pub?output=csv');
+        const response = await fetch('https://docs.google.com/spreadsheets/d/e/2PACX-1vQFH0squhL_c2KoNryfBrysWZEKTTUpthg_1XVE-fT3r7-ew1_lkbFqENefrlBLHClis53FyDdNiUkh/pub?gid=0&single=true&output=csv');
         const csvText = await response.text();
         const data = Papa.parse(csvText, { header: true }).data;
         
