@@ -1,11 +1,17 @@
-// Configurations
-const SPREADSHEET_CONFIG = {
-  baseUrl: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQFH0squhL_c2KoNryfBrysWZEKTTUpthg_1XVE-fT3r7-ew1_lkbFqENefrlBLHClis53FyDdNiUkh/pub',
-  sheets: {
-    harga: { gid: '216173443', name: 'Harga' },
-    runningText: { gid: '1779766141', name: 'RunningText' }
-  }
+// Base URL hanya satu kali
+const SPREADSHEET_BASE = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQFH0squhL_c2KoNryfBrysWZEKTTUpthg_1XVE-fT3r7-ew1_lkbFqENefrlBLHClis53FyDdNiUkh/pub?output=csv';
+
+// Konfigurasi GID dari setiap sheet
+const SHEET_CONFIG = {
+  harga: { gid: '216173443', name: 'Harga' },
+  runningText: { gid: '1779766141', name: 'RunningText' }
 };
+
+// Fungsi membuat URL CSV dari sheet yang dipilih
+function getSheetUrl(sheetType) {
+  const sheet = SHEET_CONFIG[sheetType];
+  return `${SPREADSHEET_BASE}&gid=${sheet.gid}`;
+}
 
 // Helper functions
 function formatCurrency(amount) {
