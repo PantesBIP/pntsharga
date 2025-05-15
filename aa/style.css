@@ -176,7 +176,7 @@ main {
 }
 
 .price-table .highlight {
-  color: var(--accent);
+  color: var(--primary);
   font-weight: 600;
 }
 
