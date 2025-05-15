@@ -268,49 +268,101 @@ main {
   color: var(--primary);
 }
 
-/* ANIMASI HARGA */
-@keyframes flashUpdate {
-  0% { background-color: transparent; }
+/* ANIMASI HARGA TERBARU */
+@keyframes priceFlash {
+  0% { transform: scale(1); }
+  25% { transform: scale(1.05); }
   50% { background-color: rgba(76, 175, 80, 0.3); }
-  100% { background-color: transparent; }
+  100% { transform: scale(1); background-color: transparent; }
 }
 
-@keyframes slideIn {
-  from { transform: translateY(-5px); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
+@keyframes pricePulse {
+  0% { opacity: 1; }
+  50% { opacity: 0.7; }
+  100% { opacity: 1; }
 }
 
-.price-change {
-  transition: all 0.3s ease;
+@keyframes rowSlideIn {
+  from { 
+    transform: translateX(-20px);
+    opacity: 0;
+  }
+  to { 
+    transform: translateX(0);
+    opacity: 1;
+  }
 }
 
-.price-update {
-  animation: flashUpdate 1s ease-out;
+@keyframes headerGlow {
+  0% { text-shadow: 0 0 5px rgba(255, 215, 0, 0); }
+  50% { text-shadow: 0 0 10px rgba(255, 215, 0, 0.5); }
+  100% { text-shadow: 0 0 5px rgba(255, 215, 0, 0); }
 }
 
-.new-row {
-  animation: slideIn 0.5s ease-out;
+.price-updating {
+  animation: priceFlash 1s ease-out, pricePulse 2s infinite;
+}
+
+.row-slide-in {
+  animation: rowSlideIn 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+}
+
+.table-title-animate {
+  animation: headerGlow 1.5s ease-in-out;
 }
 
 .highlight {
   position: relative;
-  overflow: hidden;
+  transition: all 0.3s ease;
 }
 
-.highlight::after {
+.highlight::before {
   content: '';
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+  background: linear-gradient(90deg, 
+              transparent, 
+              rgba(255, 255, 255, 0.1), 
+              transparent);
   transform: translateX(-100%);
-  transition: transform 0.6s ease;
 }
 
-.highlight:hover::after {
+.highlight:hover::before {
   transform: translateX(100%);
+  transition: transform 0.6s ease-in-out;
+}
+
+/* Loading animation */
+.loading-spinner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100px;
+}
+
+.loading-spinner i {
+  font-size: 2.5rem;
+  color: var(--primary);
+  animation: spin 1s linear infinite, pulse 1.5s ease infinite;
+}
+
+@keyframes pulse {
+  0% { opacity: 0.6; transform: scale(0.95); }
+  50% { opacity: 1; transform: scale(1.05); }
+  100% { opacity: 0.6; transform: scale(0.95); }
+}
+
+/* Table transition */
+.table-transition {
+  animation: fadeIn 0.8s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 /* Responsive Design */
