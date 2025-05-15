@@ -4,74 +4,42 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Harga Emas Real-time</title>
+    <link rel="stylesheet" href="a/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Orbitron:wght@500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
 </head>
 <body>
-    <header class="gamer-header">
-        <div class="container">
-            <div class="logo">
-                <span class="logo-icon"><i class="fas fa-coins"></i></span>
-                <h1>PantesBIP<span> Harga</span></h1>
-            </div>
-            
-            <nav class="gamer-nav">
-                <ul>
-                    <li><a href="#"><i class="fas fa-home"></i> Home</a></li>
-                    <li><a href="trend.html"><i class="fas fa-chart-line"></i> Trend</a></li>
-                </ul>
-            </nav>
-            
-            <button class="mobile-menu-btn">
-                <i class="fas fa-bars"></i>
-            </button>
+  <header class="gamer-header">
+    <div class="container">
+        <div class="logo">
+            <span class="logo-icon"><i class="fas fa-coins"></i></span>
+            <h1>PantesBIP<span> Harga</span></h1>
         </div>
-    </header>
+        
+        <nav class="gamer-nav">
+            <ul>
+                <li><a href="#"><i class="fas fa-home"></i> Home</a></li>
+                <li><a href="trend.html"><i class="fas fa-chart-line"></i> Trend</a></li>
+            </ul>
+        </nav>
+        
+        <button class="mobile-menu-btn">
+            <i class="fas fa-bars"></i>
+        </button>
+    </div>
+</header>
 
     <main class="container">
-        <section class="panduan-section">
-            <h2><i class="fas fa-book-open"></i> Panduan Investasi Emas</h2>
-            <p>Pantau harga emas terkini untuk investasi yang lebih cerdas.</p>
-        </section>
-
-        <section class="cards-section">
-            <div class="card" data-type="emas">
-                <div class="card-image">
-                    <img src="https://tokomaspantes.com/wp-content/uploads/2021/02/logo-pantes-putih-new-size-1-1-300x135-1.png" alt="Emas">
-                </div>
-                <div class="card-content">
-                    <h3>EMAS</h3>
-                    <span class="card-label">Berbagai Karat</span>
-                </div>
-            </div>
-
-            <div class="card" data-type="antam">
-                <div class="card-image">
-                    <img src="https://www.antam.com/uploads/web_config/5dde17b432a94_20191127132908-1.png" alt="Antam">
-                </div>
-                <div class="card-content">
-                    <h3>ANTAM</h3>
-                    <span class="card-label">Logam Mulia</span>
-                </div>
-            </div>
-
-            <div class="card" data-type="archi">
-                <div class="card-image">
-                    <img src="https://i0.wp.com/lotusarchi.com/wp-content/uploads/2022/08/Logo_Lotus_Archi_1.png?fit=900%2C900&ssl=1" alt="Archi">
-                </div>
-                <div class="card-content">
-                    <h3>ARCHI</h3>
-                    <span class="card-label">Logam Mulia</span>
-                </div>
-            </div>
-        </section>
-
         <section class="price-table-section">
-            <div class="table-responsive tv-optimized" id="priceTableContainer">
-                <div class="table-placeholder">
-                    <i class="fas fa-coins"></i>
-                    <p>Memuat data harga emas...</p>
+            <div class="tables-container" id="priceTablesContainer">
+                <div class="table-wrapper">
+                    <h3>EMAS</h3>
+                    <div class="table-responsive" id="emasTableLeft"></div>
+                </div>
+                <div class="table-wrapper">
+                    <h3>EMAS</h3>
+                    <div class="table-responsive" id="emasTableRight"></div>
                 </div>
             </div>
         </section>
@@ -99,6 +67,6 @@
         </div>
     </footer>
 
-    <script src="script.js"></script>
+    <script src="a/script.js"></script>
 </body>
 </html>
