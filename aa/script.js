@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     loadPriceData();
-    setInterval(rotateTables, 40000); // Rotate every 40 seconds
+    setInterval(rotateTables, 25000); // Rotate every 40 seconds
 });
 
 // Load and parse CSV from Google Sheets
