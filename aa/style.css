@@ -120,6 +120,7 @@ main {
   display: flex;
   gap: 15px;
   width: 100%;
+  flex-direction: row; /* Ini default, memastikan horizontal */
 }
 
 .table-wrapper {
