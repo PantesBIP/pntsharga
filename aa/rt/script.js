@@ -1,10 +1,19 @@
+// Configurations
+const SPREADSHEET_CONFIG = {
+  baseUrl: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQFH0squhL_c2KoNryfBrysWZEKTTUpthg_1XVE-fT3r7-ew1_lkbFqENefrlBLHClis53FyDdNiUkh/pub?gid=0&single=true&output=csv',
+  sheets: {
+    harga: { gid: '216173443', name: 'Harga' },
+    runningText: { gid: '1779766141', name: 'RunningText' }
+  }
+};
+
 // Helper functions
 function formatCurrency(amount) {
-    return new Intl.NumberFormat('id-ID', {
-        style: 'currency',
-        currency: 'IDR',
-        minimumFractionDigits: 0
-    }).format(amount);
+  return new Intl.NumberFormat('id-ID', {
+    style: 'currency',
+    currency: 'IDR',
+    minimumFractionDigits: 0
+  }).format(amount);
 }
 
 let currentTableType = 'emas';
@@ -12,139 +21,116 @@ let tableData = {};
 let runningTextData = [];
 
 // Main initialization
-document.addEventListener('DOMContentLoaded', function () {
-    initializeMobileMenu();
-    loadPriceData();
-    loadRunningTextData();
-    setInterval(rotateTables, 25000); // Rotate every 25 seconds
+document.addEventListener('DOMContentLoaded', function() {
+  initializeMobileMenu();
+  loadPriceData();
+  loadRunningTextData();
+  setInterval(rotateTables, 25000);
 });
 
 // Mobile menu functionality
 function initializeMobileMenu() {
-    const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
-    const gamerNav = document.querySelector('.gamer-nav');
+  const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+  const gamerNav = document.querySelector('.gamer-nav');
 
-    mobileMenuBtn.addEventListener('click', function (e) {
-        e.stopPropagation();
-        gamerNav.classList.toggle('active');
-    });
+  mobileMenuBtn.addEventListener('click', function(e) {
+    e.stopPropagation();
+    gamerNav.classList.toggle('active');
+  });
 
-    document.addEventListener('click', function () {
-        gamerNav.classList.remove('active');
-    });
+  document.addEventListener('click', function() {
+    gamerNav.classList.remove('active');
+  });
 
-    gamerNav.addEventListener('click', function (e) {
-        e.stopPropagation();
-    });
+  gamerNav.addEventListener('click', function(e) {
+    e.stopPropagation();
+  });
 }
 
-// Load and parse CSV from Google Sheets for price data
+// Build Google Sheets URL
+function getSheetUrl(sheetType) {
+  const sheetConfig = SPREADSHEET_CONFIG.sheets[sheetType];
+  return `${SPREADSHEET_CONFIG.baseUrl}?gid=${sheetConfig.gid}&single=true&output=csv`;
+}
+
+// Load price data
 async function loadPriceData() {
-    try {
-        const response = await fetch('https://docs.google.com/spreadsheets/d/e/2PACX-1vQFH0squhL_c2KoNryfBrysWZEKTTUpthg_1XVE-fT3r7-ew1_lkbFqENefrlBLHClis53FyDdNiUkh/pub?gid=0&single=true&output=csv');
-        const csvText = await response.text();
-        const data = parseCSVToJSON(csvText);
+  try {
+    const response = await fetch(getSheetUrl('harga'));
+    const csvText = await response.text();
+    const data = parseCSVToJSON(csvText);
 
-        // Organize data by type
-        tableData.emas = data.filter(row => row.tipe.toLowerCase() === 'emas');
-        tableData.antam = data.filter(row => row.tipe.toLowerCase() === 'antam');
-        tableData.archi = data.filter(row => row.tipe.toLowerCase() === 'archi');
+    tableData.emas = data.filter(row => row.tipe.toLowerCase() === 'emas');
+    tableData.antam = data.filter(row => row.tipe.toLowerCase() === 'antam');
+    tableData.archi = data.filter(row => row.tipe.toLowerCase() === 'archi');
 
-        // Display initial table
-        displayTables('emas');
-    } catch (error) {
-        console.error('Error loading CSV data:', error);
-        showError();
-    }
+    displayTables('emas');
+  } catch (error) {
+    console.error('Error loading price data:', error);
+    showError();
+  }
 }
 
-// Parse CSV data to JSON
-function parseCSVToJSON(csvText) {
-    const lines = csvText.trim().split('\n');
-    const headers = lines[0].split(',').map(h => h.toLowerCase().replace(/\s+/g, '_'));
-    return lines.slice(1).map(line => {
-        const values = line.split(',').map(v => v.trim());
-        const obj = {};
-        headers.forEach((header, index) => {
-            let value = values[index] || '';
-            if (['harga_jual', 'buyback'].includes(header)) {
-                value = parseInt(value.replace(/[^0-9]/g, ''), 10) || 0;
-            }
-            obj[header] = value;
-        });
-        return obj;
-    });
-}
-
-// Load running text data from Google Sheets
+// Load running text data
 async function loadRunningTextData() {
-    try {
-        // Replace with your actual running text spreadsheet URL
-        const response = await fetch('https://docs.google.com/spreadsheets/d/e/2PACX-1vQFH0squhL_c2KoNryfBrysWZEKTTUpthg_1XVE-fT3r7-ew1_lkbFqENefrlBLHClis53FyDdNiUkh/pub?gid=0&single=true&output=csv');
-        const csvText = await response.text();
-        const data = Papa.parse(csvText, { header: true }).data;
-        
-        // Filter out empty rows and format the data
-        runningTextData = data.filter(row => row.text && row.text.trim() !== '')
-                             .map(row => ({
-                                 text: row.text,
-                                 icon: row.icon || 'fa-info-circle' // Default icon
-                             }));
-        
-        updateRunningText();
-    } catch (error) {
-        console.error('Error loading running text data:', error);
-        // Fallback data
-        runningTextData = [
-            { text: "Harga emas diperbarui setiap 15 menit", icon: "fa-sync-alt" },
-            { text: "Gratis konsultasi investasi emas", icon: "fa-comments" },
-            { text: "Belanja emas dengan harga terbaik", icon: "fa-shopping-cart" },
-            { text: "Buyback emas dengan harga kompetitif", icon: "fa-hand-holding-usd" }
-        ];
-        updateRunningText();
-    }
+  try {
+    const response = await fetch(getSheetUrl('runningText'));
+    const csvText = await response.text();
+    const data = Papa.parse(csvText, { header: true }).data;
+    
+    runningTextData = data
+      .filter(row => row.text && row.text.trim() !== '')
+      .map(row => ({
+        text: row.text,
+        icon: row.icon || 'fa-info-circle',
+        color: row.color || '#ffd700'
+      }));
+    
+    updateRunningText();
+  } catch (error) {
+    console.error('Error loading running text:', error);
+    runningTextData = [
+      { text: "Harga emas diperbarui real-time", icon: "fa-sync-alt", color: "#00ffff" },
+      { text: "Konsultasi investasi gratis", icon: "fa-comments", color: "#ffd700" }
+    ];
+    updateRunningText();
+  }
 }
 
 // Update running text display
 function updateRunningText() {
-    const runningTextElement = document.querySelector('.running-text');
-    
-    if (!runningTextData.length) {
-        runningTextElement.style.display = 'none';
-        return;
-    }
-    
-    // Duplicate the data for seamless looping
-    const doubledData = [...runningTextData, ...runningTextData];
-    
-    runningTextElement.innerHTML = doubledData.map(item => 
-        `<span><i class="fas ${item.icon}"></i> ${item.text}</span>`
-    ).join('');
-    
-    // Calculate animation duration based on content length
-    const containerWidth = document.querySelector('.running-text-container').offsetWidth;
-    const contentWidth = runningTextElement.scrollWidth / 2; // Since we doubled the content
-    const speed = 50; // pixels per second (adjust for desired speed)
-    const duration = contentWidth / speed;
-    
-    runningTextElement.style.animationDuration = `${duration}s`;
-    
-    // Smooth hover effects
-    runningTextElement.addEventListener('mouseenter', () => {
-        runningTextElement.style.animationPlayState = 'paused';
-        runningTextElement.querySelectorAll('span').forEach(span => {
-            span.style.transition = 'all 0.3s ease';
-            span.style.transform = 'scale(1.02)';
-            span.style.opacity = '1';
-        });
-    });
-    
-    runningTextElement.addEventListener('mouseleave', () => {
-        runningTextElement.style.animationPlayState = 'running';
-        runningTextElement.querySelectorAll('span').forEach(span => {
-            span.style.transform = 'scale(1)';
-        });
-    });
+  const runningTextElement = document.querySelector('.running-text');
+  
+  if (!runningTextData.length) {
+    runningTextElement.style.display = 'none';
+    return;
+  }
+  
+  // Duplicate for seamless looping
+  const displayData = [...runningTextData, ...runningTextData];
+  
+  runningTextElement.innerHTML = displayData.map(item => `
+    <span style="color: ${item.color}">
+      <i class="fas ${item.icon}"></i> ${item.text}
+    </span>
+  `).join('');
+  
+  // Calculate animation duration
+  const container = document.querySelector('.running-text-container');
+  const contentWidth = runningTextElement.scrollWidth / 2;
+  const duration = Math.max(30, contentWidth / 50); // 50px per second
+  
+  // Apply smooth animation
+  runningTextElement.style.animation = `marquee ${duration}s linear infinite`;
+  
+  // Hover effects
+  runningTextElement.addEventListener('mouseenter', () => {
+    runningTextElement.style.animationPlayState = 'paused';
+  });
+  
+  runningTextElement.addEventListener('mouseleave', () => {
+    runningTextElement.style.animationPlayState = 'running';
+  });
 }
 
 // Rotate between different table types
