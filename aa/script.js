@@ -89,18 +89,53 @@ function displayTables(type) {
     const leftData = data.slice(0, half);
     const rightData = data.slice(half);
 
-    // Update left table
-    const leftTable = document.getElementById('emasTableLeft');
-    leftTable.innerHTML = generateTableHTML(leftData, type);
+    // Animate table transition
+    animateTableTransition('emasTableLeft', leftData, type);
+    animateTableTransition('emasTableRight', rightData, type);
 
-    // Update right table
-    const rightTable = document.getElementById('emasTableRight');
-    rightTable.innerHTML = generateTableHTML(rightData, type);
-
-    // Update table headers
+    // Animate table headers
     document.querySelectorAll('.table-wrapper h3').forEach(header => {
         header.textContent = type.toUpperCase();
+        header.classList.add('table-title-animate');
+        setTimeout(() => {
+            header.classList.remove('table-title-animate');
+        }, 1500);
     });
+}
+
+function animateTableTransition(elementId, data, type) {
+    const tableElement = document.getElementById(elementId);
+    
+    // Show loading spinner
+    tableElement.innerHTML = `
+        <div class="loading-spinner">
+            <i class="fas fa-sync-alt"></i>
+        </div>
+    `;
+    
+    // Delay for smooth transition
+    setTimeout(() => {
+        tableElement.innerHTML = generateTableHTML(data, type);
+        
+        // Add animation to all rows
+        const rows = tableElement.querySelectorAll('tbody tr');
+        rows.forEach((row, index) => {
+            row.classList.add('row-slide-in');
+            row.style.animationDelay = `${index * 0.1}s`;
+            setTimeout(() => {
+                row.classList.remove('row-slide-in');
+            }, 600 + (index * 100));
+        });
+        
+        // Add pulse animation to prices
+        const prices = tableElement.querySelectorAll('.highlight');
+        prices.forEach(price => {
+            price.classList.add('price-updating');
+            setTimeout(() => {
+                price.classList.remove('price-updating');
+            }, 2000);
+        });
+    }, 500);
 }
 
 function generateTableHTML(data, type) {
@@ -109,32 +144,34 @@ function generateTableHTML(data, type) {
     }
 
     let tableHTML = `
-        <table class="price-table">
-            <thead>
-                <tr>
-                    <th>Kode</th>
-                    <th>Jual</th>
-                    <th>Buyback</th>
-                </tr>
-            </thead>
-            <tbody>
+        <div class="table-transition">
+            <table class="price-table">
+                <thead>
+                    <tr>
+                        <th>Kode</th>
+                        <th>Jual</th>
+                        <th>Buyback</th>
+                    </tr>
+                </thead>
+                <tbody>
     `;
 
-    data.forEach(item => {
+    data.forEach((item, index) => {
         tableHTML += `
-            <tr>
+            <tr style="animation-delay: ${index * 0.1}s">
                 <td>${item.kode}</td>
                 <td class="highlight">${formatCurrency(item.harga_jual)}</td>
-                <td>${item.buyback ? formatCurrency(item.buyback) : '-'}</td>
+                <td class="highlight">${item.buyback ? formatCurrency(item.buyback) : '-'}</td>
             </tr>
         `;
     });
 
     tableHTML += `
-            </tbody>
-        </table>
-        <div class="table-footer">
-            <p>Update: ${new Date().toLocaleTimeString('id-ID')}</p>
+                </tbody>
+            </table>
+            <div class="table-footer">
+                <p>Update: ${new Date().toLocaleTimeString('id-ID')}</p>
+            </div>
         </div>
     `;
 
