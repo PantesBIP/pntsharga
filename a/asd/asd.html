@@ -1,0 +1,1230 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Harga Emas Real-time</title>
+    <style>
+:root {
+  --primary: #ffd700;
+  --secondary: #1a1a2e;
+  --accent: #00ffff;
+  --text: #ffffff;
+  --text-secondary: #ffffff;
+  --bg: #0f0f1a;
+  --card-bg: #1a1a2e;
+  --table-bg: #16213e;
+  --table-header: #0f3460;
+  --table-row-odd: #1a1a2e;
+  --table-row-even: #16213e;
+  --highlight: rgba(255, 215, 0, 0.1);
+}
+
+/* Base Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background-color: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 15px;
+  flex: 1;
+}
+
+/* Header Styles */
+.gamer-header {
+  background-color: var(--secondary);
+  padding: 12px 0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.gamer-header .container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 700;
+  font-size: 1.2rem;
+  color: var(--primary);
+}
+
+.logo-icon {
+  font-size: 1.5rem;
+}
+
+.logo span {
+  color: var(--accent);
+}
+
+.gamer-nav ul {
+  display: flex;
+  list-style: none;
+  gap: 20px;
+}
+
+.gamer-nav a {
+  color: var(--text);
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.9rem;
+}
+
+.gamer-nav a:hover {
+  color: var(--primary);
+}
+
+.mobile-menu-btn {
+  display: none;
+  font-size: 1.4rem;
+  cursor: pointer;
+  color: var(--text);
+  background: none;
+  border: none;
+  padding: 5px;
+}
+
+/* Main Content */
+main {
+  padding: 20px 0 40px;
+}
+
+/* Price Tables Section */
+.price-table-section {
+  margin-top: 20px;
+}
+
+.tables-container {
+  display: flex;
+  gap: 15px;
+  width: 100%;
+  position: relative;
+  align-items: flex-start;
+}
+
+.table-wrapper {
+  flex: 1;
+  background-color: var(--table-bg);
+  border-radius: 8px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+  padding: 15px;
+  min-height: 400px;
+}
+
+.table-wrapper h3 {
+  color: var(--primary);
+  margin-bottom: 15px;
+  text-align: center;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 1.3rem;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(255, 215, 0, 0.3);
+}
+
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.price-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+}
+
+.price-table th {
+  background-color: var(--table-header);
+  color: var(--primary);
+  padding: 12px 10px;
+  text-align: left;
+  font-weight: 600;
+}
+
+.price-table td {
+  padding: 10px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.price-table tr:nth-child(odd) {
+  background-color: var(--table-row-odd);
+}
+
+.price-table tr:nth-child(even) {
+  background-color: var(--table-row-even);
+}
+
+.price-table tr:hover {
+  background-color: var(--highlight);
+}
+
+.price-table .highlight {
+  color: var(--primary);
+  font-weight: 600;
+}
+
+.table-footer {
+  padding: 10px 0 0;
+  text-align: center;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  margin-top: 10px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Error and Loading States */
+.error-message, .loading-spinner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 200px;
+  color: var(--text-secondary);
+  text-align: center;
+}
+
+.error-message i {
+  font-size: 2rem;
+  margin-bottom: 15px;
+  color: #F44336;
+}
+
+.loading-spinner i {
+  font-size: 2rem;
+  margin-bottom: 15px;
+  color: var(--primary);
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  100% { transform: rotate(360deg); }
+}
+
+/* Footer */
+.gamer-footer {
+  background-color: var(--secondary);
+  padding: 25px 0;
+  margin-top: auto;
+}
+
+.gamer-footer .container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+}
+
+.footer-section h4 {
+  color: var(--primary);
+  margin-bottom: 12px;
+  font-size: 1rem;
+}
+
+.footer-section ul {
+  list-style: none;
+}
+
+.footer-section li {
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.8rem;
+}
+
+.footer-section i {
+  color: var(--accent);
+  font-size: 0.9rem;
+}
+
+.social-links {
+  display: flex;
+  gap: 12px;
+}
+
+.social-links a {
+  color: var(--text);
+  font-size: 1.2rem;
+  transition: color 0.3s;
+}
+
+.social-links a:hover {
+  color: var(--primary);
+}
+
+/* ANIMASI HARGA TERBARU */
+@keyframes priceFlash {
+  0% { transform: scale(1); }
+  25% { transform: scale(1.05); }
+  50% { background-color: rgba(76, 175, 80, 0.3); }
+  100% { transform: scale(1); background-color: transparent; }
+}
+
+@keyframes pricePulse {
+  0% { opacity: 1; }
+  50% { opacity: 0.7; }
+  100% { opacity: 1; }
+}
+
+@keyframes rowSlideIn {
+  from { 
+    transform: translateX(-20px);
+    opacity: 0;
+  }
+  to { 
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes headerGlow {
+  0% { text-shadow: 0 0 5px rgba(255, 215, 0, 0); }
+  50% { text-shadow: 0 0 10px rgba(255, 215, 0, 0.5); }
+  100% { text-shadow: 0 0 5px rgba(255, 215, 0, 0); }
+}
+
+.price-updating {
+  animation: priceFlash 1s ease-out, pricePulse 2s infinite;
+}
+
+.row-slide-in {
+  animation: rowSlideIn 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+}
+
+.table-title-animate {
+  animation: headerGlow 1.5s ease-in-out;
+}
+
+.highlight {
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.highlight::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, 
+              transparent, 
+              rgba(255, 255, 255, 0.1), 
+              transparent);
+  transform: translateX(-100%);
+}
+
+.highlight:hover::before {
+  transform: translateX(100%);
+  transition: transform 0.6s ease-in-out;
+}
+
+/* Loading animation */
+.loading-spinner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100px;
+}
+
+.loading-spinner i {
+  font-size: 2.5rem;
+  color: var(--primary);
+  animation: spin 1s linear infinite, pulse 1.5s ease infinite;
+}
+
+@keyframes pulse {
+  0% { opacity: 0.6; transform: scale(0.95); }
+  50% { opacity: 1; transform: scale(1.05); }
+  100% { opacity: 0.6; transform: scale(0.95); }
+}
+
+/* Table transition */
+.table-transition {
+  animation: fadeIn 0.8s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Responsive Design */
+@media (max-width: 992px) {
+  .price-table {
+    font-size: 0.85rem;
+  }
+  
+  .price-table th,
+  .price-table td {
+    padding: 8px;
+  }
+}
+
+@media (max-width: 768px) {
+  .gamer-nav {
+    position: fixed;
+    top: 60px;
+    left: -100%;
+    width: 100%;
+    background-color: var(--secondary);
+    flex-direction: column;
+    padding: 20px 0;
+    transition: left 0.3s ease;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  }
+
+  .gamer-nav.active {
+    left: 0;
+  }
+
+  .gamer-nav ul {
+    flex-direction: column;
+    gap: 15px;
+    padding: 0 20px;
+  }
+
+  .mobile-menu-btn {
+    display: block;
+  }
+
+  .tables-container {
+    flex-wrap: wrap;
+  }
+  
+  .ad-container {
+    width: 100%;
+    position: static;
+    order: -1;
+    margin-bottom: 15px;
+  }
+  
+  .table-wrapper {
+    min-width: 100%;
+  }
+
+  .table-wrapper {
+    min-height: auto;
+  }
+}
+
+@media (max-width: 480px) {
+  .price-table {
+    font-size: 0.8rem;
+  }
+  
+  .price-table th,
+  .price-table td {
+    padding: 6px 4px;
+  }
+  
+  .table-wrapper h3 {
+    font-size: 1.1rem;
+  }
+  
+  .logo {
+    font-size: 1rem;
+  }
+}
+
+.running-text {
+  display: flex;
+  align-items: center;
+  animation: marquee 30s linear infinite;
+  padding: 0 5px;
+}
+
+.running-text span {
+  margin-right: 40px;
+  display: inline-flex;
+  align-items: center;
+  font-weight: 500;
+  white-space: nowrap;
+  transition: all 0.3s ease;
+}
+
+.running-text i {
+  margin-right: 8px;
+  font-size: 0.9em;
+}
+
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.running-text-container {
+    flex: 1;
+    margin: 0 20px;
+    overflow: hidden;
+    height: 90px;
+    display: flex;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 20px;
+    position: relative;
+    min-width: 200px;
+}
+
+.running-text-wrapper {
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+    height: 100%;
+}
+
+.running-text {
+    display: inline-flex;
+    position: absolute;
+    white-space: nowrap;
+    height: 90px;
+    align-items: center;
+    left: 100%;
+    animation: marquee 30s linear infinite;
+    padding-right: 20px;
+}
+
+.running-text span {
+    margin-right: 90px;
+    display: inline-flex;
+    align-items: center;
+    color: var(--primary);
+    font-weight: 500;
+    white-space: nowrap;
+    font-size: 1.7rem;
+}
+
+.running-text i {
+    margin-right: 8px;
+    color: var(--accent);
+    font-size: 1.4em;
+}
+
+@keyframes marquee {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-100%); }
+}
+
+.running-text span {
+    transition: all 0.5s ease;
+    opacity: 0.8;
+}
+
+.running-text span:hover {
+    opacity: 1;
+    transform: scale(1.05);
+    text-shadow: 0 0 8px rgba(255, 215, 0, 0.3);
+}
+
+.ad-container {
+  width: 250px;
+  background-color: var(--card-bg);
+  border-radius: 8px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+  padding: 15px;
+  position: sticky;
+  top: 80px;
+  height: fit-content;
+  min-height: 300px;
+  display: flex !important;
+  flex-shrink: 0;
+}
+
+.ad-content {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.ad-content.hidden {
+  opacity: 0;
+  transform: translateY(10px);
+}
+
+.ad-video-container {
+  position: relative;
+  width: 100%;
+  padding-bottom: 56.25%;
+  margin-bottom: 10px;
+  transition: all 0.5s ease;
+}
+
+.ad-video-container iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+  border-radius: 4px;
+}
+
+.ad-title {
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: var(--primary);
+  text-align: center;
+}
+
+.ad-description {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.ad-link {
+  display: inline-block;
+  padding: 6px 12px;
+  background-color: var(--primary);
+  color: var(--secondary);
+  border-radius: 4px;
+  text-decoration: none;
+  font-weight: 500;
+  transition: all 0.3s;
+}
+
+.ad-link:hover {
+  background-color: var(--accent);
+  transform: translateY(-2px);
+}
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Orbitron:wght@500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header class="gamer-header">
+    <div class="container">
+        <div class="logo">
+            <span class="logo-icon"><i class="fas fa-coins"></i></span>
+            <h1>PantesBIP<span> Harga</span></h1>
+        </div>
+        
+        <div class="running-text-container">
+            <div class="running-text-wrapper">
+                <div class="running-text">
+                    <!-- Content will be loaded via JavaScript -->
+                </div>
+            </div>
+        </div>
+        
+        <nav class="gamer-nav">
+            <ul>
+                <li><a href="#"><i class="fas fa-home"></i> Home</a></li>
+                <li><a href="trend.html"><i class="fas fa-chart-line"></i> Trend</a></li>
+            </ul>
+        </nav>
+        
+        <button class="mobile-menu-btn">
+            <i class="fas fa-bars"></i>
+        </button>
+    </div>
+</header>
+
+    <main class="container">
+        <section class="price-table-section">
+            <div class="tables-container">
+                <!-- Area Iklan Kiri -->
+                <div class="ad-container ad-left" id="adLeft">
+                    <div class="ad-content">
+                        <div class="loading-spinner">
+                            <i class="fas fa-sync-alt fa-spin"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tabel Utama -->
+                <div class="table-wrapper">
+                    <h3>EMAS</h3>
+                    <div class="table-responsive" id="emasTableLeft"></div>
+                </div>
+                <div class="table-wrapper">
+                    <h3>EMAS</h3>
+                    <div class="table-responsive" id="emasTableRight"></div>
+                </div>
+
+                <!-- Area Iklan Kanan -->
+                <div class="ad-container ad-right" id="adRight">
+                    <div class="ad-content">
+                        <div class="loading-spinner">
+                            <i class="fas fa-sync-alt fa-spin"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="gamer-footer">
+        <div class="container">
+            <div class="footer-section">
+                <h4>Kontak Kami</h4>
+                <ul>
+                    <li><i class="fas fa-phone"></i> +62 896 5673 7562</li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Sosial Media</h4>
+                <div class="social-links">
+                    <a href="https:www.instagram.com/kevinchandramw_"><i class="fab fa-instagram"></i></a>
+                    <a href="https:wa.me/+6289656737562"><i class="fab fa-whatsapp"></i></a>
+                </div>
+            </div>
+            <div class="footer-section">
+                <h4>Credit</h4>
+                <p>© 2025 KEVIN Pantes BIP All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+// Configurations
+const SPREADSHEET_BASE = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQFH0squhL_c2KoNryfBrysWZEKTTUpthg_1XVE-fT3r7-ew1_lkbFqENefrlBLHClis53FyDdNiUkh/pub?output=csv';
+
+const SHEET_CONFIG = {
+  harga: { gid: '216173443', name: 'Harga' },
+  runningText: { gid: '1779766141', name: 'RunningText' },
+  iklan: { gid: '1303897065', name: 'Iklan' }
+};
+
+// State management
+const state = {
+  currentTableType: 'emas',
+  tableData: {},
+  runningTextData: [],
+  currentAdIndex: 0,
+  adRotationInterval: null,
+  adRotationSpeed: 10000, // 10 detik default
+  activeAds: []
+};
+
+// Cache DOM elements
+const DOM = {
+  runningText: document.querySelector('.running-text'),
+  emasTableLeft: document.getElementById('emasTableLeft'),
+  emasTableRight: document.getElementById('emasTableRight'),
+  mobileMenuBtn: document.querySelector('.mobile-menu-btn'),
+  gamerNav: document.querySelector('.gamer-nav'),
+  tableHeaders: document.querySelectorAll('.table-wrapper h3'),
+  adLeft: document.getElementById('adLeft'),
+  adRight: document.getElementById('adRight')
+};
+
+// Helper functions
+function formatCurrency(amount) {
+  return new Intl.NumberFormat('id-ID', {
+    style: 'currency',
+    currency: 'IDR',
+    minimumFractionDigits: 0
+  }).format(amount);
+}
+
+function getIconForText(text) {
+  if (!text) return 'fa-info-circle';
+  
+  const lowerText = text.toLowerCase();
+  const iconMap = {
+    'harga|update': 'fa-sync-alt',
+    'beli|jual': 'fa-shopping-cart',
+    'konsultasi|info': 'fa-comments',
+    'promo|diskon': 'fa-tag'
+  };
+
+  for (const [keywords, icon] of Object.entries(iconMap)) {
+    if (new RegExp(keywords).test(lowerText)) {
+      return icon;
+    }
+  }
+  
+  return 'fa-info-circle';
+}
+
+function getRandomColor() {
+  const colors = ['#ffd700', '#00ffff', '#ff6b6b', '#51cf66', '#fcc419', '#748ffc'];
+  return colors[Math.floor(Math.random() * colors.length)];
+}
+
+// Main initialization
+document.addEventListener('DOMContentLoaded', function() {
+  initializeMobileMenu();
+  loadData();
+  setInterval(rotateTables, 25000);
+});
+
+// Mobile menu functionality
+function initializeMobileMenu() {
+  if (!DOM.mobileMenuBtn || !DOM.gamerNav) return;
+
+  DOM.mobileMenuBtn.addEventListener('click', function(e) {
+    e.stopPropagation();
+    DOM.gamerNav.classList.toggle('active');
+    DOM.mobileMenuBtn.innerHTML = DOM.gamerNav.classList.contains('active') 
+      ? '<i class="fas fa-times"></i>' 
+      : '<i class="fas fa-bars"></i>';
+  });
+
+  document.addEventListener('click', function() {
+    DOM.gamerNav.classList.remove('active');
+    DOM.mobileMenuBtn.innerHTML = '<i class="fas fa-bars"></i>';
+  });
+
+  DOM.gamerNav.addEventListener('click', function(e) {
+    e.stopPropagation();
+  });
+}
+
+// Data loading
+async function loadData() {
+  try {
+    await Promise.all([
+      loadPriceData(),
+      loadRunningTextData(),
+      loadAds()
+    ]);
+  } catch (error) {
+    console.error('Error loading data:', error);
+    showError();
+  }
+}
+
+function getSheetUrl(sheetType) {
+  return `${SPREADSHEET_BASE}&gid=${SHEET_CONFIG[sheetType].gid}`;
+}
+
+// Price table functions
+async function loadPriceData() {
+  try {
+    const response = await fetch(getSheetUrl('harga'));
+    if (!response.ok) throw new Error('Network response was not ok');
+    
+    const csvText = await response.text();
+    const data = parseCSVToJSON(csvText);
+
+    state.tableData = {
+      emas: data.filter(row => row.tipe?.toLowerCase() === 'emas'),
+      antam: data.filter(row => row.tipe?.toLowerCase() === 'antam'),
+      archi: data.filter(row => row.tipe?.toLowerCase() === 'archi')
+    };
+
+    displayTables(state.currentTableType);
+  } catch (error) {
+    console.error('Error loading price data:', error);
+    throw error;
+  }
+}
+
+function parseCSVToJSON(csvText) {
+  const lines = csvText.trim().split('\n');
+  const headers = lines[0].split(',').map(h => h.toLowerCase().replace(/\s+/g, '_'));
+
+  return lines.slice(1).map(line => {
+    const values = line.split(',').map(v => v.trim());
+    const obj = {};
+
+    headers.forEach((header, index) => {
+      let value = values[index] || '';
+      if (['harga_jual', 'buyback'].includes(header)) {
+        value = parseInt(value.replace(/[^0-9]/g, ''), 10) || 0;
+      }
+      obj[header] = value;
+    });
+
+    return obj;
+  });
+}
+
+// Running text functions
+async function loadRunningTextData() {
+  try {
+    const response = await fetch(getSheetUrl('runningText'));
+    if (!response.ok) throw new Error('Network response was not ok');
+
+    const csvText = await response.text();
+    const lines = csvText.trim().split('\n').slice(1); // Skip header
+
+    state.runningTextData = lines
+      .map(line => line.split(',')[0]?.trim())
+      .filter(Boolean)
+      .map(text => ({
+        text: text,
+        icon: getIconForText(text),
+        color: getRandomColor()
+      }));
+
+    updateRunningText();
+  } catch (error) {
+    console.error('Error loading running text:', error);
+    state.runningTextData = [
+      { text: "Harga emas diperbarui real-time", icon: "fa-sync-alt", color: "#00ffff" },
+      { text: "Konsultasi investasi gratis", icon: "fa-comments", color: "#ffd700" }
+    ];
+    updateRunningText();
+    throw error;
+  }
+}
+
+function updateRunningText() {
+  if (!DOM.runningText) return;
+
+  if (!state.runningTextData.length) {
+    DOM.runningText.style.display = 'none';
+    return;
+  }
+
+  // Duplicate items for seamless looping
+  const displayItems = [...state.runningTextData, ...state.runningTextData];
+
+  DOM.runningText.innerHTML = displayItems.map(item => 
+    `<span style="color: ${item.color}"> <i class="fas ${item.icon}"></i> ${item.text} </span>`
+  ).join('');
+
+  // Calculate animation duration based on content length
+  const contentWidth = DOM.runningText.scrollWidth / 2;
+  const duration = Math.max(30, contentWidth / 50); // 50px per second
+
+  DOM.runningText.style.animationDuration = `${duration}s`;
+  DOM.runningText.style.display = 'flex';
+
+  // Add hover effects
+  setupRunningTextHover();
+}
+
+function setupRunningTextHover() {
+  if (!DOM.runningText) return;
+
+  const handleMouseEnter = () => {
+    DOM.runningText.style.animationPlayState = 'paused';
+    DOM.runningText.querySelectorAll('span').forEach(span => {
+      span.style.textShadow = '0 0 8px currentColor';
+    });
+  };
+
+  const handleMouseLeave = () => {
+    DOM.runningText.style.animationPlayState = 'running';
+    DOM.runningText.querySelectorAll('span').forEach(span => {
+      span.style.textShadow = 'none';
+    });
+  };
+
+  // Remove existing listeners to avoid duplicates
+  DOM.runningText.removeEventListener('mouseenter', handleMouseEnter);
+  DOM.runningText.removeEventListener('mouseleave', handleMouseLeave);
+
+  // Add new listeners
+  DOM.runningText.addEventListener('mouseenter', handleMouseEnter);
+  DOM.runningText.addEventListener('mouseleave', handleMouseLeave);
+}
+
+// Ad functions
+async function loadAds() {
+  try {
+    const response = await fetch(getSheetUrl('iklan'));
+    if (!response.ok) throw new Error('Gagal memuat data iklan');
+
+    const csvText = await response.text();
+    const data = parseCSVToJSON(csvText);
+
+    // Filter active ads and parse duration
+    state.activeAds = data
+      .filter(ad => ad.status === 'active')
+      .map(ad => ({
+        ...ad,
+        durasi: ad.durasi ? parseInt(ad.durasi) : state.adRotationSpeed
+      }));
+
+    if (state.activeAds.length > 0) {
+      startAdRotation();
+      setupAdHoverEffect();
+    } else {
+      displayDefaultAds();
+    }
+  } catch (error) {
+    console.error('Error loading ads:', error);
+    displayDefaultAds();
+    throw error;
+  }
+}
+
+function startAdRotation() {
+  // Clear existing interval
+  if (state.adRotationInterval) {
+    clearInterval(state.adRotationInterval);
+  }
+
+  // Show first ads
+  showNextAd();
+}
+
+function showNextAd() {
+  if (!state.activeAds.length) return;
+
+  // Update index (loop back to 0 if at end)
+  state.currentAdIndex = (state.currentAdIndex + 1) % state.activeAds.length;
+  const currentAd = state.activeAds[state.currentAdIndex];
+
+  // Display ads
+  displayAd('adLeft', currentAd);
+
+  // Show next ad in right container (or first if at end)
+  const nextAd = state.activeAds[(state.currentAdIndex + 1) % state.activeAds.length];
+  displayAd('adRight', nextAd);
+
+  // Set timeout for next rotation
+  state.adRotationInterval = setTimeout(
+    showNextAd,
+    currentAd.durasi || state.adRotationSpeed
+  );
+}
+
+function displayAd(containerId, adData) {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+
+  const contentElement = container.querySelector('.ad-content');
+  if (!contentElement) return;
+
+  // Add fade out effect
+  contentElement.classList.add('hidden');
+
+  // After fade out completes, update content
+  setTimeout(() => {
+    const videoHtml = adData.video_url
+      ? `<div class="ad-video-container"> <iframe src="${getEmbedUrl(adData.video_url)}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe> </div>`
+      : '';
+
+    contentElement.innerHTML = `
+      ${videoHtml}
+      <h4 class="ad-title">${adData.judul || 'Iklan Sponsor'}</h4>
+      <p class="ad-description">${adData.deskripsi || ''}</p>
+      ${adData.link ? `<a href="${adData.link}" target="_blank" class="ad-link">${adData.link_text || 'Kunjungi'}</a>` : ''}
+    `;
+
+    // Add fade in effect after short delay
+    setTimeout(() => {
+      contentElement.classList.remove('hidden');
+    }, 50);
+  }, 500);
+}
+
+function getEmbedUrl(url) {
+  if (!url) return '';
+
+  // Handle YouTube URLs
+  if (url.includes('youtube.com/watch')) {
+    const videoId = url.split('v=')[1].split('&')[0];
+    return `https://www.youtube.com/embed/${videoId}?autoplay=0&rel=0`;
+  }
+
+  // Handle youtu.be short URLs
+  if (url.includes('youtu.be/')) {
+    const videoId = url.split('youtu.be/')[1].split('?')[0];
+    return `https://www.youtube.com/embed/${videoId}?autoplay=0&rel=0`;
+  }
+
+  return url;
+}
+
+function displayDefaultAds() {
+  const defaultAd = {
+    judul: "Sponsor Kami",
+    deskripsi: "Tersedia slot iklan untuk produk Anda",
+    video_url: "",
+    link: "#",
+    link_text: "Hubungi Kami",
+    durasi: 10000
+  };
+
+  displayAd('adLeft', defaultAd);
+  displayAd('adRight', defaultAd);
+}
+
+function setupAdHoverEffect() {
+  if (!DOM.adLeft || !DOM.adRight) return;
+
+  const pauseRotation = () => {
+    if (state.adRotationInterval) {
+      clearTimeout(state.adRotationInterval);
+    }
+  };
+
+  const resumeRotation = () => {
+    if (state.activeAds.length > 0) {
+      const currentAd = state.activeAds[state.currentAdIndex];
+      state.adRotationInterval = setTimeout(
+        showNextAd,
+        currentAd.durasi || state.adRotationSpeed
+      );
+    }
+  };
+
+  // Add event listeners to both ad containers
+  [DOM.adLeft, DOM.adRight].forEach(container => {
+    container.addEventListener('mouseenter', pauseRotation);
+    container.addEventListener('mouseleave', resumeRotation);
+  });
+}
+
+// Table rotation functions
+function rotateTables() {
+  const types = ['emas', 'antam', 'archi'];
+  const currentIndex = types.indexOf(state.currentTableType);
+  const nextIndex = (currentIndex + 1) % types.length;
+  state.currentTableType = types[nextIndex];
+  displayTables(state.currentTableType);
+}
+
+function displayTables(type) {
+  const data = state.tableData[type];
+  if (!data || data.length === 0) {
+    showError();
+    return;
+  }
+
+  // Split data into two halves
+  const half = Math.ceil(data.length / 2);
+  const leftData = data.slice(0, half);
+  const rightData = data.slice(half);
+
+  // Animate table transition
+  animateTableTransition('emasTableLeft', leftData, type);
+  animateTableTransition('emasTableRight', rightData, type);
+
+  // Animate table headers
+  updateTableHeaders(type);
+}
+
+function updateTableHeaders(type) {
+  if (!DOM.tableHeaders.length) return;
+
+  DOM.tableHeaders.forEach(header => {
+    header.textContent = type.toUpperCase();
+    header.classList.add('table-title-animate');
+
+    const handleAnimationEnd = () => {
+      header.classList.remove('table-title-animate');
+      header.removeEventListener('animationend', handleAnimationEnd);
+    };
+
+    header.addEventListener('animationend', handleAnimationEnd);
+  });
+}
+
+function animateTableTransition(elementId, data, type) {
+  const tableElement = document.getElementById(elementId);
+  if (!tableElement) return;
+
+  // Show loading spinner
+  tableElement.innerHTML = '<div class="loading-spinner"> <i class="fas fa-sync-alt fa-spin"></i> </div>';
+
+  // Delay for smooth transition
+  setTimeout(() => {
+    tableElement.innerHTML = generateTableHTML(data, type);
+    animateTableRows(tableElement);
+  }, 500);
+}
+
+function generateTableHTML(data, type) {
+  if (!data || data.length === 0) {
+    return '<div class="no-data">Data tidak tersedia</div>';
+  }
+
+  const rowsHTML = data.map((item, index) => 
+    `<tr style="animation-delay: ${index * 0.1}s">
+      <td>${item.kode || '-'}</td>
+      <td class="highlight">${formatCurrency(item.harga_jual || 0)}</td>
+      <td class="highlight">${item.buyback ? formatCurrency(item.buyback) : '-'}</td>
+    </tr>`
+  ).join('');
+
+  return `
+    <div class="table-transition">
+      <table class="price-table">
+        <thead>
+          <tr>
+            <th>Kode</th>
+            <th>Jual</th>
+            <th>Buyback</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${rowsHTML}
+        </tbody>
+      </table>
+      <div class="table-footer">
+        <p>Update: ${new Date().toLocaleTimeString('id-ID')}</p>
+      </div>
+    </div>
+  `;
+}
+
+function animateTableRows(tableElement) {
+  if (!tableElement) return;
+
+  const rows = tableElement.querySelectorAll('tbody tr');
+  const prices = tableElement.querySelectorAll('.highlight');
+
+  rows.forEach((row, index) => {
+    row.classList.add('row-slide-in');
+    row.style.animationDelay = `${index * 0.1}s`;
+
+    const handleAnimationEnd = () => {
+      row.classList.remove('row-slide-in');
+      row.removeEventListener('animationend', handleAnimationEnd);
+    };
+
+    row.addEventListener('animationend', handleAnimationEnd);
+  });
+
+  prices.forEach(price => {
+    price.classList.add('price-updating');
+
+    setTimeout(() => {
+      price.classList.remove('price-updating');
+    }, 2000);
+  });
+}
+
+// Error handling
+function showError() {
+  const errorHTML = `
+    <div class="error-message">
+      <i class="fas fa-exclamation-triangle"></i>
+      <p>Gagal memuat data. Silakan coba lagi.</p>
+    </div>
+  `;
+
+  if (DOM.emasTableLeft) DOM.emasTableLeft.innerHTML = errorHTML;
+  if (DOM.emasTableRight) DOM.emasTableRight.innerHTML = errorHTML;
+}
+    </script>
+</body>
+</html>
