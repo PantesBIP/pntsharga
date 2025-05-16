@@ -116,27 +116,28 @@ function parseCSVToJSON(csvText) {
   });
 }
 
-// Load running text data
+// Update fungsi loadRunningTextData
 async function loadRunningTextData() {
   try {
     const response = await fetch(getSheetUrl('runningText'));
     if (!response.ok) throw new Error('Network response was not ok');
     
     const csvText = await response.text();
-    const results = Papa.parse(csvText, { header: false }); // Parse tanpa header
+    const lines = csvText.trim().split('\n').slice(1); // Skip header
     
-    // Ambil semua baris kecuali header (A1)
-    const textItems = results.data.slice(1).map(row => row[0]).filter(text => text && text.trim() !== '');
-    
-    runningTextData = textItems.map(text => ({
-      text: text,
-      icon: getIconForText(text),
-      color: getRandomColor()
-    }));
+    runningTextData = lines
+      .map(line => line.split(',')[0]?.trim()) // Ambil kolom pertama saja
+      .filter(text => text && text !== '')
+      .map(text => ({
+        text: text,
+        icon: getIconForText(text),
+        color: getRandomColor()
+      }));
     
     updateRunningText();
   } catch (error) {
     console.error('Error loading running text:', error);
+    // Fallback data
     runningTextData = [
       { text: "Harga emas diperbarui real-time", icon: "fa-sync-alt", color: "#00ffff" },
       { text: "Konsultasi investasi gratis", icon: "fa-comments", color: "#ffd700" }
@@ -145,7 +146,7 @@ async function loadRunningTextData() {
   }
 }
 
-// Update running text display
+// Update fungsi updateRunningText
 function updateRunningText() {
   const runningTextElement = document.querySelector('.running-text');
   if (!runningTextElement) return;
@@ -155,20 +156,22 @@ function updateRunningText() {
     return;
   }
   
-  // Duplicate for seamless looping
-  const displayData = [...runningTextData, ...runningTextData];
+  // Duplicate items untuk looping mulus
+  const displayItems = [...runningTextData, ...runningTextData];
   
-  runningTextElement.innerHTML = displayData.map(item => `
+  runningTextElement.innerHTML = displayItems.map(item => `
     <span style="color: ${item.color}">
       <i class="fas ${item.icon}"></i> ${item.text}
     </span>
   `).join('');
   
-  // Calculate animation duration based on content length
+  // Hitung durasi animasi berdasarkan panjang konten
   const contentWidth = runningTextElement.scrollWidth / 2;
   const duration = Math.max(30, contentWidth / 50); // 50px per second
   
   runningTextElement.style.animationDuration = `${duration}s`;
+  runningTextElement.style.display = 'flex';
+}
   
   // Hover effects
   runningTextElement.addEventListener('mouseenter', () => {
