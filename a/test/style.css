@@ -114,10 +114,13 @@ main {
   margin-top: 20px;
 }
 
+/* Ganti semua definisi .tables-container dengan ini */
 .tables-container {
   display: flex;
-  gap: 20px;
+  gap: 15px;
   width: 100%;
+  position: relative;
+  align-items: flex-start; /* Tambahkan ini */
 }
 
 .table-wrapper {
@@ -404,10 +407,32 @@ main {
     display: block;
   }
 
+  /* Ganti semua definisi .tables-container dengan ini */
+.tables-container {
+  display: flex;
+  gap: 15px;
+  width: 100%;
+  position: relative;
+  align-items: flex-start; /* Tambahkan ini */
+}
+
+  /* Tambahkan media query untuk layar kecil */
+@media (max-width: 992px) {
   .tables-container {
-    flex-direction: column;
-    gap: 15px;
+    flex-wrap: wrap;
   }
+  
+  .ad-container {
+    width: 100%;
+    position: static;
+    order: -1; /* Pindahkan iklan ke atas */
+    margin-bottom: 15px;
+  }
+  
+  .table-wrapper {
+    min-width: 100%;
+  }
+}
 
   .table-wrapper {
     min-height: auto;
@@ -530,7 +555,7 @@ main {
   transition: text-shadow 0.3s ease;
 }
 
-/* Ad Container Styles */
+/* Perbaiki definisi .ad-container */
 .ad-container {
   width: 250px;
   background-color: var(--card-bg);
@@ -540,8 +565,9 @@ main {
   position: sticky;
   top: 80px;
   height: fit-content;
-  max-height: 80vh;
-  overflow-y: auto;
+  min-height: 300px; /* Pastikan ada tinggi minimum */
+  display: flex !important; /* Pastikan ditampilkan */
+  flex-shrink: 0; /* Hindari penyusutan */
 }
 
 .ad-content {
