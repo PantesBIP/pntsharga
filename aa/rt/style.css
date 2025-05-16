@@ -470,12 +470,14 @@ main {
     background: rgba(0, 0, 0, 0.2);
     border-radius: 20px;
     position: relative;
+    min-width: 0; /* Add this to prevent flexbox overflow issues */
 }
 
 .running-text-wrapper {
     width: 100%;
     overflow: hidden;
     position: relative;
+    height: 100%;
 }
 
 .running-text {
@@ -487,6 +489,7 @@ main {
     padding: 0 10px;
     align-items: center;
     height: 100%;
+    left: 100%; /* Start from the right */
 }
 
 .running-text span {
@@ -495,6 +498,7 @@ main {
     align-items: center;
     color: var(--primary);
     font-weight: 500;
+    white-space: nowrap;
 }
 
 .running-text i {
@@ -503,8 +507,8 @@ main {
 }
 
 @keyframes marquee {
-    from { transform: translateX(0); }
-    to { transform: translateX(-50%); }
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-100%); }
 }
 
 /* Smooth transition for running text items */
