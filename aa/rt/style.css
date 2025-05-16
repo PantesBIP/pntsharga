@@ -459,7 +459,7 @@ main {
   100% { transform: translateX(-50%); }
 }
 
-/* Running Text Styles */
+/* Ganti semua definisi running text dengan ini */
 .running-text-container {
     flex: 1;
     margin: 0 20px;
@@ -470,7 +470,7 @@ main {
     background: rgba(0, 0, 0, 0.2);
     border-radius: 20px;
     position: relative;
-    min-width: 0; /* Add this to prevent flexbox overflow issues */
+    min-width: 200px; /* Tambahkan min-width */
 }
 
 .running-text-wrapper {
@@ -481,15 +481,14 @@ main {
 }
 
 .running-text {
-    display: flex;
+    display: inline-flex;
     position: absolute;
     white-space: nowrap;
-    will-change: transform;
-    animation: marquee 30s linear infinite;
-    padding: 0 10px;
-    align-items: center;
     height: 100%;
-    left: 100%; /* Start from the right */
+    align-items: center;
+    left: 100%;
+    animation: marquee 30s linear infinite;
+    padding-right: 20px; /* Untuk spacing */
 }
 
 .running-text span {
