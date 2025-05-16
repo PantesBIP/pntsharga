@@ -171,7 +171,6 @@ function updateRunningText() {
   
   runningTextElement.style.animationDuration = `${duration}s`;
   runningTextElement.style.display = 'flex';
-}
   
   // Hover effects
   runningTextElement.addEventListener('mouseenter', () => {
