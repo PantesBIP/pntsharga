@@ -31,12 +31,13 @@ body {
 }
 
 .container {
-  width: 190%;
+  width: 100%;
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 15px;
   flex: 1;
 }
+
 
 /* Header Styles */
 .gamer-header {
@@ -117,11 +118,11 @@ main {
 /* Ganti semua definisi .tables-container dengan ini */
 .tables-container {
   display: flex;
-  gap: 15px;
-  width: 100%;
-  position: relative;
-  align-items: flex-start; /* Tambahkan ini */
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: space-between;
 }
+
 
 .table-wrapper {
   flex: 1;
