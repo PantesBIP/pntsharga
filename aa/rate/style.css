@@ -1,16 +1,17 @@
 :root {
+  /* Updated color palette for better readability */
   --primary: #D4AF37; /* Rich gold color */
   --secondary: #FFFFFF; /* White */
   --accent: #B8860B; /* Darker gold for accents */
-  --text: #333333; /* Dark text for contrast */
-  --text-secondary: #666666; /* Lighter text */
-  --bg: #FFFFFF; /* White background */
+  --text: #222222; /* Darker text for better contrast */
+  --text-secondary: #555555; /* Slightly lighter text */
+  --bg: #F9F9F9; /* Light gray background */
   --card-bg: #FFFDF6; /* Very light gold/white */
   --table-bg: #FFFDF6; /* Very light gold/white */
   --table-header: #F5E6C8; /* Light gold header */
   --table-row-odd: #FFFFFF; /* White */
   --table-row-even: #FFF9E6; /* Very light gold */
-  --highlight: rgba(212, 175, 55, 0.1); /* Gold highlight */
+  --highlight: rgba(212, 175, 55, 0.15); /* Slightly stronger gold highlight */
 }
 
 /* Base Styles */
@@ -21,15 +22,35 @@
 }
 
 body {
-  font-family: 'Poppins', sans-serif;
+  font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
   background-color: var(--bg);
   color: var(--text);
-  line-height: 1.6;
+  line-height: 1.7; /* Increased line height for better readability */
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  font-size: 16px; /* Base font size */
 }
 
+/* Improved typography */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 600;
+  line-height: 1.3;
+  margin-bottom: 1rem;
+  color: var(--text);
+}
+
+h3 {
+  font-size: 1.4rem; /* Larger heading for better hierarchy */
+}
+
+p {
+  margin-bottom: 1.2rem;
+  font-size: 1rem;
+  color: var(--text);
+}
+
+/* Container */
 .container {
   width: 100%;
   max-width: 1200px;
@@ -49,120 +70,60 @@ body {
   border-bottom: 1px solid var(--primary);
 }
 
-.gamer-header .container {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  position: relative;
-}
-
 .logo {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-family: 'Poppins', sans-serif;
+  font-size: 1.3rem;
   font-weight: 700;
-  font-size: 1.2rem;
   color: var(--primary);
-}
-
-.logo-icon {
-  font-size: 1.5rem;
-}
-
-.logo span {
-  color: var(--accent);
-}
-
-.gamer-nav ul {
-  display: flex;
-  list-style: none;
-  gap: 20px;
 }
 
 .gamer-nav a {
-  color: var(--text);
-  text-decoration: none;
+  font-size: 0.95rem;
   font-weight: 500;
-  transition: color 0.3s;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 0.9rem;
-}
-
-.gamer-nav a:hover {
-  color: var(--primary);
-}
-
-.mobile-menu-btn {
-  display: none;
-  font-size: 1.4rem;
-  cursor: pointer;
   color: var(--text);
-  background: none;
-  border: none;
-  padding: 5px;
 }
 
-/* Main Content */
-main {
-  padding: 20px 0 40px;
-}
-
-/* Price Tables Section */
+/* Price Tables Section - Improved readability */
 .price-table-section {
-  margin-top: 20px;
-}
-
-.tables-container {
-  display: flex;
-  gap: 20px;
-  width: 100%;
+  margin-top: 2rem;
 }
 
 .table-wrapper {
-  flex: 1;
   background-color: var(--table-bg);
   border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-  padding: 15px;
-  min-height: 400px;
-  border: 1px solid rgba(212, 175, 55, 0.2);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+  padding: 1.5rem;
+  border: 1px solid rgba(212, 175, 55, 0.25);
 }
 
 .table-wrapper h3 {
   color: var(--primary);
-  margin-bottom: 15px;
-  text-align: center;
-  font-family: 'Poppins', sans-serif;
-  font-size: 1.3rem;
-  padding-bottom: 10px;
-  border-bottom: 1px solid rgba(212, 175, 55, 0.3);
-}
-
-.table-responsive {
-  width: 100%;
-  overflow-x: auto;
+  margin-bottom: 1.5rem;
+  font-size: 1.4rem;
+  padding-bottom: 0.8rem;
+  border-bottom: 2px solid rgba(212, 175, 55, 0.3);
 }
 
 .price-table {
   width: 100%;
-  border-collapse: collapse;
+  border-collapse: separate;
+  border-spacing: 0;
   font-size: 0.95rem;
 }
 
 .price-table th {
   background-color: var(--table-header);
-  color: var(--primary);
-  padding: 12px 10px;
+  color: var(--text);
+  padding: 12px 15px;
   text-align: left;
   font-weight: 600;
+  border-bottom: 2px solid rgba(212, 175, 55, 0.3);
 }
 
 .price-table td {
-  padding: 10px;
-  border-bottom: 1px solid rgba(212, 175, 55, 0.1);
+  padding: 12px 15px;
+  border-bottom: 1px solid rgba(212, 175, 55, 0.15);
+  color: var(--text);
+  font-weight: 400;
 }
 
 .price-table tr:nth-child(odd) {
@@ -178,322 +139,68 @@ main {
 }
 
 .price-table .highlight {
-  color: var(--primary);
+  color: var(--accent);
   font-weight: 600;
 }
 
-.table-footer {
-  padding: 10px 0 0;
-  text-align: center;
-  font-size: 0.8rem;
-  color: var(--text-secondary);
-  margin-top: 10px;
-  border-top: 1px solid rgba(212, 175, 55, 0.1);
-}
-
-/* Error and Loading States */
-.error-message, .loading-spinner {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 200px;
-  color: var(--text-secondary);
-  text-align: center;
-}
-
-.error-message i {
-  font-size: 2rem;
-  margin-bottom: 15px;
-  color: #D4AF37;
-}
-
-.loading-spinner i {
-  font-size: 2rem;
-  margin-bottom: 15px;
-  color: var(--primary);
-  animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-  100% { transform: rotate(360deg); }
-}
-
-/* Footer */
+/* Improved footer readability */
 .gamer-footer {
   background-color: var(--secondary);
-  padding: 25px 0;
-  margin-top: auto;
-  border-top: 1px solid rgba(212, 175, 55, 0.2);
-}
-
-.gamer-footer .container {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 20px;
+  padding: 2rem 0;
+  border-top: 1px solid rgba(212, 175, 55, 0.3);
 }
 
 .footer-section h4 {
   color: var(--primary);
-  margin-bottom: 12px;
-  font-size: 1rem;
-}
-
-.footer-section ul {
-  list-style: none;
+  margin-bottom: 1rem;
+  font-size: 1.1rem;
 }
 
 .footer-section li {
-  margin-bottom: 8px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 0.8rem;
-}
-
-.footer-section i {
-  color: var(--accent);
   font-size: 0.9rem;
+  color: var(--text-secondary);
 }
 
-.social-links {
-  display: flex;
-  gap: 12px;
-}
-
-.social-links a {
-  color: var(--text);
-  font-size: 1.2rem;
-  transition: color 0.3s;
-}
-
-.social-links a:hover {
-  color: var(--primary);
-}
-
-/* ANIMASI HARGA TERBARU */
-@keyframes priceFlash {
-  0% { transform: scale(1); }
-  25% { transform: scale(1.05); }
-  50% { background-color: rgba(212, 175, 55, 0.2); }
-  100% { transform: scale(1); background-color: transparent; }
-}
-
-@keyframes pricePulse {
-  0% { opacity: 1; }
-  50% { opacity: 0.7; }
-  100% { opacity: 1; }
-}
-
-@keyframes rowSlideIn {
-  from { 
-    transform: translateX(-20px);
-    opacity: 0;
-  }
-  to { 
-    transform: translateX(0);
-    opacity: 1;
-  }
-}
-
-@keyframes headerGlow {
-  0% { text-shadow: 0 0 5px rgba(212, 175, 55, 0); }
-  50% { text-shadow: 0 0 10px rgba(212, 175, 55, 0.3); }
-  100% { text-shadow: 0 0 5px rgba(212, 175, 55, 0); }
-}
-
-.price-updating {
-  animation: priceFlash 1s ease-out, pricePulse 2s infinite;
-}
-
-.row-slide-in {
-  animation: rowSlideIn 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
-}
-
-.table-title-animate {
-  animation: headerGlow 1.5s ease-in-out;
-}
-
-.highlight {
-  position: relative;
-  transition: all 0.3s ease;
-}
-
-.highlight::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, 
-              transparent, 
-              rgba(212, 175, 55, 0.1), 
-              transparent);
-  transform: translateX(-100%);
-}
-
-.highlight:hover::before {
-  transform: translateX(100%);
-  transition: transform 0.6s ease-in-out;
-}
-
-/* Loading animation */
-.loading-spinner {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100px;
-}
-
-.loading-spinner i {
-  font-size: 2.5rem;
-  color: var(--primary);
-  animation: spin 1s linear infinite, pulse 1.5s ease infinite;
-}
-
-@keyframes pulse {
-  0% { opacity: 0.6; transform: scale(0.95); }
-  50% { opacity: 1; transform: scale(1.05); }
-  100% { opacity: 0.6; transform: scale(0.95); }
-}
-
-/* Table transition */
-.table-transition {
-  animation: fadeIn 0.8s ease-out;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-/* Running text styles */
+/* Running text improvements */
 .running-text-container {
-    flex: 1;
-    margin: 0 20px;
-    overflow: hidden;
-    height: 50px;
-    display: flex;
-    align-items: center;
-    background: rgba(212, 175, 55, 0.1);
-    border-radius: 8px;
-    position: relative;
-    min-width: 200px;
-    border: 1px solid rgba(212, 175, 55, 0.2);
-}
-
-.running-text-wrapper {
-    width: 100%;
-    overflow: hidden;
-    position: relative;
-    height: 100%;
-}
-
-.running-text {
-    display: inline-flex;
-    position: absolute;
-    white-space: nowrap;
-    height: 50px;
-    align-items: center;
-    left: 100%;
-    animation: marquee 30s linear infinite;
-    padding-right: 20px;
+  background: rgba(212, 175, 55, 0.15);
 }
 
 .running-text span {
-    margin-right: 40px;
-    display: inline-flex;
-    align-items: center;
-    color: var(--primary);
-    font-weight: 500;
-    white-space: nowrap;
-    font-size: 1rem;
+  color: var(--text);
+  font-weight: 500;
+  font-size: 0.95rem;
 }
 
-.running-text i {
-    margin-right: 8px;
-    color: var(--accent);
-    font-size: 1em;
-}
-
-@keyframes marquee {
-    0% { transform: translateX(0); }
-    100% { transform: translateX(-100%); }
-}
-
-/* Responsive Design */
-@media (max-width: 992px) {
-  .price-table {
-    font-size: 0.85rem;
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  body {
+    font-size: 15px;
+  }
+  
+  .table-wrapper {
+    padding: 1rem;
   }
   
   .price-table th,
   .price-table td {
-    padding: 8px;
-  }
-}
-
-@media (max-width: 768px) {
-  .gamer-nav {
-    position: fixed;
-    top: 60px;
-    left: -100%;
-    width: 100%;
-    background-color: var(--secondary);
-    flex-direction: column;
-    padding: 20px 0;
-    transition: left 0.3s ease;
-    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
-  }
-
-  .gamer-nav.active {
-    left: 0;
-  }
-
-  .gamer-nav ul {
-    flex-direction: column;
-    gap: 15px;
-    padding: 0 20px;
-  }
-
-  .mobile-menu-btn {
-    display: block;
-  }
-
-  .tables-container {
-    flex-direction: column;
-    gap: 15px;
-  }
-
-  .table-wrapper {
-    min-height: auto;
+    padding: 10px 8px;
+    font-size: 0.9rem;
   }
 }
 
 @media (max-width: 480px) {
-  .price-table {
-    font-size: 0.8rem;
+  body {
+    font-size: 14px;
+  }
+  
+  .table-wrapper h3 {
+    font-size: 1.2rem;
   }
   
   .price-table th,
   .price-table td {
-    padding: 6px 4px;
-  }
-  
-  .table-wrapper h3 {
-    font-size: 1.1rem;
-  }
-  
-  .logo {
-    font-size: 1rem;
-  }
-  
-  .running-text-container {
-    height: 40px;
-  }
-  
-  .running-text span {
-    font-size: 0.9rem;
+    padding: 8px 6px;
+    font-size: 0.85rem;
   }
 }
