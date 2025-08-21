@@ -1,3 +1,13 @@
+// Konfigurasi Sheet
+const SHEET_CONFIG = {
+  harga: { gid: '216173443', name: 'Harga' },
+  runningText: { gid: '1779766141', name: 'RunningText' },
+  iklan: { gid: '1303897065', name: 'Iklan' }
+};
+
+// Base URL untuk Google Sheets
+const SHEET_BASE_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQFH0squhL_c2KoNryfBrysWZEKTTUpthg_1XVE-fT3r7-ew1_lkbFqENefrlBLHClis53FyDdNiUkh/pub';
+
 // Helper functions
 function formatCurrency(amount) {
     return new Intl.NumberFormat('id-ID', {
@@ -27,6 +37,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Load initial data
     loadPriceData();
+    loadRunningText();
     
     // Start rotation interval
     startRotationInterval();
@@ -55,21 +66,19 @@ function navigateTables(direction) {
     displayTables(currentTableType);
 }
 
-// Load and parse CSV from Google Sheets
+// Load and parse CSV from Google Sheets - Harga
 async function loadPriceData() {
     try {
-        const response = await fetch('https://docs.google.com/spreadsheets/d/e/2PACX-1vQFH0squhL_c2KoNryfBrysWZEKTTUpthg_1XVE-fT3r7-ew1_lkbFqENefrlBLHClis53FyDdNiUkh/pub?gid=216173443&single=true&output=csv');
+        const url = `${SHEET_BASE_URL}?gid=${SHEET_CONFIG.harga.gid}&single=true&output=csv`;
+        const response = await fetch(url);
         const csvText = await response.text();
         const data = parseCSVToJSON(csvText);
 
         // Organize data by type
-        tableData.emas = data.filter(row => row.tipe.toLowerCase() === 'emas');
-        tableData.antam = data.filter(row => row.tipe.toLowerCase() === 'antam');
-        tableData.archi = data.filter(row => row.tipe.toLowerCase() === 'archi');
+        tableData.emas = data.filter(row => row.tipe && row.tipe.toLowerCase() === 'emas');
+        tableData.antam = data.filter(row => row.tipe && row.tipe.toLowerCase() === 'antam');
+        tableData.archi = data.filter(row => row.tipe && row.tipe.toLowerCase() === 'archi');
 
-        // Generate marquee text from data
-        generateMarqueeText();
-        
         // Display initial table
         displayTables('emas');
     } catch (error) {
@@ -78,8 +87,48 @@ async function loadPriceData() {
     }
 }
 
+// Load running text from Google Sheets
+async function loadRunningText() {
+    try {
+        const url = `${SHEET_BASE_URL}?gid=${SHEET_CONFIG.runningText.gid}&single=true&output=csv`;
+        const response = await fetch(url);
+        const csvText = await response.text();
+        const data = parseCSVToJSON(csvText);
+        
+        // Process running text data
+        processRunningTextData(data);
+    } catch (error) {
+        console.error('Error loading running text:', error);
+        // Fallback text if running text fails to load
+        document.getElementById('marqueeText').textContent = "Harga emas terkini - Informasi terupdate setiap hari";
+    }
+}
+
+function processRunningTextData(data) {
+    if (!data || data.length === 0) {
+        document.getElementById('marqueeText').textContent = "Harga emas terkini - Informasi terupdate setiap hari";
+        return;
+    }
+    
+    // Get all running text items
+    const runningTexts = data.filter(item => item.teks);
+    
+    if (runningTexts.length === 0) {
+        document.getElementById('marqueeText').textContent = "Harga emas terkini - Informasi terupdate setiap hari";
+        return;
+    }
+    
+    // Combine all running text with separator
+    const marqueeContent = runningTexts.map(item => item.teks).join(' | ');
+    
+    // Update marquee text
+    document.getElementById('marqueeText').textContent = marqueeContent;
+}
+
 function parseCSVToJSON(csvText) {
     const lines = csvText.trim().split('\n');
+    if (lines.length < 2) return [];
+    
     const headers = lines[0].split(',').map(h => h.toLowerCase().replace(/\s+/g, '_'));
     return lines.slice(1).map(line => {
         const values = line.split(',').map(v => v.trim());
@@ -93,44 +142,6 @@ function parseCSVToJSON(csvText) {
         });
         return obj;
     });
-}
-
-function generateMarqueeText() {
-    let marqueeText = "Harga Emas Terkini: ";
-    
-    // Add emas data
-    if (tableData.emas && tableData.emas.length > 0) {
-        const emasItems = tableData.emas.slice(0, 3); // Take first 3 items
-        emasItems.forEach((item, index) => {
-            marqueeText += `${item.kode}: ${formatCurrency(item.harga_jual)}`;
-            if (index < emasItems.length - 1) marqueeText += " | ";
-        });
-    }
-    
-    marqueeText += " | ";
-    
-    // Add antam data
-    if (tableData.antam && tableData.antam.length > 0) {
-        const antamItems = tableData.antam.slice(0, 2); // Take first 2 items
-        antamItems.forEach((item, index) => {
-            marqueeText += `${item.kode}: ${formatCurrency(item.harga_jual)}`;
-            if (index < antamItems.length - 1) marqueeText += " | ";
-        });
-    }
-    
-    marqueeText += " | ";
-    
-    // Add archi data
-    if (tableData.archi && tableData.archi.length > 0) {
-        const archiItems = tableData.archi.slice(0, 2); // Take first 2 items
-        archiItems.forEach((item, index) => {
-            marqueeText += `${item.kode}: ${formatCurrency(item.harga_jual)}`;
-            if (index < archiItems.length - 1) marqueeText += " | ";
-        });
-    }
-    
-    // Update marquee text
-    document.getElementById('marqueeText').textContent = marqueeText;
 }
 
 function displayTables(type) {
@@ -173,8 +184,8 @@ function updateTable(elementId, data, type) {
     data.forEach(item => {
         tableHTML += `
             <tr>
-                <td>${item.kode}</td>
-                <td class="highlight">${formatCurrency(item.harga_jual)}</td>
+                <td>${item.kode || '-'}</td>
+                <td class="highlight">${item.harga_jual ? formatCurrency(item.harga_jual) : '-'}</td>
                 <td class="highlight">${item.buyback ? formatCurrency(item.buyback) : '-'}</td>
             </tr>
         `;
