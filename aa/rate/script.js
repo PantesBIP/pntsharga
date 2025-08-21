@@ -9,12 +9,17 @@ function formatCurrency(amount) {
 
 let tableData = {};
 let currentTableType = 'emas';
+let rotationInterval;
+let isAutoRotate = true;
 
 // Load data and initialize
 document.addEventListener('DOMContentLoaded', function () {
     const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
     const nav = document.querySelector('.nav');
     const tabButtons = document.querySelectorAll('.tab-btn');
+    const leftNavBtn = document.querySelector('.left-nav');
+    const rightNavBtn = document.querySelector('.right-nav');
+    const autoRotateCheckbox = document.getElementById('autoRotate');
 
     // Mobile menu toggle
     mobileMenuBtn.addEventListener('click', function (e) {
@@ -42,12 +47,71 @@ document.addEventListener('DOMContentLoaded', function () {
             // Switch to the selected table type
             currentTableType = this.getAttribute('data-type');
             displayTables(currentTableType);
+            
+            // Reset rotation interval
+            resetRotationInterval();
         });
+    });
+
+    // Navigation buttons
+    leftNavBtn.addEventListener('click', function() {
+        navigateTables('left');
+    });
+
+    rightNavBtn.addEventListener('click', function() {
+        navigateTables('right');
+    });
+
+    // Auto rotate toggle
+    autoRotateCheckbox.addEventListener('change', function() {
+        isAutoRotate = this.checked;
+        resetRotationInterval();
     });
 
     // Load initial data
     loadPriceData();
+    
+    // Start rotation interval
+    startRotationInterval();
 });
+
+function startRotationInterval() {
+    if (rotationInterval) clearInterval(rotationInterval);
+    
+    if (isAutoRotate) {
+        rotationInterval = setInterval(function() {
+            navigateTables('right');
+        }, 25000); // Rotate every 25 seconds
+    }
+}
+
+function resetRotationInterval() {
+    if (rotationInterval) clearInterval(rotationInterval);
+    startRotationInterval();
+}
+
+function navigateTables(direction) {
+    const types = ['emas', 'antam', 'archi'];
+    const currentIndex = types.indexOf(currentTableType);
+    let nextIndex;
+    
+    if (direction === 'right') {
+        nextIndex = (currentIndex + 1) % types.length;
+    } else {
+        nextIndex = (currentIndex - 1 + types.length) % types.length;
+    }
+    
+    // Update active tab
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.classList.remove('active');
+        if (btn.getAttribute('data-type') === types[nextIndex]) {
+            btn.classList.add('active');
+        }
+    });
+    
+    currentTableType = types[nextIndex];
+    displayTables(currentTableType);
+}
 
 // Load and parse CSV from Google Sheets
 async function loadPriceData() {
