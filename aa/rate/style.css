@@ -1,434 +1,431 @@
 :root {
-  --primary: #ffd700;
-  --secondary: #1a1a2e;
-  --accent: #00ffff;
-  --text: #ffffff;
-  --text-secondary: #ffffff;
-  --bg: #0f0f1a;
-  --card-bg: #1a1a2e;
-  --table-bg: #16213e;
-  --table-header: #0f3460;
-  --table-row-odd: #1a1a2e;
-  --table-row-even: #16213e;
-  --highlight: rgba(255, 215, 0, 0.1);
-}
+            --primary: #ffd700;
+            --secondary: #1a1a2e;
+            --accent: #00ffff;
+            --text: #ffffff;
+            --text-secondary: #ffffff;
+            --bg: #0f0f1a;
+            --card-bg: #1a1a2e;
+            --table-bg: #16213e;
+            --table-header: #0f3460;
+            --table-row-odd: #1a1a2e;
+            --table-row-even: #16213e;
+            --highlight: rgba(255, 215, 0, 0.1);
+        }
 
-/* Base Styles */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-body {
-  font-family: 'Poppins', sans-serif;
-  background-color: var(--bg);
-  color: var(--text);
-  line-height: 1.6;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-}
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
 
-.container {
-  width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 15px;
-  flex: 1;
-}
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+            flex: 1;
+        }
 
-/* Header Styles */
-.gamer-header {
-  background-color: var(--secondary);
-  padding: 12px 0;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-  position: sticky;
-  top: 0;
-  z-index: 1000;
-}
+        /* Header Styles */
+        .gamer-header {
+            background-color: var(--secondary);
+            padding: 12px 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
 
-.gamer-header .container {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  position: relative;
-}
+        .gamer-header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+        }
 
-.logo {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-family: 'Orbitron', sans-serif;
-  font-weight: 700;
-  font-size: 1.2rem;
-  color: var(--primary);
-}
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: var(--primary);
+        }
 
-.logo-icon {
-  font-size: 1.5rem;
-}
+        .logo-icon {
+            font-size: 1.5rem;
+        }
 
-.logo span {
-  color: var(--accent);
-}
+        .logo span {
+            color: var(--accent);
+        }
 
-.gamer-nav ul {
-  display: flex;
-  list-style: none;
-  gap: 20px;
-}
+        .gamer-nav ul {
+            display: flex;
+            list-style: none;
+            gap: 20px;
+        }
 
-.gamer-nav a {
-  color: var(--text);
-  text-decoration: none;
-  font-weight: 500;
-  transition: color 0.3s;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 0.9rem;
-}
+        .gamer-nav a {
+            color: var(--text);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.9rem;
+        }
 
-.gamer-nav a:hover {
-  color: var(--primary);
-}
+        .gamer-nav a:hover {
+            color: var(--primary);
+        }
 
-.mobile-menu-btn {
-  display: none;
-  font-size: 1.4rem;
-  cursor: pointer;
-  color: var(--text);
-  background: none;
-  border: none;
-  padding: 5px;
-}
+        .mobile-menu-btn {
+            display: none;
+            font-size: 1.4rem;
+            cursor: pointer;
+            color: var(--text);
+            background: none;
+            border: none;
+            padding: 5px;
+        }
 
-/* Main Content */
-main {
-  padding: 20px 0 40px;
-}
+        /* Main Content */
+        main {
+            padding: 20px 0 40px;
+        }
 
-/* Price Tables Section */
-.price-table-section {
-  margin-top: 20px;
-}
+        /* Price Tables Section */
+        .price-table-section {
+            margin-top: 20px;
+        }
 
-.tables-container {
-  display: flex;
-  gap: 20px;
-  width: 100%;
-}
+        .tables-container {
+            display: flex;
+            gap: 20px;
+            width: 100%;
+        }
 
-.table-wrapper {
-  flex: 1;
-  background-color: var(--table-bg);
-  border-radius: 8px;
-  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
-  padding: 15px;
-  min-height: 400px;
-}
+        .table-wrapper {
+            flex: 1;
+            background-color: var(--table-bg);
+            border-radius: 8px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+            padding: 15px;
+            min-height: 400px;
+        }
 
-.table-wrapper h3 {
-  color: var(--primary);
-  margin-bottom: 15px;
-  text-align: center;
-  font-family: 'Orbitron', sans-serif;
-  font-size: 1.3rem;
-  padding-bottom: 10px;
-  border-bottom: 1px solid rgba(255, 215, 0, 0.3);
-}
+        .table-wrapper h3 {
+            color: var(--primary);
+            margin-bottom: 15px;
+            text-align: center;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.3rem;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(255, 215, 0, 0.3);
+        }
 
-.table-responsive {
-  width: 100%;
-  overflow-x: auto;
-}
+        .table-responsive {
+            width: 100%;
+            overflow-x: auto;
+        }
 
-.price-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 0.95rem;
-}
+        .price-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.95rem;
+        }
 
-.price-table th {
-  background-color: var(--table-header);
-  color: var(--primary);
-  padding: 12px 10px;
-  text-align: left;
-  font-weight: 600;
-}
+        .price-table th {
+            background-color: var(--table-header);
+            color: var(--primary);
+            padding: 12px 10px;
+            text-align: left;
+            font-weight: 600;
+        }
 
-.price-table td {
-  padding: 10px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-}
+        .price-table td {
+            padding: 10px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
 
-.price-table tr:nth-child(odd) {
-  background-color: var(--table-row-odd);
-}
+        .price-table tr:nth-child(odd) {
+            background-color: var(--table-row-odd);
+        }
 
-.price-table tr:nth-child(even) {
-  background-color: var(--table-row-even);
-}
+        .price-table tr:nth-child(even) {
+            background-color: var(--table-row-even);
+        }
 
-.price-table tr:hover {
-  background-color: var(--highlight);
-}
+        .price-table tr:hover {
+            background-color: var(--highlight);
+        }
 
-.price-table .highlight {
-  color: var(--primary);
-  font-weight: 600;
-}
+        .price-table .highlight {
+            color: var(--primary);
+            font-weight: 600;
+        }
 
-.table-footer {
-  padding: 10px 0 0;
-  text-align: center;
-  font-size: 0.8rem;
-  color: var(--text-secondary);
-  margin-top: 10px;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-}
+        .table-footer {
+            padding: 10px 0 0;
+            text-align: center;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            margin-top: 10px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
 
-/* Error and Loading States */
-.error-message, .loading-spinner {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 200px;
-  color: var(--text-secondary);
-  text-align: center;
-}
+        /* Error and Loading States */
+        .error-message, .loading-spinner {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 200px;
+            color: var(--text-secondary);
+            text-align: center;
+        }
 
-.error-message i {
-  font-size: 2rem;
-  margin-bottom: 15px;
-  color: #F44336;
-}
+        .error-message i {
+            font-size: 2rem;
+            margin-bottom: 15px;
+            color: #F44336;
+        }
 
-.loading-spinner i {
-  font-size: 2rem;
-  margin-bottom: 15px;
-  color: var(--primary);
-  animation: spin 1s linear infinite;
-}
+        .loading-spinner i {
+            font-size: 2rem;
+            margin-bottom: 15px;
+            color: var(--primary);
+            animation: spin 1s linear infinite;
+        }
 
-@keyframes spin {
-  100% { transform: rotate(360deg); }
-}
+        @keyframes spin {
+            100% { transform: rotate(360deg); }
+        }
 
-/* Footer */
-.gamer-footer {
-  background-color: var(--secondary);
-  padding: 25px 0;
-  margin-top: auto;
-}
+        /* Footer */
+        .gamer-footer {
+            background-color: var(--secondary);
+            padding: 25px 0;
+            margin-top: auto;
+        }
 
-.gamer-footer .container {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 20px;
-}
+        .gamer-footer .container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
 
-.footer-section h4 {
-  color: var(--primary);
-  margin-bottom: 12px;
-  font-size: 1rem;
-}
+        .footer-section h4 {
+            color: var(--primary);
+            margin-bottom: 12px;
+            font-size: 1rem;
+        }
 
-.footer-section ul {
-  list-style: none;
-}
+        .footer-section ul {
+            list-style: none;
+        }
 
-.footer-section li {
-  margin-bottom: 8px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 0.8rem;
-}
+        .footer-section li {
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.8rem;
+        }
 
-.footer-section i {
-  color: var(--accent);
-  font-size: 0.9rem;
-}
+        .footer-section i {
+            color: var(--accent);
+            font-size: 0.9rem;
+        }
 
-.social-links {
-  display: flex;
-  gap: 12px;
-}
+        .social-links {
+            display: flex;
+            gap: 12px;
+        }
 
-.social-links a {
-  color: var(--text);
-  font-size: 1.2rem;
-  transition: color 0.3s;
-}
+        .social-links a {
+            color: var(--text);
+            font-size: 1.2rem;
+            transition: color 0.3s;
+        }
 
-.social-links a:hover {
-  color: var(--primary);
-}
+        .social-links a:hover {
+            color: var(--primary);
+        }
 
-/* ANIMASI HARGA TERBARU */
-@keyframes priceFlash {
-  0% { transform: scale(1); }
-  25% { transform: scale(1.05); }
-  50% { background-color: rgba(76, 175, 80, 0.3); }
-  100% { transform: scale(1); background-color: transparent; }
-}
+        /* ANIMASI YANG DISEDERHANAKAN */
+        @keyframes priceFlash {
+            0% { background-color: transparent; }
+            50% { background-color: rgba(76, 175, 80, 0.2); }
+            100% { background-color: transparent; }
+        }
 
-@keyframes pricePulse {
-  0% { opacity: 1; }
-  50% { opacity: 0.7; }
-  100% { opacity: 1; }
-}
+        @keyframes rowSlideIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
 
-@keyframes rowSlideIn {
-  from { 
-    transform: translateX(-20px);
-    opacity: 0;
-  }
-  to { 
-    transform: translateX(0);
-    opacity: 1;
-  }
-}
+        .price-updating {
+            animation: priceFlash 1s ease-out;
+        }
 
-@keyframes headerGlow {
-  0% { text-shadow: 0 0 5px rgba(255, 215, 0, 0); }
-  50% { text-shadow: 0 0 10px rgba(255, 215, 0, 0.5); }
-  100% { text-shadow: 0 0 5px rgba(255, 215, 0, 0); }
-}
+        .table-transition {
+            transition: opacity 0.3s ease;
+        }
 
-.price-updating {
-  animation: priceFlash 1s ease-out, pricePulse 2s infinite;
-}
+        /* Running text animation yang disederhanakan */
+        .running-text-container {
+            flex: 1;
+            margin: 0 20px;
+            overflow: hidden;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 12px;
+            position: relative;
+            min-width: 200px;
+        }
 
-.row-slide-in {
-  animation: rowSlideIn 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
-}
+        .running-text-wrapper {
+            width: 100%;
+            overflow: hidden;
+            position: relative;
+            height: 100%;
+        }
 
-.table-title-animate {
-  animation: headerGlow 1.5s ease-in-out;
-}
+        .running-text {
+            display: inline-flex;
+            position: absolute;
+            white-space: nowrap;
+            height: 60px;
+            align-items: center;
+            left: 100%;
+            animation: marquee 30s linear infinite;
+            padding-right: 20px;
+        }
 
-.highlight {
-  position: relative;
-  transition: all 0.3s ease;
-}
+        .running-text span {
+            margin-right: 60px;
+            display: inline-flex;
+            align-items: center;
+            color: var(--primary);
+            font-weight: 500;
+            white-space: nowrap;
+            font-size: 1.2rem;
+            transition: opacity 0.3s ease;
+        }
 
-.highlight::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, 
-              transparent, 
-              rgba(255, 255, 255, 0.1), 
-              transparent);
-  transform: translateX(-100%);
-}
+        .running-text i {
+            margin-right: 8px;
+            color: var(--accent);
+            font-size: 1.1em;
+        }
 
-.highlight:hover::before {
-  transform: translateX(100%);
-  transition: transform 0.6s ease-in-out;
-}
+        @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-100%); }
+        }
 
-/* Loading animation */
-.loading-spinner {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100px;
-}
+        .running-text span:hover {
+            opacity: 1;
+        }
 
-.loading-spinner i {
-  font-size: 2.5rem;
-  color: var(--primary);
-  animation: spin 1s linear infinite, pulse 1.5s ease infinite;
-}
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .price-table {
+                font-size: 0.85rem;
+            }
+            
+            .price-table th,
+            .price-table td {
+                padding: 8px;
+            }
+        }
 
-@keyframes pulse {
-  0% { opacity: 0.6; transform: scale(0.95); }
-  50% { opacity: 1; transform: scale(1.05); }
-  100% { opacity: 0.6; transform: scale(0.95); }
-}
+        @media (max-width: 768px) {
+            .gamer-nav {
+                position: fixed;
+                top: 60px;
+                left: -100%;
+                width: 100%;
+                background-color: var(--secondary);
+                flex-direction: column;
+                padding: 20px 0;
+                transition: left 0.3s ease;
+                box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+            }
 
-/* Table transition */
-.table-transition {
-  animation: fadeIn 0.8s ease-out;
-}
+            .gamer-nav.active {
+                left: 0;
+            }
 
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
-}
+            .gamer-nav ul {
+                flex-direction: column;
+                gap: 15px;
+                padding: 0 20px;
+            }
 
-/* Responsive Design */
-@media (max-width: 992px) {
-  .price-table {
-    font-size: 0.85rem;
-  }
-  
-  .price-table th,
-  .price-table td {
-    padding: 8px;
-  }
-}
+            .mobile-menu-btn {
+                display: block;
+            }
 
-@media (max-width: 768px) {
-  .gamer-nav {
-    position: fixed;
-    top: 60px;
-    left: -100%;
-    width: 100%;
-    background-color: var(--secondary);
-    flex-direction: column;
-    padding: 20px 0;
-    transition: left 0.3s ease;
-    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
-  }
+            .tables-container {
+                flex-direction: column;
+                gap: 15px;
+            }
 
-  .gamer-nav.active {
-    left: 0;
-  }
+            .table-wrapper {
+                min-height: auto;
+            }
 
-  .gamer-nav ul {
-    flex-direction: column;
-    gap: 15px;
-    padding: 0 20px;
-  }
+            .running-text-container {
+                margin: 10px 0;
+                height: 50px;
+                order: 3;
+                width: 100%;
+            }
 
-  .mobile-menu-btn {
-    display: block;
-  }
+            .running-text span {
+                font-size: 1rem;
+                margin-right: 40px;
+            }
+        }
 
-  .tables-container {
-    flex-direction: column;
-    gap: 15px;
-  }
+        @media (max-width: 480px) {
+            .price-table {
+                font-size: 0.8rem;
+            }
+            
+            .price-table th,
+            .price-table td {
+                padding: 6px 4px;
+            }
+            
+            .table-wrapper h3 {
+                font-size: 1.1rem;
+            }
+            
+            .logo {
+                font-size: 1rem;
+            }
 
-  .table-wrapper {
-    min-height: auto;
-  }
-}
-
-@media (max-width: 480px) {
-  .price-table {
-    font-size: 0.8rem;
-  }
-  
-  .price-table th,
-  .price-table td {
-    padding: 6px 4px;
-  }
-  
-  .table-wrapper h3 {
-    font-size: 1.1rem;
-  }
-  
-  .logo {
-    font-size: 1rem;
-  }
-}
+            .running-text span {
+                font-size: 0.9rem;
+                margin-right: 30px;
+            }
+        }
