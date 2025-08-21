@@ -1,493 +1,106 @@
-:root {
-  --primary: #ffd700;
-  --secondary: #1a1a2e;
-  --accent: #00ffff;
-  --text: #ffffff;
-  --text-secondary: #cccccc;
-  --bg: #0f0f1a;
-  --card-bg: #1a1a2e;
-  --table-bg: #16213e;
-  --table-header: #0f3460;
-  --table-row-odd: #1a1a2e;
-  --table-row-even: #16213e;
-  --highlight: rgba(255, 215, 0, 0.1);
-  --transition-speed: 0.4s;
-}
+/* Hanya menampilkan bagian CSS yang diubah */
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-body {
-  font-family: 'Poppins', sans-serif;
-  background-color: var(--bg);
-  color: var(--text);
-  line-height: 1.6;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  overflow-x: hidden;
-}
-
-.container {
-  width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 15px;
-  flex: 1;
-}
-
-/* Header Styles */
-.gamer-header {
-  background-color: var(--secondary);
-  padding: 12px 0;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-  position: sticky;
-  top: 0;
-  z-index: 1000;
-  will-change: transform;
-}
-
-.gamer-header .container {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  position: relative;
-}
-
-.logo {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-family: 'Orbitron', sans-serif;
-  font-weight: 700;
-  font-size: 1.2rem;
-  color: var(--primary);
-  transition: transform 0.3s ease;
-}
-
-.logo:hover {
-  transform: scale(1.05);
-}
-
-.logo-icon {
-  font-size: 1.5rem;
-}
-
-.logo span {
-  color: var(--accent);
-}
-
-.gamer-nav ul {
-  display: flex;
-  list-style: none;
-  gap: 20px;
-}
-
-.gamer-nav a {
-  color: var(--text);
-  text-decoration: none;
-  font-weight: 500;
-  transition: all var(--transition-speed) ease;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 0.9rem;
-  padding: 5px 10px;
-  border-radius: 4px;
-}
-
-.gamer-nav a:hover {
-  color: var(--primary);
-  background-color: rgba(255, 215, 0, 0.1);
-}
-
-.mobile-menu-btn {
-  display: none;
-  font-size: 1.4rem;
-  cursor: pointer;
-  color: var(--text);
-  background: none;
-  border: none;
-  padding: 5px;
-  transition: transform 0.3s ease;
-}
-
-.mobile-menu-btn:hover {
-  transform: rotate(90deg);
-}
-
-/* Main Content */
-main {
-  padding: 20px 0 40px;
-}
-
-/* Price Tables Section */
-.price-table-section {
-  margin-top: 20px;
-}
-
-.tables-container {
-  display: flex;
-  gap: 20px;
-  width: 100%;
-}
-
-.table-wrapper {
-  flex: 1;
-  background-color: var(--table-bg);
-  border-radius: 8px;
-  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
-  padding: 15px;
-  min-height: 400px;
-  transition: all var(--transition-speed) ease;
-}
-
-.table-wrapper:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-}
-
-.table-wrapper h3 {
-  color: var(--primary);
-  margin-bottom: 15px;
-  text-align: center;
-  font-family: 'Orbitron', sans-serif;
-  font-size: 1.3rem;
-  padding-bottom: 10px;
-  border-bottom: 1px solid rgba(255, 215, 0, 0.3);
-}
-
-.table-responsive {
-  width: 100%;
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
-}
-
-.price-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 0.95rem;
-}
-
-.price-table th {
-  background-color: var(--table-header);
-  color: var(--primary);
-  padding: 12px 10px;
-  text-align: left;
-  font-weight: 600;
-  position: sticky;
-  top: 0;
-}
-
-.price-table td {
-  padding: 10px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-  transition: all var(--transition-speed) ease;
-}
-
-.price-table tr:nth-child(odd) {
-  background-color: var(--table-row-odd);
-}
-
-.price-table tr:nth-child(even) {
-  background-color: var(--table-row-even);
-}
-
-.price-table tr {
-  transition: all var(--transition-speed) ease;
-}
-
-.price-table tr:hover {
-  background-color: var(--highlight);
-}
-
-.price-table .highlight {
-  color: var(--primary);
-  font-weight: 600;
-}
-
-.table-footer {
-  padding: 10px 0 0;
-  text-align: center;
-  font-size: 0.8rem;
-  color: var(--text-secondary);
-  margin-top: 10px;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-/* Error and Loading States */
-.error-message, .loading-spinner {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 200px;
-  color: var(--text-secondary);
-  text-align: center;
-}
-
-.error-message i {
-  font-size: 2rem;
-  margin-bottom: 15px;
-  color: #F44336;
-}
-
-.loading-spinner i {
-  font-size: 2rem;
-  margin-bottom: 15px;
-  color: var(--primary);
-  animation: spin 1s linear infinite;
-}
-
-/* Price Change Animations */
-.price-change {
-  transition: all 0.8s cubic-bezier(0.25, 0.8, 0.25, 1);
-}
-
-.price-up {
-  color: #4caf50;
-  background-color: rgba(76, 175, 80, 0.1);
-  animation: priceFlash 1.2s ease-out;
-}
-
-.price-down {
-  color: #f44336;
-  background-color: rgba(244, 67, 54, 0.1);
-  animation: priceFlash 1.2s ease-out;
-}
-
+/* ANIMASI YANG DISEDERHANAKAN */
 @keyframes priceFlash {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.03); }
-  100% { transform: scale(1); }
+  0% { background-color: transparent; }
+  50% { background-color: rgba(76, 175, 80, 0.2); }
+  100% { background-color: transparent; }
+}
+
+@keyframes rowSlideIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
 .price-updating {
-  animation: pricePulse 1.5s infinite;
+  animation: priceFlash 1s ease-out;
 }
 
-@keyframes pricePulse {
-  0% { opacity: 0.8; }
-  50% { opacity: 1; }
-  100% { opacity: 0.8; }
+.table-transition {
+  transition: opacity 0.3s ease;
 }
 
-/* Table Transitions */
-.table-fade {
-  animation: fadeIn var(--transition-speed) ease-out;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-.row-slide-in {
-  animation: slideIn 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
-}
-
-@keyframes slideIn {
-  from { transform: translateY(15px); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
-}
-
-/* Running Text */
-.running-text-container {
-  flex: 1;
-  margin: 0 20px;
-  overflow: hidden;
-  height: 60px;
+/* Running text animation yang disederhanakan */
+.running-text {
   display: flex;
   align-items: center;
-  background: rgba(0, 0, 0, 0.2);
-  border-radius: 20px;
-  position: relative;
-  min-width: 200px;
-}
-
-.running-text-wrapper {
-  width: 100%;
-  overflow: hidden;
-  position: relative;
-  height: 100%;
-}
-
-.running-text {
-  display: inline-flex;
-  position: absolute;
-  white-space: nowrap;
-  height: 60px;
-  align-items: center;
-  left: 100%;
   animation: marquee 30s linear infinite;
-  padding-right: 20px;
+  padding: 0 5px;
 }
 
 .running-text span {
-  margin-right: 30px;
+  margin-right: 40px;
   display: inline-flex;
   align-items: center;
-  color: var(--primary);
   font-weight: 500;
   white-space: nowrap;
-  font-size: 1.2rem;
-  transition: all 0.3s ease;
-}
-
-.running-text span:hover {
-  color: var(--accent);
-  transform: scale(1.05);
+  transition: opacity 0.3s ease;
 }
 
 .running-text i {
   margin-right: 8px;
-  color: var(--accent);
-  font-size: 1.1em;
+  font-size: 0.9em;
 }
 
 @keyframes marquee {
   0% { transform: translateX(0); }
-  100% { transform: translateX(-100%); }
+  100% { transform: translateX(-50%); }
 }
 
-/* Footer */
-.gamer-footer {
-  background-color: var(--secondary);
-  padding: 25px 0;
-  margin-top: auto;
+/* Hapus animasi yang tidak perlu */
+.highlight::before {
+  display: none;
 }
 
-.gamer-footer .container {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 20px;
+/* Efek hover yang disederhanakan */
+.running-text span:hover {
+  opacity: 1;
 }
 
-.footer-section h4 {
-  color: var(--primary);
-  margin-bottom: 12px;
-  font-size: 1rem;
+/* Ganti semua definisi running text dengan ini */
+.running-text-container {
+    flex: 1;
+    margin: 0 20px;
+    overflow: hidden;
+    height: 60px; /* Dikurangi dari 90px */
+    display: flex;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 12px; /* Diperkecil */
+    position: relative;
+    min-width: 200px;
 }
 
-.footer-section ul {
-  list-style: none;
-}
-
-.footer-section li {
-  margin-bottom: 8px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 0.8rem;
-}
-
-.footer-section i {
-  color: var(--accent);
-  font-size: 0.9rem;
-}
-
-.social-links {
-  display: flex;
-  gap: 12px;
-}
-
-.social-links a {
-  color: var(--text);
-  font-size: 1.2rem;
-  transition: all var(--transition-speed) ease;
-}
-
-.social-links a:hover {
-  color: var(--primary);
-  transform: translateY(-3px);
-}
-
-/* Responsive Design */
-@media (max-width: 992px) {
-  .price-table {
-    font-size: 0.85rem;
-  }
-  
-  .price-table th,
-  .price-table td {
-    padding: 8px;
-  }
-}
-
-@media (max-width: 768px) {
-  .gamer-nav {
-    position: fixed;
-    top: 60px;
-    left: -100%;
+.running-text-wrapper {
     width: 100%;
-    background-color: var(--secondary);
-    flex-direction: column;
-    padding: 20px 0;
-    transition: left var(--transition-speed) ease;
-    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
-  }
-
-  .gamer-nav.active {
-    left: 0;
-  }
-
-  .gamer-nav ul {
-    flex-direction: column;
-    gap: 15px;
-    padding: 0 20px;
-  }
-
-  .mobile-menu-btn {
-    display: block;
-  }
-
-  .tables-container {
-    flex-direction: column;
-    gap: 15px;
-  }
-
-  .table-wrapper {
-    min-height: auto;
-  }
-  
-  /* Disable animations on mobile */
-  .row-slide-in, .price-updating, .table-title-animate {
-    animation: none !important;
-  }
-  
-  .running-text {
-    animation: none !important;
-    white-space: normal !important;
-  }
+    overflow: hidden;
+    position: relative;
+    height: 100%;
 }
 
-@media (max-width: 480px) {
-  .price-table {
-    font-size: 0.8rem;
-  }
-  
-  .price-table th,
-  .price-table td {
-    padding: 6px 4px;
-  }
-  
-  .table-wrapper h3 {
-    font-size: 1.1rem;
-  }
-  
-  .logo {
-    font-size: 1rem;
-  }
-  
-  .running-text-container {
-    height: 50px;
-  }
-  
-  .running-text span {
-    font-size: 1rem;
-    margin-right: 20px;
-  }
+.running-text {
+    display: inline-flex;
+    position: absolute;
+    white-space: nowrap;
+    height: 60px; /* Dikurangi dari 90px */
+    align-items: center;
+    left: 100%;
+    animation: marquee 30s linear infinite;
+    padding-right: 20px;
+}
+
+.running-text span {
+    margin-right: 60px; /* Jarak dikurangi dari 90px */
+    display: inline-flex;
+    align-items: center;
+    color: var(--primary);
+    font-weight: 500;
+    white-space: nowrap;
+    font-size: 1.2rem; /* Ukuran font dikurangi dari 1.7rem */
+}
+
+.running-text i {
+    margin-right: 8px;
+    color: var(--accent);
+    font-size: 1.1em; /* Ukuran icon dikurangi dari 1.4em */
 }
