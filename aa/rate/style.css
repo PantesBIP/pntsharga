@@ -1,431 +1,290 @@
-:root {
-            --primary: #ffd700;
-            --secondary: #1a1a2e;
-            --accent: #00ffff;
-            --text: #ffffff;
-            --text-secondary: #ffffff;
-            --bg: #0f0f1a;
-            --card-bg: #1a1a2e;
-            --table-bg: #16213e;
-            --table-header: #0f3460;
-            --table-row-odd: #1a1a2e;
-            --table-row-even: #16213e;
-            --highlight: rgba(255, 215, 0, 0.1);
-        }
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+body {
+    background-color: #f8f9fa;
+    color: #333;
+    line-height: 1.6;
+}
 
-        body {
-            font-family: 'Poppins', sans-serif;
-            background-color: var(--bg);
-            color: var(--text);
-            line-height: 1.6;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
+/* Navbar */
+.navbar {
+    background: linear-gradient(135deg, #daa520 0%, #b8860b 100%);
+    color: white;
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
 
-        .container {
-            width: 100%;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 15px;
-            flex: 1;
-        }
+.logo-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
 
-        /* Header Styles */
-        .gamer-header {
-            background-color: var(--secondary);
-            padding: 12px 0;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-        }
+.logo {
+    width: 40px;
+    height: 40px;
+    background-color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    color: #daa520;
+}
 
-        .gamer-header .container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: relative;
-        }
+.marquee-container {
+    flex: 1;
+    margin: 0 20px;
+    overflow: hidden;
+    white-space: nowrap;
+}
 
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-family: 'Orbitron', sans-serif;
-            font-weight: 700;
-            font-size: 1.2rem;
-            color: var(--primary);
-        }
+.marquee {
+    display: inline-block;
+    padding-left: 100%;
+    animation: marquee 20s linear infinite;
+}
 
-        .logo-icon {
-            font-size: 1.5rem;
-        }
+@keyframes marquee {
+    0% { transform: translate(0, 0); }
+    100% { transform: translate(-100%, 0); }
+}
 
-        .logo span {
-            color: var(--accent);
-        }
+/* Main Content */
+.container {
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 0 20px;
+}
 
-        .gamer-nav ul {
-            display: flex;
-            list-style: none;
-            gap: 20px;
-        }
+.header {
+    text-align: center;
+    margin-bottom: 30px;
+}
 
-        .gamer-nav a {
-            color: var(--text);
-            text-decoration: none;
-            font-weight: 500;
-            transition: color 0.3s;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            font-size: 0.9rem;
-        }
+.header h1 {
+    color: #b8860b;
+    margin-bottom: 10px;
+}
 
-        .gamer-nav a:hover {
-            color: var(--primary);
-        }
+.header p {
+    color: #666;
+}
 
-        .mobile-menu-btn {
-            display: none;
-            font-size: 1.4rem;
-            cursor: pointer;
-            color: var(--text);
-            background: none;
-            border: none;
-            padding: 5px;
-        }
+/* Tabs */
+.tabs-container {
+    margin-bottom: 20px;
+    overflow-x: auto;
+    display: flex;
+    justify-content: center;
+}
 
-        /* Main Content */
-        main {
-            padding: 20px 0 40px;
-        }
+.tabs {
+    display: flex;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    margin-bottom: 20px;
+    overflow: hidden;
+}
 
-        /* Price Tables Section */
-        .price-table-section {
-            margin-top: 20px;
-        }
+.tab {
+    padding: 12px 20px;
+    cursor: pointer;
+    background: white;
+    border: none;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+}
 
-        .tables-container {
-            display: flex;
-            gap: 20px;
-            width: 100%;
-        }
+.tab.active {
+    background: #daa520;
+    color: white;
+}
 
-        .table-wrapper {
-            flex: 1;
-            background-color: var(--table-bg);
-            border-radius: 8px;
-            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
-            padding: 15px;
-            min-height: 400px;
-        }
+.tab:hover:not(.active) {
+    background: #f5f5f5;
+}
 
-        .table-wrapper h3 {
-            color: var(--primary);
-            margin-bottom: 15px;
-            text-align: center;
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.3rem;
-            padding-bottom: 10px;
-            border-bottom: 1px solid rgba(255, 215, 0, 0.3);
-        }
+/* Table */
+.table-container {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+    margin-bottom: 30px;
+}
 
-        .table-responsive {
-            width: 100%;
-            overflow-x: auto;
-        }
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
 
-        .price-table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 0.95rem;
-        }
+th, td {
+    padding: 15px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+}
 
-        .price-table th {
-            background-color: var(--table-header);
-            color: var(--primary);
-            padding: 12px 10px;
-            text-align: left;
-            font-weight: 600;
-        }
+th {
+    background-color: #f5f5f5;
+    font-weight: 600;
+}
 
-        .price-table td {
-            padding: 10px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-        }
+tr:last-child td {
+    border-bottom: none;
+}
 
-        .price-table tr:nth-child(odd) {
-            background-color: var(--table-row-odd);
-        }
+/* Navigation Buttons */
+.navigation {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 30px;
+}
 
-        .price-table tr:nth-child(even) {
-            background-color: var(--table-row-even);
-        }
+.nav-btn {
+    padding: 10px 20px;
+    background: #daa520;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
 
-        .price-table tr:hover {
-            background-color: var(--highlight);
-        }
+.nav-btn:hover {
+    background: #b8860b;
+}
 
-        .price-table .highlight {
-            color: var(--primary);
-            font-weight: 600;
-        }
+.nav-btn:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+}
 
-        .table-footer {
-            padding: 10px 0 0;
-            text-align: center;
-            font-size: 0.8rem;
-            color: var(--text-secondary);
-            margin-top: 10px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-        }
+.auto-toggle {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-left: 15px;
+    padding: 10px 15px;
+    background: #f5f5f5;
+    border-radius: 5px;
+    cursor: pointer;
+}
 
-        /* Error and Loading States */
-        .error-message, .loading-spinner {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 200px;
-            color: var(--text-secondary);
-            text-align: center;
-        }
+/* Footer */
+footer {
+    background: #333;
+    color: white;
+    padding: 40px 20px;
+}
 
-        .error-message i {
-            font-size: 2rem;
-            margin-bottom: 15px;
-            color: #F44336;
-        }
+.footer-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 30px;
+}
 
-        .loading-spinner i {
-            font-size: 2rem;
-            margin-bottom: 15px;
-            color: var(--primary);
-            animation: spin 1s linear infinite;
-        }
+.contact-info, .branches {
+    flex: 1;
+    min-width: 250px;
+}
 
-        @keyframes spin {
-            100% { transform: rotate(360deg); }
-        }
+.footer-section h3 {
+    margin-bottom: 15px;
+    color: #daa520;
+}
 
-        /* Footer */
-        .gamer-footer {
-            background-color: var(--secondary);
-            padding: 25px 0;
-            margin-top: auto;
-        }
+.contact-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    gap: 10px;
+}
 
-        .gamer-footer .container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-        }
+.branches-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 10px;
+}
 
-        .footer-section h4 {
-            color: var(--primary);
-            margin-bottom: 12px;
-            font-size: 1rem;
-        }
+.branch {
+    padding: 8px 0;
+    border-bottom: 1px solid #444;
+}
 
-        .footer-section ul {
-            list-style: none;
-        }
+.copyright {
+    text-align: center;
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid #444;
+}
 
-        .footer-section li {
-            margin-bottom: 8px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 0.8rem;
-        }
+/* Responsive */
+@media (max-width: 768px) {
+    .navbar {
+        flex-direction: column;
+        padding: 10px;
+    }
+    
+    .logo-container {
+        margin-bottom: 10px;
+    }
+    
+    .marquee-container {
+        width: 100%;
+        margin: 10px 0;
+    }
+    
+    .navigation {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .auto-toggle {
+        margin-left: 0;
+    }
+    
+    th, td {
+        padding: 10px;
+    }
+    
+    .footer-content {
+        flex-direction: column;
+    }
+}
 
-        .footer-section i {
-            color: var(--accent);
-            font-size: 0.9rem;
-        }
+/* Loading */
+.loading {
+    text-align: center;
+    padding: 40px;
+    font-size: 18px;
+    color: #666;
+}
 
-        .social-links {
-            display: flex;
-            gap: 12px;
-        }
-
-        .social-links a {
-            color: var(--text);
-            font-size: 1.2rem;
-            transition: color 0.3s;
-        }
-
-        .social-links a:hover {
-            color: var(--primary);
-        }
-
-        /* ANIMASI YANG DISEDERHANAKAN */
-        @keyframes priceFlash {
-            0% { background-color: transparent; }
-            50% { background-color: rgba(76, 175, 80, 0.2); }
-            100% { background-color: transparent; }
-        }
-
-        @keyframes rowSlideIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        .price-updating {
-            animation: priceFlash 1s ease-out;
-        }
-
-        .table-transition {
-            transition: opacity 0.3s ease;
-        }
-
-        /* Running text animation yang disederhanakan */
-        .running-text-container {
-            flex: 1;
-            margin: 0 20px;
-            overflow: hidden;
-            height: 60px;
-            display: flex;
-            align-items: center;
-            background: rgba(0, 0, 0, 0.2);
-            border-radius: 12px;
-            position: relative;
-            min-width: 200px;
-        }
-
-        .running-text-wrapper {
-            width: 100%;
-            overflow: hidden;
-            position: relative;
-            height: 100%;
-        }
-
-        .running-text {
-            display: inline-flex;
-            position: absolute;
-            white-space: nowrap;
-            height: 60px;
-            align-items: center;
-            left: 100%;
-            animation: marquee 30s linear infinite;
-            padding-right: 20px;
-        }
-
-        .running-text span {
-            margin-right: 60px;
-            display: inline-flex;
-            align-items: center;
-            color: var(--primary);
-            font-weight: 500;
-            white-space: nowrap;
-            font-size: 1.2rem;
-            transition: opacity 0.3s ease;
-        }
-
-        .running-text i {
-            margin-right: 8px;
-            color: var(--accent);
-            font-size: 1.1em;
-        }
-
-        @keyframes marquee {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-100%); }
-        }
-
-        .running-text span:hover {
-            opacity: 1;
-        }
-
-        /* Responsive Design */
-        @media (max-width: 992px) {
-            .price-table {
-                font-size: 0.85rem;
-            }
-            
-            .price-table th,
-            .price-table td {
-                padding: 8px;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .gamer-nav {
-                position: fixed;
-                top: 60px;
-                left: -100%;
-                width: 100%;
-                background-color: var(--secondary);
-                flex-direction: column;
-                padding: 20px 0;
-                transition: left 0.3s ease;
-                box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
-            }
-
-            .gamer-nav.active {
-                left: 0;
-            }
-
-            .gamer-nav ul {
-                flex-direction: column;
-                gap: 15px;
-                padding: 0 20px;
-            }
-
-            .mobile-menu-btn {
-                display: block;
-            }
-
-            .tables-container {
-                flex-direction: column;
-                gap: 15px;
-            }
-
-            .table-wrapper {
-                min-height: auto;
-            }
-
-            .running-text-container {
-                margin: 10px 0;
-                height: 50px;
-                order: 3;
-                width: 100%;
-            }
-
-            .running-text span {
-                font-size: 1rem;
-                margin-right: 40px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .price-table {
-                font-size: 0.8rem;
-            }
-            
-            .price-table th,
-            .price-table td {
-                padding: 6px 4px;
-            }
-            
-            .table-wrapper h3 {
-                font-size: 1.1rem;
-            }
-            
-            .logo {
-                font-size: 1rem;
-            }
-
-            .running-text span {
-                font-size: 0.9rem;
-                margin-right: 30px;
-            }
-        }
+.loading i {
+    display: block;
+    font-size: 40px;
+    margin-bottom: 15px;
+    color: #daa520;
+}
