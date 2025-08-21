@@ -1,0 +1,412 @@
+:root {
+    --primary: #D4AF37;
+    --primary-dark: #B8860B;
+    --secondary: #2C3E50;
+    --accent: #3498DB;
+    --text: #2C3E50;
+    --text-light: #7F8C8D;
+    --bg: #F8F9FA;
+    --card-bg: #FFFFFF;
+    --table-header: #ECF0F1;
+    --table-row-odd: #F9F9F9;
+    --table-row-even: #FFFFFF;
+    --border: #E0E0E0;
+    --success: #27AE60;
+    --error: #E74C3C;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 15px;
+}
+
+/* Header Styles */
+.header {
+    background-color: var(--card-bg);
+    padding: 15px 0;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.header .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 700;
+    color: var(--primary);
+}
+
+.logo-icon {
+    font-size: 1.8rem;
+}
+
+.logo span {
+    color: var(--secondary);
+}
+
+/* Marquee Styles - PERBAIKAN KECEPATAN */
+.marquee-container {
+    flex: 1;
+    margin: 0 20px;
+    background-color: var(--primary);
+    color: white;
+    border-radius: 4px;
+    overflow: hidden;
+    position: relative;
+    height: 40px;
+    display: flex;
+    align-items: center;
+}
+
+.marquee {
+    white-space: nowrap;
+    display: flex;
+    width: 100%;
+}
+
+.marquee-text {
+    display: inline-block;
+    padding-left: 100%;
+    animation: marquee 60s linear infinite; /* Diperlambat dari 25s menjadi 60s */
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+/* Animasi yang lebih lambat */
+@keyframes marquee {
+    0% {
+        transform: translate(0, 0);
+    }
+    100% {
+        transform: translate(-100%, 0);
+    }
+}
+
+.mobile-menu-btn {
+    display: none;
+    font-size: 1.4rem;
+    cursor: pointer;
+    color: var(--text);
+    background: none;
+    border: none;
+    padding: 5px;
+}
+
+/* Main Content */
+main {
+    padding: 25px 0 40px;
+    flex: 1;
+}
+
+.price-section {
+    margin-top: 20px;
+}
+
+/* Tables Container with Navigation */
+.tables-container {
+    display: flex;
+    gap: 15px;
+    width: 100%;
+    align-items: center;
+    position: relative;
+}
+
+.nav-btn {
+    background-color: var(--primary);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+.nav-btn:hover {
+    background-color: var(--primary-dark);
+}
+
+.table-wrapper {
+    flex: 1;
+    background-color: var(--card-bg);
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    padding: 20px;
+}
+
+.table-responsive {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.price-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.95rem;
+}
+
+.price-table th {
+    background-color: var(--table-header);
+    color: var(--text);
+    padding: 12px 10px;
+    text-align: left;
+    font-weight: 600;
+    border-bottom: 1px solid var(--border);
+}
+
+.price-table td {
+    padding: 12px 10px;
+    border-bottom: 1px solid var(--border);
+}
+
+.price-table tr:nth-child(odd) {
+    background-color: var(--table-row-odd);
+}
+
+.price-table tr:nth-child(even) {
+    background-color: var(--table-row-even);
+}
+
+.price-table tr:last-child td {
+    border-bottom: none;
+}
+
+.price-table .highlight {
+    color: var(--primary);
+    font-weight: 600;
+}
+
+/* Video Container Styles */
+.video-container {
+    display: none;
+    margin-top: 30px;
+    background-color: var(--card-bg);
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    padding: 20px;
+    text-align: center;
+}
+
+.video-container.active {
+    display: block;
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+.video-wrapper {
+    position: relative;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.video-wrapper video {
+    width: 100%;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.skip-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: rgba(0, 0, 0, 0.6);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 8px 12px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    transition: background-color 0.3s;
+}
+
+.skip-btn:hover {
+    background-color: rgba(0, 0, 0, 0.8);
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* Error and Loading States */
+.error-message, .loading-spinner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 200px;
+    color: var(--text-light);
+    text-align: center;
+}
+
+.error-message i {
+    font-size: 2rem;
+    margin-bottom: 15px;
+    color: var(--error);
+}
+
+.loading-spinner i {
+    font-size: 2rem;
+    margin-bottom: 15px;
+    color: var(--primary);
+}
+
+.no-data {
+    text-align: center;
+    padding: 40px 0;
+    color: var(--text-light);
+}
+
+/* Footer */
+.footer {
+    background-color: var(--card-bg);
+    padding: 30px 0;
+    margin-top: auto;
+    border-top: 1px solid var(--border);
+}
+
+.footer .container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 25px;
+}
+
+.footer-section h4 {
+    color: var(--secondary);
+    margin-bottom: 15px;
+    font-size: 1rem;
+}
+
+.footer-section ul {
+    list-style: none;
+}
+
+.footer-section li {
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.9rem;
+    color: var(--text-light);
+}
+
+.footer-section i {
+    color: var(--primary);
+    font-size: 1rem;
+}
+
+.social-links {
+    display: flex;
+    gap: 15px;
+}
+
+.social-links a {
+    color: var(--text-light);
+    font-size: 1.3rem;
+}
+
+.social-links a:hover {
+    color: var(--primary);
+}
+
+/* Responsive Design */
+@media (max-width: 992px) {
+    .price-table {
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .header .container {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .marquee-container {
+        width: 100%;
+        margin: 10px 0;
+        order: 3;
+    }
+    
+    .tables-container {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .nav-btn {
+        display: none;
+    }
+    
+    /* Lebih lambat di mobile */
+    .marquee-text {
+        animation: marquee 90s linear infinite;
+    }
+    
+    .video-wrapper {
+        max-width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .price-table {
+        font-size: 0.85rem;
+    }
+    
+    .price-table th,
+    .price-table td {
+        padding: 10px 8px;
+    }
+    
+    .logo {
+        font-size: 0.9rem;
+    }
+    
+    .marquee-container {
+        font-size: 0.85rem;
+        height: 35px;
+    }
+    
+    /* Lebih lambat di perangkat kecil */
+    .marquee-text {
+        animation: marquee 120s linear infinite;
+    }
+    
+    .skip-btn {
+        top: 5px;
+        right: 5px;
+        padding: 6px 10px;
+        font-size: 0.7rem;
+    }
+}
