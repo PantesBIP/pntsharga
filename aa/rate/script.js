@@ -206,7 +206,9 @@ function updateTable(elementId, data, type) {
     tableHTML += `
             </tbody>
         </table>
-        
+        <div class="table-footer">
+            <p>Update: ${new Date().toLocaleTimeString('id-ID')}</p>
+        </div>
     `;
 
     tableElement.innerHTML = tableHTML;
