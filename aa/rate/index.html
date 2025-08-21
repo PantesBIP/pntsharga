@@ -30,48 +30,26 @@
         </div>
     </header>
 
-    <div class="marquee-container">
-        <div class="marquee">
-            <span class="marquee-text">Harga emas terkini: Emas Antam naik 0.5% | Emas 24 karat: Rp 1.250.000/gram | Emas 22 karat: Rp 1.150.000/gram | Emas 18 karat: Rp 950.000/gram</span>
-        </div>
-    </div>
-
     <main class="container">
         <section class="price-section">
             <div class="section-header">
                 <h2>Harga Emas Terkini</h2>
+                <p class="update-time">Update: <span id="updateTime">-</span></p>
             </div>
             
-            <!--- <div class="tabs">
+            <div class="tabs">
                 <button class="tab-btn active" data-type="emas">EMAS</button>
                 <button class="tab-btn" data-type="antam">ANTAM</button>
                 <button class="tab-btn" data-type="archi">ARCHI</button>
-            </div> ---->
+            </div>
             
             <div class="tables-container">
-                <button class="nav-btn left-nav">
-                    <i class="fas fa-chevron-left"></i>
-                </button>
-                
                 <div class="table-wrapper">
                     <div class="table-responsive" id="priceTableLeft"></div>
                 </div>
-                
                 <div class="table-wrapper">
                     <div class="table-responsive" id="priceTableRight"></div>
                 </div>
-                
-                <button class="nav-btn right-nav">
-                    <i class="fas fa-chevron-right"></i>
-                </button>
-            </div>
-            
-            <div class="auto-toggle">
-                <label class="toggle-label">
-                    <input type="checkbox" id="autoRotate" checked>
-                    <span class="toggle-slider"></span>
-                    <span class="toggle-text">Rotasi Otomatis</span>
-                </label>
             </div>
         </section>
     </main>
