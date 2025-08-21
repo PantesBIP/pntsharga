@@ -9,25 +9,33 @@ let branches = ["Jakarta Pusat", "Bandung", "Surabaya", "Yogyakarta", "Bali", "M
 let currentTabIndex = 0;
 let autoSwitchInterval;
 let isAutoSwitchEnabled = true;
+let tableData = {};
+
+// Helper functions
+function formatCurrency(amount) {
+    return new Intl.NumberFormat('id-ID', {
+        style: 'currency',
+        currency: 'IDR',
+        minimumFractionDigits: 0
+    }).format(amount);
+}
 
 // Fungsi untuk parsing CSV ke JSON
 function parseCSVToJSON(csvText) {
-    const lines = csvText.split('\n');
-    const headers = lines[0].split(',').map(header => header.trim());
-    
-    const result = [];
-    for (let i = 1; i < lines.length; i++) {
+    const lines = csvText.trim().split('\n');
+    const headers = lines[0].split(',').map(h => h.toLowerCase().replace(/\s+/g, '_'));
+    return lines.slice(1).map(line => {
+        const values = line.split(',').map(v => v.trim());
         const obj = {};
-        const currentLine = lines[i].split(',');
-        
-        for (let j = 0; j < headers.length; j++) {
-            obj[headers[j]] = currentLine[j] ? currentLine[j].trim() : '';
-        }
-        
-        result.push(obj);
-    }
-    
-    return result;
+        headers.forEach((header, index) => {
+            let value = values[index] || '';
+            if (['harga_jual', 'buyback', 'harga'].includes(header)) {
+                value = parseInt(value.replace(/[^0-9]/g, ''), 10) || 0;
+            }
+            obj[header] = value;
+        });
+        return obj;
+    });
 }
 
 // Fungsi untuk mengambil data dari spreadsheet
@@ -57,23 +65,41 @@ async function fetchData() {
             }
         }
         
+        // Organize data by type
+        tableData.emas = productData.filter(row => row.tipe && row.tipe.toLowerCase() === 'emas');
+        tableData.antam = productData.filter(row => row.tipe && row.tipe.toLowerCase() === 'antam');
+        tableData.archi = productData.filter(row => row.tipe && row.tipe.toLowerCase() === 'archi');
+        
         // Update UI dengan data yang telah diambil
         updateMarquee();
         updateBranches();
         groupDataByType();
         
+        // Start auto rotation
+        if (isAutoSwitchEnabled) {
+            startAutoSwitch();
+        }
+        
     } catch (error) {
         console.error('Error fetching data:', error);
+        showError();
         // Fallback data jika terjadi error
-        productData = [
-            { jenis: "Emas", nama: "Emas 24 Karat", harga: "1,000,000" },
-            { jenis: "Emas", nama: "Emas 22 Karat", harga: "900,000" },
-            { jenis: "Antam", nama: "Antam 1 gram", harga: "1,050,000" },
-            { jenis: "Antam", nama: "Antam 5 gram", harga: "5,200,000" },
-            { jenis: "Archi", nama: "Archi 1 gram", harga: "1,040,000" },
-            { jenis: "Archi", nama: "Archi 2.5 gram", harga: "2,550,000" }
-        ];
-        groupDataByType();
+        setTimeout(() => {
+            productData = [
+                { tipe: "Emas", nama: "Emas 24 Karat", harga: 1000000 },
+                { tipe: "Emas", nama: "Emas 22 Karat", harga: 900000 },
+                { tipe: "Antam", nama: "Antam 1 gram", harga: 1050000 },
+                { tipe: "Antam", nama: "Antam 5 gram", harga: 5200000 },
+                { tipe: "Archi", nama: "Archi 1 gram", harga: 1040000 },
+                { tipe: "Archi", nama: "Archi 2.5 gram", harga: 2550000 }
+            ];
+            
+            tableData.emas = productData.filter(row => row.tipe && row.tipe.toLowerCase() === 'emas');
+            tableData.antam = productData.filter(row => row.tipe && row.tipe.toLowerCase() === 'antam');
+            tableData.archi = productData.filter(row => row.tipe && row.tipe.toLowerCase() === 'archi');
+            
+            groupDataByType();
+        }, 3000);
     }
 }
 
@@ -82,10 +108,11 @@ function groupDataByType() {
     const groupedData = {};
     
     productData.forEach(item => {
-        if (!groupedData[item.jenis]) {
-            groupedData[item.jenis] = [];
+        const type = item.tipe || 'Lainnya';
+        if (!groupedData[type]) {
+            groupedData[type] = [];
         }
-        groupedData[item.jenis].push(item);
+        groupedData[type].push(item);
     });
     
     // Urutkan tipe sesuai urutan yang diinginkan
@@ -132,6 +159,12 @@ function generateTabs(data) {
             // Tampilkan tabel yang sesuai
             currentTabIndex = index;
             showTableForCurrentTab(data);
+            
+            // Reset auto rotation timer
+            if (isAutoSwitchEnabled) {
+                clearInterval(autoSwitchInterval);
+                startAutoSwitch();
+            }
         });
         
         tabsContainer.appendChild(tab);
@@ -149,32 +182,8 @@ function showTableForCurrentTab(data) {
     
     const currentData = data[currentTabIndex];
     
-    let tableHTML = `
-        <table>
-            <thead>
-                <tr>
-                    <th>Nama Produk</th>
-                    <th>Harga (Rp)</th>
-                </tr>
-            </thead>
-            <tbody>
-    `;
-    
-    currentData.items.forEach(item => {
-        tableHTML += `
-            <tr>
-                <td>${item.nama || '-'}</td>
-                <td>${item.harga || '-'}</td>
-            </tr>
-        `;
-    });
-    
-    tableHTML += `
-            </tbody>
-        </table>
-    `;
-    
-    tableContent.innerHTML = tableHTML;
+    // Animate table transition
+    animateTableTransition('table-content', currentData.items, currentData.type);
     
     // Update status tombol navigasi
     updateNavigationButtons(data.length);
@@ -201,17 +210,23 @@ function navigateTab(direction, data) {
         
         currentTabIndex = newIndex;
         showTableForCurrentTab(data);
+        
+        // Reset auto rotation timer
+        if (isAutoSwitchEnabled) {
+            clearInterval(autoSwitchInterval);
+            startAutoSwitch();
+        }
     }
 }
 
 // Fungsi untuk toggle auto switch
-function toggleAutoSwitch(data) {
+function toggleAutoSwitch() {
     isAutoSwitchEnabled = !isAutoSwitchEnabled;
     const toggleBtn = document.getElementById('auto-toggle');
     
     if (isAutoSwitchEnabled) {
         toggleBtn.innerHTML = '<i class="fas fa-pause"></i> Auto: ON';
-        startAutoSwitch(data);
+        startAutoSwitch();
     } else {
         toggleBtn.innerHTML = '<i class="fas fa-play"></i> Auto: OFF';
         clearInterval(autoSwitchInterval);
@@ -219,19 +234,17 @@ function toggleAutoSwitch(data) {
 }
 
 // Fungsi untuk memulai auto switch
-function startAutoSwitch(data) {
+function startAutoSwitch() {
     clearInterval(autoSwitchInterval);
     
     autoSwitchInterval = setInterval(() => {
-        const nextIndex = (currentTabIndex + 1) % data.length;
+        const tabs = document.querySelectorAll('.tab');
+        const nextIndex = (currentTabIndex + 1) % tabs.length;
         
-        // Hapus class active dari semua tabs
-        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-        // Tambah class active ke tab baru
-        document.querySelectorAll('.tab')[nextIndex].classList.add('active');
-        
-        currentTabIndex = nextIndex;
-        showTableForCurrentTab(data);
+        // Trigger click on next tab
+        if (tabs[nextIndex]) {
+            tabs[nextIndex].click();
+        }
     }, 30000); // 30 detik
 }
 
@@ -254,6 +267,93 @@ function updateBranches() {
     });
 }
 
+function animateTableTransition(elementId, data, type) {
+    const tableElement = document.getElementById(elementId);
+    
+    // Show loading spinner
+    tableElement.innerHTML = `
+        <div class="loading">
+            <i class="fas fa-spinner fa-spin"></i>
+            <p>Memuat data...</p>
+        </div>
+    `;
+    
+    // Delay for smooth transition
+    setTimeout(() => {
+        tableElement.innerHTML = generateTableHTML(data, type);
+        
+        // Add animation to all rows
+        const rows = tableElement.querySelectorAll('tbody tr');
+        rows.forEach((row, index) => {
+            row.classList.add('row-slide-in');
+            row.style.animationDelay = `${index * 0.1}s`;
+            setTimeout(() => {
+                row.classList.remove('row-slide-in');
+            }, 600 + (index * 100));
+        });
+        
+        // Add pulse animation to prices
+        const prices = tableElement.querySelectorAll('.highlight');
+        prices.forEach(price => {
+            price.classList.add('price-updating');
+            setTimeout(() => {
+                price.classList.remove('price-updating');
+            }, 2000);
+        });
+    }, 500);
+}
+
+function generateTableHTML(data, type) {
+    if (!data || data.length === 0) {
+        return '<div class="loading"><p>Data tidak tersedia</p></div>';
+    }
+
+    let tableHTML = `
+        <div class="table-transition">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Nama Produk</th>
+                        <th>Harga</th>
+                    </tr>
+                </thead>
+                <tbody>
+    `;
+
+    data.forEach((item, index) => {
+        const productName = item.nama || item.kode || 'Produk';
+        const price = item.harga || item.harga_jual || 0;
+        
+        tableHTML += `
+            <tr style="animation-delay: ${index * 0.1}s">
+                <td>${productName}</td>
+                <td class="highlight">${formatCurrency(price)}</td>
+            </tr>
+        `;
+    });
+
+    tableHTML += `
+                </tbody>
+            </table>
+            <div class="table-footer">
+                <p>Update: ${new Date().toLocaleTimeString('id-ID')}</p>
+            </div>
+        </div>
+    `;
+
+    return tableHTML;
+}
+
+function showError() {
+    const errorHTML = `
+        <div class="loading">
+            <i class="fas fa-exclamation-triangle"></i>
+            <p>Gagal memuat data. Silakan coba lagi.</p>
+        </div>
+    `;
+    document.getElementById('table-content').innerHTML = errorHTML;
+}
+
 // Inisialisasi ketika halaman dimuat
 document.addEventListener('DOMContentLoaded', () => {
     // Fetch data dari spreadsheet
@@ -261,29 +361,66 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Setup event listeners untuk navigasi
     document.getElementById('prev-btn').addEventListener('click', () => {
-        navigateTab(-1, productData);
+        const tabs = document.querySelectorAll('.tab');
+        if (tabs.length > 0) {
+            navigateTab(-1, Array.from(tabs).map(tab => ({ type: tab.textContent, items: [] })));
+        }
     });
     
     document.getElementById('next-btn').addEventListener('click', () => {
-        navigateTab(1, productData);
+        const tabs = document.querySelectorAll('.tab');
+        if (tabs.length > 0) {
+            navigateTab(1, Array.from(tabs).map(tab => ({ type: tab.textContent, items: [] })));
+        }
     });
     
     document.getElementById('auto-toggle').addEventListener('click', () => {
-        toggleAutoSwitch(productData);
+        toggleAutoSwitch();
     });
 });
 
-// Fallback jika data tidak berhasil diambil
-setTimeout(() => {
-    if (productData.length === 0) {
-        productData = [
-            { jenis: "Emas", nama: "Emas 24 Karat", harga: "1,000,000" },
-            { jenis: "Emas", nama: "Emas 22 Karat", harga: "900,000" },
-            { jenis: "Antam", nama: "Antam 1 gram", harga: "1,050,000" },
-            { jenis: "Antam", nama: "Antam 5 gram", harga: "5,200,000" },
-            { jenis: "Archi", nama: "Archi 1 gram", harga: "1,040,000" },
-            { jenis: "Archi", nama: "Archi 2.5 gram", harga: "2,550,000" }
-        ];
-        groupDataByType();
+// CSS animations (akan ditambahkan ke styles.css)
+const style = document.createElement('style');
+style.textContent = `
+    .row-slide-in {
+        animation: slideInRow 0.6s ease forwards;
+        opacity: 0;
+        transform: translateX(-20px);
     }
-}, 3000);
+    
+    @keyframes slideInRow {
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+    
+    .price-updating {
+        animation: pulsePrice 1s ease;
+    }
+    
+    @keyframes pulsePrice {
+        0% { background-color: transparent; }
+        50% { background-color: rgba(218, 165, 32, 0.2); }
+        100% { background-color: transparent; }
+    }
+    
+    .table-transition {
+        position: relative;
+    }
+    
+    .table-footer {
+        text-align: center;
+        padding: 10px;
+        font-size: 0.9em;
+        color: #666;
+        border-top: 1px solid #eee;
+        margin-top: 15px;
+    }
+    
+    .highlight {
+        font-weight: bold;
+        color: #b8860b;
+    }
+`;
+document.head.appendChild(style);
