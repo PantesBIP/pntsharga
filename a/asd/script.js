@@ -103,10 +103,7 @@ async function loadRunningText() {
         }
         
         const csvText = await response.text();
-        console.log("Running Text CSV:", csvText); // Debugging
-        
         const data = parseRunningTextCSV(csvText);
-        console.log("Parsed Running Text Data:", data); // Debugging
         
         // Process running text data
         processRunningTextData(data);
@@ -120,7 +117,6 @@ async function loadRunningText() {
 // Special parser for running text CSV
 function parseRunningTextCSV(csvText) {
     const lines = csvText.trim().split('\n');
-    console.log("CSV Lines:", lines); // Debugging
     
     if (lines.length < 1) return [];
     
@@ -131,14 +127,12 @@ function parseRunningTextCSV(csvText) {
     
     // Jika ada multiple lines, coba parse dengan header
     const headers = lines[0].split(',').map(h => h.toLowerCase().trim().replace(/\s+/g, '_'));
-    console.log("Headers:", headers); // Debugging
     
     // Cari kolom yang berisi teks
     const textColumn = headers.find(h => h.includes('teks') || h.includes('text') || h.includes('isi') || h.includes('running')) || headers[0];
     
     return lines.slice(1).map(line => {
         const values = line.split(',').map(v => v.trim());
-        console.log("Line values:", values); // Debugging
         
         // Jika hanya ada satu kolom, gunakan langsung
         if (values.length === 1) {
@@ -154,8 +148,6 @@ function parseRunningTextCSV(csvText) {
 }
 
 function processRunningTextData(data) {
-    console.log("Processing running text data:", data); // Debugging
-    
     if (!data || data.length === 0) {
         document.getElementById('marqueeText').textContent = "Harga emas terkini - Informasi terupdate setiap hari";
         return;
@@ -173,7 +165,26 @@ function processRunningTextData(data) {
     const marqueeContent = runningTexts.join(' | ');
     
     // Update marquee text
-    document.getElementById('marqueeText').textContent = marqueeContent;
+    const marqueeElement = document.getElementById('marqueeText');
+    marqueeElement.textContent = marqueeContent;
+    
+    // Sesuaikan kecepatan berdasarkan panjang teks
+    adjustMarqueeSpeed(marqueeContent.length);
+}
+
+// Fungsi untuk menyesuaikan kecepatan running text berdasarkan panjang teks
+function adjustMarqueeSpeed(textLength) {
+    const marqueeElement = document.getElementById('marqueeText');
+    const baseDuration = 60; // durasi dasar dalam detik
+    const duration = Math.max(baseDuration, textLength / 10); // durasi berdasarkan panjang teks
+    
+    // Hapus animasi sebelumnya
+    marqueeElement.style.animation = 'none';
+    
+    // Terapkan animasi baru dengan durasi yang disesuaikan
+    setTimeout(() => {
+        marqueeElement.style.animation = `marquee ${duration}s linear infinite`;
+    }, 10);
 }
 
 function parseCSVToJSON(csvText) {
