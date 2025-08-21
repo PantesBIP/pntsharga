@@ -1,190 +1,289 @@
-// Helper functions
-function formatCurrency(amount) {
-    return new Intl.NumberFormat('id-ID', {
-        style: 'currency',
-        currency: 'IDR',
-        minimumFractionDigits: 0
-    }).format(amount);
+// Konstanta untuk URL spreadsheet
+const SPREADSHEET_DATA_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQFH0squhL_c2KoNryfBrysWZEKTTUpthg_1XVE-fT3r7-ew1_lkbFqENefrlBLHClis53FyDdNiUkh/pub?gid=216173443&single=true&output=csv';
+const SPREADSHEET_INFO_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQFH0squhL_c2KoNryfBrysWZEKTTUpthg_1XVE-fT3r7-ew1_lkbFqENefrlBLHClis53FyDdNiUkh/pub?gid=0&single=true&output=csv';
+
+// Variabel global
+let productData = [];
+let marqueeText = "🏆 Harga emas terkini 🏆 | 🎉 Diskon khusus untuk pembelian dalam jumlah besar 🎉 | 📞 Hubungi kami untuk informasi lebih lanjut 📞";
+let branches = ["Jakarta Pusat", "Bandung", "Surabaya", "Yogyakarta", "Bali", "Medan"];
+let currentTabIndex = 0;
+let autoSwitchInterval;
+let isAutoSwitchEnabled = true;
+
+// Fungsi untuk parsing CSV ke JSON
+function parseCSVToJSON(csvText) {
+    const lines = csvText.split('\n');
+    const headers = lines[0].split(',').map(header => header.trim());
+    
+    const result = [];
+    for (let i = 1; i < lines.length; i++) {
+        const obj = {};
+        const currentLine = lines[i].split(',');
+        
+        for (let j = 0; j < headers.length; j++) {
+            obj[headers[j]] = currentLine[j] ? currentLine[j].trim() : '';
+        }
+        
+        result.push(obj);
+    }
+    
+    return result;
 }
 
-let currentTableType = 'emas';
-let tableData = {};
-
-// Load data and initialize table rotation
-document.addEventListener('DOMContentLoaded', function () {
-    const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
-    const gamerNav = document.querySelector('.gamer-nav');
-
-    mobileMenuBtn.addEventListener('click', function (e) {
-        e.stopPropagation();
-        gamerNav.classList.toggle('active');
-    });
-
-    document.addEventListener('click', function () {
-        gamerNav.classList.remove('active');
-    });
-
-    gamerNav.addEventListener('click', function (e) {
-        e.stopPropagation();
-    });
-
-    loadPriceData();
-    setInterval(rotateTables, 25000); // Rotate every 40 seconds
-});
-
-// Load and parse CSV from Google Sheets
-async function loadPriceData() {
+// Fungsi untuk mengambil data dari spreadsheet
+async function fetchData() {
     try {
-        const response = await fetch('https://docs.google.com/spreadsheets/d/e/2PACX-1vQFH0squhL_c2KoNryfBrysWZEKTTUpthg_1XVE-fT3r7-ew1_lkbFqENefrlBLHClis53FyDdNiUkh/pub?gid=216173443&single=true&output=csv');
-        const csvText = await response.text();
-        const data = parseCSVToJSON(csvText);
-
-        // Organize data by type
-        tableData.emas = data.filter(row => row.tipe.toLowerCase() === 'emas');
-        tableData.antam = data.filter(row => row.tipe.toLowerCase() === 'antam');
-        tableData.archi = data.filter(row => row.tipe.toLowerCase() === 'archi');
-
-        // Display initial table
-        displayTables('emas');
+        // Ambil data produk
+        const dataResponse = await fetch(SPREADSHEET_DATA_URL);
+        const dataCsvText = await dataResponse.text();
+        productData = parseCSVToJSON(dataCsvText);
+        
+        // Ambil data info (marquee dan cabang)
+        const infoResponse = await fetch(SPREADSHEET_INFO_URL);
+        const infoCsvText = await infoResponse.text();
+        const infoData = parseCSVToJSON(infoCsvText);
+        
+        // Proses data info
+        if (infoData.length > 0) {
+            // Ambil teks marquee
+            if (infoData[0].marquee) {
+                marqueeText = infoData[0].marquee;
+            }
+            
+            // Ambil data cabang
+            const branchesData = infoData.filter(item => item.cabang);
+            if (branchesData.length > 0) {
+                branches = branchesData.map(item => item.cabang);
+            }
+        }
+        
+        // Update UI dengan data yang telah diambil
+        updateMarquee();
+        updateBranches();
+        groupDataByType();
+        
     } catch (error) {
-        console.error('Error loading CSV data:', error);
-        showError();
+        console.error('Error fetching data:', error);
+        // Fallback data jika terjadi error
+        productData = [
+            { jenis: "Emas", nama: "Emas 24 Karat", harga: "1,000,000" },
+            { jenis: "Emas", nama: "Emas 22 Karat", harga: "900,000" },
+            { jenis: "Antam", nama: "Antam 1 gram", harga: "1,050,000" },
+            { jenis: "Antam", nama: "Antam 5 gram", harga: "5,200,000" },
+            { jenis: "Archi", nama: "Archi 1 gram", harga: "1,040,000" },
+            { jenis: "Archi", nama: "Archi 2.5 gram", harga: "2,550,000" }
+        ];
+        groupDataByType();
     }
 }
 
-function parseCSVToJSON(csvText) {
-    const lines = csvText.trim().split('\n');
-    const headers = lines[0].split(',').map(h => h.toLowerCase().replace(/\s+/g, '_'));
-    return lines.slice(1).map(line => {
-        const values = line.split(',').map(v => v.trim());
-        const obj = {};
-        headers.forEach((header, index) => {
-            let value = values[index] || '';
-            if (['harga_jual', 'buyback'].includes(header)) {
-                value = parseInt(value.replace(/[^0-9]/g, ''), 10) || 0;
-            }
-            obj[header] = value;
+// Fungsi untuk mengelompokkan data berdasarkan tipe
+function groupDataByType() {
+    const groupedData = {};
+    
+    productData.forEach(item => {
+        if (!groupedData[item.jenis]) {
+            groupedData[item.jenis] = [];
+        }
+        groupedData[item.jenis].push(item);
+    });
+    
+    // Urutkan tipe sesuai urutan yang diinginkan
+    const typeOrder = ["Emas", "Antam", "Archi"];
+    const sortedTypes = Object.keys(groupedData).sort((a, b) => {
+        const indexA = typeOrder.indexOf(a);
+        const indexB = typeOrder.indexOf(b);
+        
+        if (indexA === -1 && indexB === -1) return a.localeCompare(b);
+        if (indexA === -1) return 1;
+        if (indexB === -1) return -1;
+        
+        return indexA - indexB;
+    });
+    
+    // Buat array data yang sudah dikelompokkan dan diurutkan
+    const sortedData = sortedTypes.map(type => ({
+        type,
+        items: groupedData[type]
+    }));
+    
+    // Generate tabs dan tabel
+    generateTabs(sortedData);
+    showTableForCurrentTab(sortedData);
+    
+    // Set waktu update
+    document.getElementById('update-time').textContent = new Date().toLocaleString('id-ID');
+}
+
+// Fungsi untuk membuat tabs
+function generateTabs(data) {
+    const tabsContainer = document.getElementById('tabs');
+    tabsContainer.innerHTML = '';
+    
+    data.forEach((group, index) => {
+        const tab = document.createElement('button');
+        tab.className = `tab ${index === 0 ? 'active' : ''}`;
+        tab.textContent = group.type;
+        tab.addEventListener('click', () => {
+            // Hapus class active dari semua tabs
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            // Tambah class active ke tab yang diklik
+            tab.classList.add('active');
+            // Tampilkan tabel yang sesuai
+            currentTabIndex = index;
+            showTableForCurrentTab(data);
         });
-        return obj;
+        
+        tabsContainer.appendChild(tab);
     });
 }
 
-function rotateTables() {
-    const types = ['emas', 'antam', 'archi'];
-    const currentIndex = types.indexOf(currentTableType);
-    const nextIndex = (currentIndex + 1) % types.length;
-    currentTableType = types[nextIndex];
-    displayTables(currentTableType);
-}
-
-function displayTables(type) {
-    const data = tableData[type];
-    if (!data || data.length === 0) {
-        showError();
+// Fungsi untuk menampilkan tabel berdasarkan tab aktif
+function showTableForCurrentTab(data) {
+    const tableContent = document.getElementById('table-content');
+    
+    if (data.length === 0) {
+        tableContent.innerHTML = '<div class="loading"><p>Tidak ada data yang tersedia</p></div>';
         return;
     }
-
-    // Split data into two halves
-    const half = Math.ceil(data.length / 2);
-    const leftData = data.slice(0, half);
-    const rightData = data.slice(half);
-
-    // Animate table transition
-    animateTableTransition('emasTableLeft', leftData, type);
-    animateTableTransition('emasTableRight', rightData, type);
-
-    // Animate table headers
-    document.querySelectorAll('.table-wrapper h3').forEach(header => {
-        header.textContent = type.toUpperCase();
-        header.classList.add('table-title-animate');
-        setTimeout(() => {
-            header.classList.remove('table-title-animate');
-        }, 1500);
-    });
-}
-
-function animateTableTransition(elementId, data, type) {
-    const tableElement = document.getElementById(elementId);
     
-    // Show loading spinner
-    tableElement.innerHTML = `
-        <div class="loading-spinner">
-            <i class="fas fa-sync-alt"></i>
-        </div>
-    `;
+    const currentData = data[currentTabIndex];
     
-    // Delay for smooth transition
-    setTimeout(() => {
-        tableElement.innerHTML = generateTableHTML(data, type);
-        
-        // Add animation to all rows
-        const rows = tableElement.querySelectorAll('tbody tr');
-        rows.forEach((row, index) => {
-            row.classList.add('row-slide-in');
-            row.style.animationDelay = `${index * 0.1}s`;
-            setTimeout(() => {
-                row.classList.remove('row-slide-in');
-            }, 600 + (index * 100));
-        });
-        
-        // Add pulse animation to prices
-        const prices = tableElement.querySelectorAll('.highlight');
-        prices.forEach(price => {
-            price.classList.add('price-updating');
-            setTimeout(() => {
-                price.classList.remove('price-updating');
-            }, 2000);
-        });
-    }, 500);
-}
-
-function generateTableHTML(data, type) {
-    if (data.length === 0) {
-        return '<div class="no-data">Data tidak tersedia</div>';
-    }
-
     let tableHTML = `
-        <div class="table-transition">
-            <table class="price-table">
-                <thead>
-                    <tr>
-                        <th>Kode</th>
-                        <th>Jual</th>
-                        <th>Buyback</th>
-                    </tr>
-                </thead>
-                <tbody>
+        <table>
+            <thead>
+                <tr>
+                    <th>Nama Produk</th>
+                    <th>Harga (Rp)</th>
+                </tr>
+            </thead>
+            <tbody>
     `;
-
-    data.forEach((item, index) => {
+    
+    currentData.items.forEach(item => {
         tableHTML += `
-            <tr style="animation-delay: ${index * 0.1}s">
-                <td>${item.kode}</td>
-                <td class="highlight">${formatCurrency(item.harga_jual)}</td>
-                <td class="highlight">${item.buyback ? formatCurrency(item.buyback) : '-'}</td>
+            <tr>
+                <td>${item.nama || '-'}</td>
+                <td>${item.harga || '-'}</td>
             </tr>
         `;
     });
-
+    
     tableHTML += `
-                </tbody>
-            </table>
-            <div class="table-footer">
-                <p>Update: ${new Date().toLocaleTimeString('id-ID')}</p>
-            </div>
-        </div>
+            </tbody>
+        </table>
     `;
-
-    return tableHTML;
+    
+    tableContent.innerHTML = tableHTML;
+    
+    // Update status tombol navigasi
+    updateNavigationButtons(data.length);
 }
 
-function showError() {
-    const errorHTML = `
-        <div class="error-message">
-            <i class="fas fa-exclamation-triangle"></i>
-            <p>Gagal memuat data. Silakan coba lagi.</p>
-        </div>
-    `;
-    document.getElementById('emasTableLeft').innerHTML = errorHTML;
-    document.getElementById('emasTableRight').innerHTML = errorHTML;
+// Fungsi untuk update status tombol navigasi
+function updateNavigationButtons(totalTabs) {
+    const prevBtn = document.getElementById('prev-btn');
+    const nextBtn = document.getElementById('next-btn');
+    
+    prevBtn.disabled = currentTabIndex === 0;
+    nextBtn.disabled = currentTabIndex === totalTabs - 1;
 }
+
+// Fungsi untuk navigasi tab
+function navigateTab(direction, data) {
+    const newIndex = currentTabIndex + direction;
+    
+    if (newIndex >= 0 && newIndex < data.length) {
+        // Hapus class active dari semua tabs
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        // Tambah class active ke tab baru
+        document.querySelectorAll('.tab')[newIndex].classList.add('active');
+        
+        currentTabIndex = newIndex;
+        showTableForCurrentTab(data);
+    }
+}
+
+// Fungsi untuk toggle auto switch
+function toggleAutoSwitch(data) {
+    isAutoSwitchEnabled = !isAutoSwitchEnabled;
+    const toggleBtn = document.getElementById('auto-toggle');
+    
+    if (isAutoSwitchEnabled) {
+        toggleBtn.innerHTML = '<i class="fas fa-pause"></i> Auto: ON';
+        startAutoSwitch(data);
+    } else {
+        toggleBtn.innerHTML = '<i class="fas fa-play"></i> Auto: OFF';
+        clearInterval(autoSwitchInterval);
+    }
+}
+
+// Fungsi untuk memulai auto switch
+function startAutoSwitch(data) {
+    clearInterval(autoSwitchInterval);
+    
+    autoSwitchInterval = setInterval(() => {
+        const nextIndex = (currentTabIndex + 1) % data.length;
+        
+        // Hapus class active dari semua tabs
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        // Tambah class active ke tab baru
+        document.querySelectorAll('.tab')[nextIndex].classList.add('active');
+        
+        currentTabIndex = nextIndex;
+        showTableForCurrentTab(data);
+    }, 30000); // 30 detik
+}
+
+// Fungsi untuk update marquee
+function updateMarquee() {
+    const marqueeElement = document.getElementById('marquee');
+    marqueeElement.textContent = marqueeText;
+}
+
+// Fungsi untuk update daftar cabang
+function updateBranches() {
+    const branchesList = document.getElementById('branches-list');
+    branchesList.innerHTML = '';
+    
+    branches.forEach(branch => {
+        const branchElement = document.createElement('div');
+        branchElement.className = 'branch';
+        branchElement.textContent = branch;
+        branchesList.appendChild(branchElement);
+    });
+}
+
+// Inisialisasi ketika halaman dimuat
+document.addEventListener('DOMContentLoaded', () => {
+    // Fetch data dari spreadsheet
+    fetchData();
+    
+    // Setup event listeners untuk navigasi
+    document.getElementById('prev-btn').addEventListener('click', () => {
+        navigateTab(-1, productData);
+    });
+    
+    document.getElementById('next-btn').addEventListener('click', () => {
+        navigateTab(1, productData);
+    });
+    
+    document.getElementById('auto-toggle').addEventListener('click', () => {
+        toggleAutoSwitch(productData);
+    });
+});
+
+// Fallback jika data tidak berhasil diambil
+setTimeout(() => {
+    if (productData.length === 0) {
+        productData = [
+            { jenis: "Emas", nama: "Emas 24 Karat", harga: "1,000,000" },
+            { jenis: "Emas", nama: "Emas 22 Karat", harga: "900,000" },
+            { jenis: "Antam", nama: "Antam 1 gram", harga: "1,050,000" },
+            { jenis: "Antam", nama: "Antam 5 gram", harga: "5,200,000" },
+            { jenis: "Archi", nama: "Archi 1 gram", harga: "1,040,000" },
+            { jenis: "Archi", nama: "Archi 2.5 gram", harga: "2,550,000" }
+        ];
+        groupDataByType();
+    }
+}, 3000);
