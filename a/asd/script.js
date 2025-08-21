@@ -1,13 +1,3 @@
-// Konfigurasi Sheet
-const SHEET_CONFIG = {
-  harga: { gid: '216173443', name: 'Harga' },
-  runningText: { gid: '1779766141', name: 'RunningText' },
-  iklan: { gid: '1303897065', name: 'Iklan' }
-};
-
-// Base URL untuk Google Sheets
-const SHEET_BASE_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQFH0squhL_c2KoNryfBrysWZEKTTUpthg_1XVE-fT3r7-ew1_lkbFqENefrlBLHClis53FyDdNiUkh/pub';
-
 // Helper functions
 function formatCurrency(amount) {
     return new Intl.NumberFormat('id-ID', {
@@ -17,11 +7,10 @@ function formatCurrency(amount) {
     }).format(amount);
 }
 
-let tableData = {};
 let currentTableType = 'emas';
-let rotationInterval;
+let tableData = {};
 
-// Load data and initialize
+// Load data and initialize table rotation
 document.addEventListener('DOMContentLoaded', function () {
     const leftNavBtn = document.querySelector('.left-nav');
     const rightNavBtn = document.querySelector('.right-nav');
@@ -35,20 +24,94 @@ document.addEventListener('DOMContentLoaded', function () {
         navigateTables('right');
     });
 
-    // Load initial data
     loadPriceData();
-    loadRunningText();
-    
-    // Start rotation interval
-    startRotationInterval();
+    setInterval(rotateTables, 25000); // Rotate every 25 seconds
 });
 
-function startRotationInterval() {
-    if (rotationInterval) clearInterval(rotationInterval);
+// Load and parse CSV from Google Sheets
+async function loadPriceData() {
+    try {
+        const response = await fetch('https://docs.google.com/spreadsheets/d/e/2PACX-1vQFH0squhL_c2KoNryfBrysWZEKTTUpthg_1XVE-fT3r7-ew1_lkbFqENefrlBLHClis53FyDdNiUkh/pub?gid=216173443&single=true&output=csv');
+        const csvText = await response.text();
+        const data = parseCSVToJSON(csvText);
+
+        // Organize data by type
+        tableData.emas = data.filter(row => row.tipe && row.tipe.toLowerCase() === 'emas');
+        tableData.antam = data.filter(row => row.tipe && row.tipe.toLowerCase() === 'antam');
+        tableData.archi = data.filter(row => row.tipe && row.tipe.toLowerCase() === 'archi');
+
+        // Generate running text from data
+        generateRunningText();
+
+        // Display initial table
+        displayTables('emas');
+    } catch (error) {
+        console.error('Error loading CSV data:', error);
+        showError();
+    }
+}
+
+function parseCSVToJSON(csvText) {
+    const lines = csvText.trim().split('\n');
+    const headers = lines[0].split(',').map(h => h.toLowerCase().replace(/\s+/g, '_'));
+    return lines.slice(1).map(line => {
+        const values = line.split(',').map(v => v.trim());
+        const obj = {};
+        headers.forEach((header, index) => {
+            let value = values[index] || '';
+            if (['harga_jual', 'buyback'].includes(header)) {
+                value = parseInt(value.replace(/[^0-9]/g, ''), 10) || 0;
+            }
+            obj[header] = value;
+        });
+        return obj;
+    });
+}
+
+function generateRunningText() {
+    let runningText = "Harga Emas Terkini: ";
     
-    rotationInterval = setInterval(function() {
-        navigateTables('right');
-    }, 25000); // Rotate every 25 seconds
+    // Add emas data
+    if (tableData.emas && tableData.emas.length > 0) {
+        const emasItems = tableData.emas.slice(0, 3); // Take first 3 items
+        emasItems.forEach((item, index) => {
+            runningText += `${item.kode}: ${formatCurrency(item.harga_jual)}`;
+            if (index < emasItems.length - 1) runningText += " | ";
+        });
+    }
+    
+    runningText += " | ";
+    
+    // Add antam data
+    if (tableData.antam && tableData.antam.length > 0) {
+        const antamItems = tableData.antam.slice(0, 2); // Take first 2 items
+        antamItems.forEach((item, index) => {
+            runningText += `${item.kode}: ${formatCurrency(item.harga_jual)}`;
+            if (index < antamItems.length - 1) runningText += " | ";
+        });
+    }
+    
+    runningText += " | ";
+    
+    // Add archi data
+    if (tableData.archi && tableData.archi.length > 0) {
+        const archiItems = tableData.archi.slice(0, 2); // Take first 2 items
+        archiItems.forEach((item, index) => {
+            runningText += `${item.kode}: ${formatCurrency(item.harga_jual)}`;
+            if (index < archiItems.length - 1) runningText += " | ";
+        });
+    }
+    
+    // Update marquee text
+    document.getElementById('marqueeText').textContent = runningText;
+}
+
+function rotateTables() {
+    const types = ['emas', 'antam', 'archi'];
+    const currentIndex = types.indexOf(currentTableType);
+    const nextIndex = (currentIndex + 1) % types.length;
+    currentTableType = types[nextIndex];
+    displayTables(currentTableType);
 }
 
 function navigateTables(direction) {
@@ -64,84 +127,6 @@ function navigateTables(direction) {
     
     currentTableType = types[nextIndex];
     displayTables(currentTableType);
-}
-
-// Load and parse CSV from Google Sheets - Harga
-async function loadPriceData() {
-    try {
-        const url = `${SHEET_BASE_URL}?gid=${SHEET_CONFIG.harga.gid}&single=true&output=csv`;
-        const response = await fetch(url);
-        const csvText = await response.text();
-        const data = parseCSVToJSON(csvText);
-
-        // Organize data by type
-        tableData.emas = data.filter(row => row.tipe && row.tipe.toLowerCase() === 'emas');
-        tableData.antam = data.filter(row => row.tipe && row.tipe.toLowerCase() === 'antam');
-        tableData.archi = data.filter(row => row.tipe && row.tipe.toLowerCase() === 'archi');
-
-        // Display initial table
-        displayTables('emas');
-    } catch (error) {
-        console.error('Error loading CSV data:', error);
-        showError();
-    }
-}
-
-// Load running text from Google Sheets
-async function loadRunningText() {
-    try {
-        const url = `${SHEET_BASE_URL}?gid=${SHEET_CONFIG.runningText.gid}&single=true&output=csv`;
-        const response = await fetch(url);
-        const csvText = await response.text();
-        const data = parseCSVToJSON(csvText);
-        
-        // Process running text data
-        processRunningTextData(data);
-    } catch (error) {
-        console.error('Error loading running text:', error);
-        // Fallback text if running text fails to load
-        document.getElementById('marqueeText').textContent = "Harga emas terkini - Informasi terupdate setiap hari";
-    }
-}
-
-function processRunningTextData(data) {
-    if (!data || data.length === 0) {
-        document.getElementById('marqueeText').textContent = "Harga emas terkini - Informasi terupdate setiap hari";
-        return;
-    }
-    
-    // Get all running text items
-    const runningTexts = data.filter(item => item.teks);
-    
-    if (runningTexts.length === 0) {
-        document.getElementById('marqueeText').textContent = "Harga emas terkini - Informasi terupdate setiap hari";
-        return;
-    }
-    
-    // Combine all running text with separator
-    const marqueeContent = runningTexts.map(item => item.teks).join(' | ');
-    
-    // Update marquee text
-    document.getElementById('marqueeText').textContent = marqueeContent;
-}
-
-function parseCSVToJSON(csvText) {
-    const lines = csvText.trim().split('\n');
-    if (lines.length < 2) return [];
-    
-    const headers = lines[0].split(',').map(h => h.toLowerCase().replace(/\s+/g, '_'));
-    return lines.slice(1).map(line => {
-        const values = line.split(',').map(v => v.trim());
-        const obj = {};
-        headers.forEach((header, index) => {
-            let value = values[index] || '';
-            if (['harga_jual', 'buyback'].includes(header)) {
-                value = parseInt(value.replace(/[^0-9]/g, ''), 10) || 0;
-            }
-            obj[header] = value;
-        });
-        return obj;
-    });
 }
 
 function displayTables(type) {
