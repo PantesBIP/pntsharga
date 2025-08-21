@@ -71,6 +71,11 @@ async function loadPriceData() {
     try {
         const url = `${SHEET_BASE_URL}?gid=${SHEET_CONFIG.harga.gid}&single=true&output=csv`;
         const response = await fetch(url);
+        
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
         const csvText = await response.text();
         const data = parseCSVToJSON(csvText);
 
@@ -92,8 +97,16 @@ async function loadRunningText() {
     try {
         const url = `${SHEET_BASE_URL}?gid=${SHEET_CONFIG.runningText.gid}&single=true&output=csv`;
         const response = await fetch(url);
+        
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
         const csvText = await response.text();
-        const data = parseCSVToJSON(csvText);
+        console.log("Running Text CSV:", csvText); // Debugging
+        
+        const data = parseRunningTextCSV(csvText);
+        console.log("Parsed Running Text Data:", data); // Debugging
         
         // Process running text data
         processRunningTextData(data);
@@ -104,14 +117,52 @@ async function loadRunningText() {
     }
 }
 
+// Special parser for running text CSV
+function parseRunningTextCSV(csvText) {
+    const lines = csvText.trim().split('\n');
+    console.log("CSV Lines:", lines); // Debugging
+    
+    if (lines.length < 1) return [];
+    
+    // Jika hanya ada satu baris, anggap sebagai header + data
+    if (lines.length === 1) {
+        return [{ teks: lines[0].trim() }];
+    }
+    
+    // Jika ada multiple lines, coba parse dengan header
+    const headers = lines[0].split(',').map(h => h.toLowerCase().trim().replace(/\s+/g, '_'));
+    console.log("Headers:", headers); // Debugging
+    
+    // Cari kolom yang berisi teks
+    const textColumn = headers.find(h => h.includes('teks') || h.includes('text') || h.includes('isi') || h.includes('running')) || headers[0];
+    
+    return lines.slice(1).map(line => {
+        const values = line.split(',').map(v => v.trim());
+        console.log("Line values:", values); // Debugging
+        
+        // Jika hanya ada satu kolom, gunakan langsung
+        if (values.length === 1) {
+            return { teks: values[0] };
+        }
+        
+        // Jika ada multiple columns, cari yang berisi teks
+        const textIndex = headers.indexOf(textColumn);
+        const teks = textIndex >= 0 && textIndex < values.length ? values[textIndex] : values.join(' ');
+        
+        return { teks };
+    }).filter(item => item.teks && item.teks.trim() !== '');
+}
+
 function processRunningTextData(data) {
+    console.log("Processing running text data:", data); // Debugging
+    
     if (!data || data.length === 0) {
         document.getElementById('marqueeText').textContent = "Harga emas terkini - Informasi terupdate setiap hari";
         return;
     }
     
     // Get all running text items
-    const runningTexts = data.filter(item => item.teks);
+    const runningTexts = data.map(item => item.teks).filter(teks => teks && teks.trim() !== '');
     
     if (runningTexts.length === 0) {
         document.getElementById('marqueeText').textContent = "Harga emas terkini - Informasi terupdate setiap hari";
@@ -119,7 +170,7 @@ function processRunningTextData(data) {
     }
     
     // Combine all running text with separator
-    const marqueeContent = runningTexts.map(item => item.teks).join(' | ');
+    const marqueeContent = runningTexts.join(' | ');
     
     // Update marquee text
     document.getElementById('marqueeText').textContent = marqueeContent;
