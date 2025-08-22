@@ -13,6 +13,10 @@
   --border: #e0e0e0;
   --success: #27ae60;
   --error: #e74c3c;
+  /* Warna baru untuk marquee */
+  --marquee-bg: #1a4b8c; /* Biru tua yang kontras */
+  --marquee-text: #ffffff; /* Putih untuk kontras maksimal */
+  --marquee-accent: #ffcc00; /* Warna aksen untuk highlight */
 }
 
 * {
@@ -71,18 +75,20 @@ body {
   color: var(--secondary);
 }
 
-/* Marquee Styles */
+/* Marquee Styles - PERBAIKAN */
 .marquee-container {
   flex: 1;
   margin: 0 20px;
-  background-color: var(--primary);
-  color: white;
-  border-radius: 4px;
+  background: linear-gradient(90deg, var(--marquee-bg), #2a5ca0); /* Gradien untuk depth */
+  color: var(--marquee-text);
+  border-radius: 6px; /* Sedikit meningkatkan radius */
   overflow: hidden;
   position: relative;
-  height: 40px;
+  height: 45px; /* Sedikit lebih tinggi */
   display: flex;
   align-items: center;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1); /* Menambahkan shadow untuk depth */
+  border: 1px solid rgba(255, 255, 255, 0.1); /* Border subtle */
 }
 
 .marquee {
@@ -95,8 +101,36 @@ body {
   display: inline-block;
   padding-left: 100%;
   animation: marquee 60s linear infinite;
-  font-size: 0.9rem;
-  font-weight: 500;
+  font-size: 1.1rem; /* Ukuran font lebih besar */
+  font-weight: 600; /* Lebih tebal */
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3); /* Shadow teks untuk keterbacaan */
+  padding-top: 2px; /* Penyesuaian vertikal */
+}
+
+/* Efek hover untuk marquee */
+.marquee-container:hover {
+  background: linear-gradient(90deg, #153a6b, #235798);
+}
+
+/* Menambahkan pseudo-element untuk gradient di ujung marquee */
+.marquee-container::before,
+.marquee-container::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  width: 30px;
+  height: 100%;
+  z-index: 2;
+}
+
+.marquee-container::before {
+  left: 0;
+  background: linear-gradient(to right, var(--marquee-bg), transparent);
+}
+
+.marquee-container::after {
+  right: 0;
+  background: linear-gradient(to left, var(--marquee-bg), transparent);
 }
 
 @keyframes marquee {
@@ -454,6 +488,11 @@ main {
     width: 100%;
     margin: 10px 0;
     order: 3;
+    height: 40px; /* Sedikit lebih tinggi di mobile */
+  }
+  
+  .marquee-text {
+    font-size: 1rem; /* Ukuran font untuk mobile */
   }
 
   .tables-container {
@@ -527,11 +566,13 @@ main {
 
   .marquee-container {
     font-size: 0.85rem;
-    height: 35px;
+    height: 38px;
+    margin: 8px 0;
   }
 
   .marquee-text {
-    animation: marquee 120s linear infinite;
+    font-size: 0.95rem; /* Ukuran font untuk mobile kecil */
+    animation: marquee 100s linear infinite; /* Lebih lambat di layar kecil */
   }
 
   .video-wrapper iframe {
