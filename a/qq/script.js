@@ -22,6 +22,7 @@ let currentTableType = 'emas';
 let rotationInterval;
 let videoTimeout;
 let videoPlayed = false;
+let adsData = [];
 
 // Load data and initialize
 document.addEventListener('DOMContentLoaded', function () {
@@ -52,6 +53,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // Load initial data
     loadPriceData();
     loadRunningText();
+    loadAdsData();
     
     // Start rotation interval
     startRotationInterval();
@@ -80,9 +82,13 @@ function navigateTables(direction) {
     displayTables(currentTableType);
     
     // Tampilkan video setelah slide terakhir (archi) dan hanya sekali
-    if (currentTableType === 'archi' && !videoPlayed) {
+    if (currentTableType === 'archi' && !videoPlayed && hasActiveAds()) {
         showVideoAfterDelay();
     }
+}
+
+function hasActiveAds() {
+    return adsData.some(ad => ad.status && ad.status.toLowerCase() === 'active' && ad.video_url);
 }
 
 function showVideoAfterDelay() {
@@ -97,13 +103,55 @@ function showVideoAfterDelay() {
 }
 
 function showVideo() {
+    const activeAds = adsData.filter(ad => ad.status && ad.status.toLowerCase() === 'active' && ad.video_url);
+    
+    if (activeAds.length === 0) {
+        console.log('Tidak ada iklan aktif yang ditemukan');
+        return;
+    }
+    
+    // Pilih iklan pertama yang aktif
+    const selectedAd = activeAds[0];
     const videoContainer = document.getElementById('videoContainer');
     const videoElement = document.getElementById('promoVideo');
+    const videoTitle = document.getElementById('videoTitle');
+    const videoDescription = document.getElementById('videoDescription');
+    const videoLinks = document.getElementById('videoLinks');
+    
+    // Set judul dan deskripsi
+    videoTitle.textContent = selectedAd.judul || 'Promo Spesial';
+    videoDescription.textContent = selectedAd.deskripsi || 'Penawaran terbatas untuk Anda';
+    
+    // Set video source
+    videoElement.innerHTML = `<source src="${selectedAd.video_url}" type="video/mp4">`;
+    
+    // Set link jika ada
+    videoLinks.innerHTML = '';
+    if (selectedAd.link1) {
+        const link1 = document.createElement('a');
+        link1.href = selectedAd.link1;
+        link1.target = '_blank';
+        link1.rel = 'noopener noreferrer';
+        link1.className = 'video-link';
+        link1.textContent = 'Info Lebih Lanjut';
+        videoLinks.appendChild(link1);
+    }
+    
+    if (selectedAd.link2) {
+        const link2 = document.createElement('a');
+        link2.href = selectedAd.link2;
+        link2.target = '_blank';
+        link2.rel = 'noopener noreferrer';
+        link2.className = 'video-link';
+        link2.textContent = 'Hubungi Kami';
+        videoLinks.appendChild(link2);
+    }
     
     // Tampilkan container video
     videoContainer.classList.add('active');
     
     // Putar video
+    videoElement.load(); // Memuat ulang video dengan sumber baru
     videoElement.play().catch(error => {
         console.error('Error playing video:', error);
     });
@@ -172,6 +220,66 @@ async function loadRunningText() {
         // Fallback text if running text fails to load
         document.getElementById('marqueeText').textContent = "Harga emas terkini - Informasi terupdate setiap hari";
     }
+}
+
+// Load ads data from Google Sheets
+async function loadAdsData() {
+    try {
+        const url = `${SHEET_BASE_URL}?gid=${SHEET_CONFIG.iklan.gid}&single=true&output=csv`;
+        const response = await fetch(url);
+        
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        const csvText = await response.text();
+        adsData = parseAdsCSV(csvText);
+        console.log('Ads data loaded:', adsData);
+        
+    } catch (error) {
+        console.error('Error loading ads data:', error);
+    }
+}
+
+// Special parser for ads CSV
+function parseAdsCSV(csvText) {
+    const lines = csvText.trim().split('\n');
+    
+    if (lines.length < 1) return [];
+    
+    // Jika hanya ada satu baris, coba parse sebagai data
+    if (lines.length === 1) {
+        // Coba parse baris tunggal sebagai data iklan
+        const values = lines[0].split(',').map(v => v.trim());
+        if (values.length >= 7) {
+            return [{
+                judul: values[0],
+                deskripsi: values[1],
+                video_url: values[2],
+                gambar_url: values[3],
+                link1: values[4],
+                link2: values[5],
+                status: values[6]
+            }];
+        }
+        return [];
+    }
+    
+    // Jika ada multiple lines, parse dengan header
+    const headers = lines[0].split(',').map(h => h.toLowerCase().trim().replace(/\s+/g, '_'));
+    
+    return lines.slice(1).map(line => {
+        const values = line.split(',').map(v => v.trim());
+        const obj = {};
+        
+        headers.forEach((header, index) => {
+            if (index < values.length) {
+                obj[header] = values[index];
+            }
+        });
+        
+        return obj;
+    }).filter(ad => ad.judul && ad.status && ad.status.toLowerCase() === 'active');
 }
 
 // Special parser for running text CSV
