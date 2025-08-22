@@ -75,8 +75,8 @@ body {
 .marquee-container {
   flex: 1;
   margin: 0 20px;
-  background-color: var(--primary-dark);
-  color: var(--primary);
+  background-color: var(--primary);
+  color: white;
   border-radius: 4px;
   overflow: hidden;
   position: relative;
