@@ -535,11 +535,11 @@ main {
 /* Responsive Design */
 @media (max-width: 992px) {
   .price-table {
-    font-size: 0.8rem;
+    font-size: 1rem;
   }
   
   .price-table th {
-    font-size: 0.85rem;
+    font-size: 1rem;
   }
 }
 
@@ -601,7 +601,7 @@ main {
   .price-table th,
   .price-table td {
     padding: 6px 4px;
-    font-size: 0.75rem;
+    font-size: 1rem;
   }
 
   .video-wrapper iframe {
