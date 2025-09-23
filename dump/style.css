@@ -14,10 +14,11 @@
   --success: #27ae60;
   --error: #e74c3c;
   /* Warna baru untuk marquee */
-  --marquee-bg: #1a4b8c; /* Biru tua yang kontras */
-  --marquee-text: #ffffff; /* Putih untuk kontras maksimal */
-  --marquee-accent: #ffcc00; /* Warna aksen untuk highlight */
-  --footer-height: 120px; /* Tinggi footer yang tetap */
+  --marquee-bg: #1a4b8c;
+  --marquee-text: #ffffff;
+  --marquee-accent: #ffcc00;
+  --footer-height: 70px; /* Footer lebih kecil */
+  --header-height: 80px; /* Tinggi header */
 }
 
 * {
@@ -31,10 +32,15 @@ body {
   background-color: var(--bg);
   color: var(--text);
   line-height: 1.6;
-  min-height: 100vh;
+  height: 100vh; /* Full viewport height */
+  overflow: hidden; /* Hilangkan scroll global */
+}
+
+.page-wrapper {
+  height: 100vh;
   display: flex;
   flex-direction: column;
-  padding-bottom: var(--footer-height); /* Ruang untuk footer fixed */
+  padding-bottom: var(--footer-height); /* Ruang untuk footer */
 }
 
 .container {
@@ -47,11 +53,13 @@ body {
 /* Header Styles */
 .header {
   background-color: var(--card-bg);
-  padding: 15px 0;
+  padding: 12px 0;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
   position: sticky;
   top: 0;
   z-index: 100;
+  height: var(--header-height);
+  flex-shrink: 0;
 }
 
 .header .container {
@@ -59,6 +67,7 @@ body {
   justify-content: space-between;
   align-items: center;
   position: relative;
+  height: 100%;
 }
 
 .logo {
@@ -70,27 +79,31 @@ body {
 }
 
 .logo-icon {
-  font-size: 1.8rem;
+  font-size: 1.6rem;
+}
+
+.logo h1 {
+  font-size: 1.4rem;
 }
 
 .logo span {
   color: var(--secondary);
 }
 
-/* Marquee Styles - PERBAIKAN */
+/* Marquee Styles */
 .marquee-container {
   flex: 1;
   margin: 0 20px;
-  background: linear-gradient(90deg, var(--marquee-bg), #2a5ca0); /* Gradien untuk depth */
+  background: linear-gradient(90deg, var(--marquee-bg), #2a5ca0);
   color: var(--marquee-text);
-  border-radius: 6px; /* Sedikit meningkatkan radius */
+  border-radius: 6px;
   overflow: hidden;
   position: relative;
-  height: 45px; /* Sedikit lebih tinggi */
+  height: 40px;
   display: flex;
   align-items: center;
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1); /* Menambahkan shadow untuk depth */
-  border: 1px solid rgba(255, 255, 255, 0.1); /* Border subtle */
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .marquee {
@@ -103,18 +116,12 @@ body {
   display: inline-block;
   padding-left: 100%;
   animation: marquee 65s linear infinite;
-  font-size: 1.3rem; /* Ukuran font lebih besar */
-  font-weight: 600; /* Lebih tebal */
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3); /* Shadow teks untuk keterbacaan */
-  padding-top: 2px; /* Penyesuaian vertikal */
+  font-size: 1.1rem;
+  font-weight: 600;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+  padding-top: 2px;
 }
 
-/* Efek hover untuk marquee */
-.marquee-container:hover {
-  background: linear-gradient(90deg, #153a6b, #235798);
-}
-
-/* Menambahkan pseudo-element untuk gradient di ujung marquee */
 .marquee-container::before,
 .marquee-container::after {
   content: '';
@@ -156,24 +163,27 @@ body {
 
 /* Main Content */
 main {
-  padding: 25px 0 40px;
   flex: 1;
-  min-height: calc(100vh - var(--footer-height) - 100px); /* Sesuaikan tinggi main */
-  overflow-y: auto; /* Biarkan konten utama bisa scroll */
+  padding: 15px 0;
+  overflow: hidden; /* Hilangkan scroll di main */
+  height: calc(100vh - var(--header-height) - var(--footer-height));
 }
 
 .price-section {
-  margin-top: 20px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 /* Tables Container with Navigation */
 .tables-container {
   display: flex;
-  gap: 15px;
+  gap: 12px;
   width: 100%;
   align-items: center;
   position: relative;
-  min-height: 400px; /* Tinggi minimum untuk container tabel */
+  height: 100%;
+  min-height: 0; /* Penting untuk flexbox */
 }
 
 .nav-btn {
@@ -181,14 +191,15 @@ main {
   color: white;
   border: none;
   border-radius: 50%;
-  width: 40px;
-  height: 40px;
+  width: 35px;
+  height: 35px;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  font-size: 1rem;
+  font-size: 0.9rem;
   transition: background-color 0.3s;
+  flex-shrink: 0;
 }
 
 .nav-btn:hover {
@@ -200,48 +211,50 @@ main {
   background-color: var(--card-bg);
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-  padding: 20px;
+  padding: 15px;
   display: block;
-  min-height: 350px; /* Tinggi minimum untuk wrapper tabel */
-  overflow: hidden; /* Pastikan konten tidak meluber */
+  height: 100%;
+  min-height: 0;
+  overflow: hidden;
 }
 
 .table-title {
   text-align: center;
   color: var(--primary);
-  margin-bottom: 15px;
-  font-size: 1.2rem;
+  margin-bottom: 12px;
+  font-size: 1.1rem;
   font-weight: 600;
 }
 
 .table-responsive {
   width: 100%;
-  overflow-x: auto;
-  max-height: 500px; /* Maksimum tinggi untuk tabel */
-  overflow-y: auto; /* Biarkan tabel scroll jika terlalu tinggi */
+  height: calc(100% - 40px); /* Tinggi dikurangi judul */
+  overflow: auto;
 }
 
 .price-table {
   width: 100%;
   border-collapse: collapse;
-  font-size: clamp(0.8rem, 1.5vw, 0.95rem); /* Font size responsive */
-  table-layout: fixed; /* Pastikan lebar kolom konsisten */
+  font-size: 0.85rem;
+  table-layout: fixed;
 }
 
 .price-table th {
   background-color: var(--table-header);
   color: var(--text);
-  padding: 12px 8px; /* Padding lebih kecil untuk menghemat ruang */
+  padding: 10px 8px;
   text-align: left;
   font-weight: 600;
   border-bottom: 1px solid var(--border);
-  word-wrap: break-word; /* Biarkan teks wrap jika perlu */
+  word-wrap: break-word;
+  font-size: 0.9rem;
 }
 
 .price-table td {
-  padding: 10px 8px; /* Padding lebih kecil */
+  padding: 8px 6px;
   border-bottom: 1px solid var(--border);
   word-wrap: break-word;
+  line-height: 1.3;
 }
 
 .price-table tr:nth-child(odd) {
@@ -264,28 +277,35 @@ main {
 /* Video Container Styles */
 .video-container {
   display: none;
-  margin-top: 30px;
+  height: 100%;
   background-color: var(--card-bg);
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-  padding: 20px;
+  padding: 15px;
   text-align: center;
 }
 
 .video-container.active {
-  display: block;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   animation: fadeIn 0.5s ease-in-out;
 }
 
 .video-wrapper {
   position: relative;
+  width: 100%;
   max-width: 800px;
-  margin: 0 auto;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .video-wrapper iframe {
   width: 100%;
-  height: 400px;
+  height: 100%;
+  max-height: 400px;
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   border: none;
@@ -296,24 +316,25 @@ main {
   top: 10px;
   right: 10px;
   display: flex;
-  gap: 10px;
+  gap: 8px;
   align-items: center;
   z-index: 100;
 }
+
 .volume-btn {
   background-color: rgba(0, 0, 0, 0.7);
   color: white;
   border: none;
   border-radius: 4px;
-  padding: 8px;
+  padding: 6px;
   cursor: pointer;
-  font-size: 1rem;
+  font-size: 0.9rem;
   display: flex;
   align-items: center;
   justify-content: center;
   transition: background-color 0.3s;
-  width: 40px;
-  height: 40px;
+  width: 35px;
+  height: 35px;
 }
 
 .volume-btn:hover {
@@ -323,15 +344,15 @@ main {
 .volume-slider {
   background-color: rgba(0, 0, 0, 0.7);
   border-radius: 4px;
-  padding: 10px;
+  padding: 8px;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
 }
 
 .volume-slider input {
-  width: 80px;
-  height: 5px;
+  width: 70px;
+  height: 4px;
   -webkit-appearance: none;
   appearance: none;
   background: #ddd;
@@ -342,16 +363,16 @@ main {
 .volume-slider input::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
-  width: 15px;
-  height: 15px;
+  width: 12px;
+  height: 12px;
   border-radius: 50%;
   background: var(--primary);
   cursor: pointer;
 }
 
 .volume-slider input::-moz-range-thumb {
-  width: 15px;
-  height: 15px;
+  width: 12px;
+  height: 12px;
   border-radius: 50%;
   background: var(--primary);
   cursor: pointer;
@@ -363,12 +384,12 @@ main {
   color: white;
   border: none;
   border-radius: 4px;
-  padding: 10px 15px;
+  padding: 8px 12px;
   cursor: pointer;
-  font-size: 0.9rem;
+  font-size: 0.8rem;
   display: flex;
   align-items: center;
-  gap: 5px;
+  gap: 4px;
   transition: background-color 0.3s;
 }
 
@@ -392,20 +413,20 @@ main {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 200px;
+  height: 100%;
   color: var(--text-light);
   text-align: center;
 }
 
 .error-message i {
-  font-size: 2rem;
-  margin-bottom: 15px;
+  font-size: 1.8rem;
+  margin-bottom: 12px;
   color: var(--error);
 }
 
 .loading-spinner i {
-  font-size: 2rem;
-  margin-bottom: 15px;
+  font-size: 1.8rem;
+  margin-bottom: 12px;
   color: var(--primary);
   animation: spin 1s linear infinite;
 }
@@ -421,15 +442,15 @@ main {
 
 .no-data {
   text-align: center;
-  padding: 40px 0;
+  padding: 30px 0;
   color: var(--text-light);
   font-style: italic;
 }
 
-/* Footer - FIXED */
+/* Footer - FIXED dan lebih kecil */
 .footer {
   background-color: var(--card-bg);
-  padding: 20px 0;
+  padding: 12px 0;
   position: fixed;
   bottom: 0;
   left: 0;
@@ -441,16 +462,16 @@ main {
 
 .footer .container {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 15px;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 10px;
   height: 100%;
   align-items: center;
 }
 
 .footer-section h4 {
   color: var(--secondary);
-  margin-bottom: 8px;
-  font-size: 0.9rem;
+  margin-bottom: 5px;
+  font-size: 0.8rem;
 }
 
 .footer-section ul {
@@ -458,27 +479,27 @@ main {
 }
 
 .footer-section li {
-  margin-bottom: 5px;
+  margin-bottom: 3px;
   display: flex;
   align-items: center;
-  gap: 8px;
-  font-size: 0.8rem;
+  gap: 6px;
+  font-size: 0.75rem;
   color: var(--text-light);
 }
 
 .footer-section i {
   color: var(--primary);
-  font-size: 0.9rem;
+  font-size: 0.8rem;
 }
 
 .social-links {
   display: flex;
-  gap: 10px;
+  gap: 8px;
 }
 
 .social-links a {
   color: var(--text-light);
-  font-size: 1.1rem;
+  font-size: 1rem;
   transition: color 0.3s;
 }
 
@@ -487,186 +508,14 @@ main {
 }
 
 .footer-section p {
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   color: var(--text-light);
 }
 
-/* Responsive Design */
-@media (max-width: 992px) {
-  .price-table {
-    font-size: clamp(0.75rem, 1.3vw, 0.85rem);
-  }
-
-  .video-wrapper iframe {
-    height: 350px;
-  }
-}
-
-@media (max-width: 768px) {
-  :root {
-    --footer-height: 100px; /* Lebih kecil di mobile */
-  }
-
-  .header .container {
-    flex-direction: column;
-    gap: 15px;
-  }
-
-  .marquee-container {
-    width: 100%;
-    margin: 10px 0;
-    order: 3;
-    height: 40px;
-  }
-  
-  .marquee-text {
-    font-size: 1rem;
-  }
-
-  .tables-container {
-    flex-direction: column;
-    gap: 15px;
-  }
-
-  .nav-btn {
-    display: none;
-  }
-
-  .marquee-text {
-    animation: marquee 90s linear infinite;
-  }
-
-  .video-wrapper {
-    max-width: 100%;
-  }
-
-  .video-wrapper iframe {
-    height: 300px;
-  }
-
-  .video-counter {
-    background-color: rgba(0, 0, 0, 0.7);
-    color: white;
-    padding: 5px 10px;
-    border-radius: 4px;
-    font-size: 0.9rem;
-    margin-right: 10px;
-  }
-
-  .video-controls {
-    flex-direction: column;
-    top: 5px;
-    right: 5px;
-  }
-
-  .volume-slider {
-    flex-direction: column;
-    padding: 8px;
-  }
-
-  .volume-slider input {
-    width: 60px;
-  }
-
-  .footer .container {
-    grid-template-columns: 1fr;
-    text-align: center;
-    gap: 8px;
-  }
-
-  .social-links {
-    justify-content: center;
-  }
-
-  .footer-section h4 {
-    margin-bottom: 5px;
-    font-size: 0.85rem;
-  }
-
-  .footer-section li {
-    font-size: 0.75rem;
-  }
-
-  .footer-section p {
-    font-size: 0.75rem;
-  }
-}
-
-@media (max-width: 480px) {
-  :root {
-    --footer-height: 90px; /* Lebih kecil di mobile kecil */
-  }
-
-  .price-table {
-    font-size: clamp(0.7rem, 1.1vw, 0.8rem);
-  }
-
-  .price-table th,
-  .price-table td {
-    padding: 8px 6px; /* Padding lebih kecil di mobile */
-  }
-
-  .logo {
-    font-size: 0.9rem;
-  }
-
-  .marquee-container {
-    font-size: 0.85rem;
-    height: 38px;
-    margin: 8px 0;
-  }
-
-  .marquee-text {
-    font-size: 0.95rem;
-    animation: marquee 100s linear infinite;
-  }
-
-  .video-wrapper iframe {
-    height: 250px;
-  }
-
-  .video-controls {
-    top: 3px;
-    right: 3px;
-  }
-
-  .volume-btn {
-    width: 35px;
-    height: 35px;
-    padding: 6px;
-  }
-
-  .skip-btn {
-    padding: 8px 12px;
-    font-size: 0.8rem;
-  }
-
-  .table-title {
-    font-size: 1.1rem;
-  }
-
-  .footer .container {
-    gap: 5px;
-  }
-
-  .footer-section h4 {
-    font-size: 0.8rem;
-    margin-bottom: 3px;
-  }
-
-  .footer-section li {
-    font-size: 0.7rem;
-  }
-
-  .footer-section p {
-    font-size: 0.7rem;
-  }
-}
-
-/* Fitur tambahan untuk tabel dengan banyak data */
+/* Scrollbar styling untuk tabel */
 .table-responsive::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 5px;
+  height: 5px;
 }
 
 .table-responsive::-webkit-scrollbar-track {
@@ -681,4 +530,197 @@ main {
 
 .table-responsive::-webkit-scrollbar-thumb:hover {
   background: #a8a8a8;
+}
+
+/* Responsive Design */
+@media (max-width: 992px) {
+  .price-table {
+    font-size: 0.8rem;
+  }
+  
+  .price-table th {
+    font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 768px) {
+  :root {
+    --footer-height: 60px;
+    --header-height: 70px;
+  }
+
+  .header .container {
+    flex-direction: column;
+    gap: 8px;
+    padding: 5px 15px;
+  }
+
+  .logo h1 {
+    font-size: 1.2rem;
+  }
+
+  .logo-icon {
+    font-size: 1.4rem;
+  }
+
+  .marquee-container {
+    width: 100%;
+    margin: 5px 0;
+    order: 3;
+    height: 35px;
+  }
+  
+  .marquee-text {
+    font-size: 0.9rem;
+  }
+
+  .tables-container {
+    flex-direction: column;
+    gap: 10px;
+    height: calc(100% - 20px);
+  }
+
+  .nav-btn {
+    display: none;
+  }
+
+  .table-wrapper {
+    padding: 10px;
+    height: 48%; /* Bagi tinggi untuk 2 tabel */
+  }
+
+  .table-title {
+    font-size: 1rem;
+    margin-bottom: 8px;
+  }
+
+  .table-responsive {
+    height: calc(100% - 35px);
+  }
+
+  .price-table th,
+  .price-table td {
+    padding: 6px 4px;
+    font-size: 0.75rem;
+  }
+
+  .video-wrapper iframe {
+    max-height: 300px;
+  }
+
+  .video-controls {
+    top: 5px;
+    right: 5px;
+    gap: 5px;
+  }
+
+  .volume-btn {
+    width: 30px;
+    height: 30px;
+    padding: 5px;
+  }
+
+  .skip-btn {
+    padding: 6px 10px;
+    font-size: 0.75rem;
+  }
+
+  .footer .container {
+    grid-template-columns: 1fr;
+    gap: 3px;
+    text-align: center;
+  }
+
+  .footer-section h4 {
+    font-size: 0.75rem;
+    margin-bottom: 2px;
+  }
+
+  .footer-section li {
+    font-size: 0.7rem;
+  }
+
+  .social-links {
+    justify-content: center;
+  }
+
+  .footer-section p {
+    font-size: 0.7rem;
+  }
+}
+
+@media (max-width: 480px) {
+  :root {
+    --footer-height: 55px;
+    --header-height: 65px;
+  }
+
+  .price-table {
+    font-size: 0.75rem;
+  }
+
+  .price-table th {
+    font-size: 0.8rem;
+    padding: 5px 3px;
+  }
+
+  .price-table td {
+    padding: 5px 3px;
+    font-size: 0.7rem;
+  }
+
+  .logo h1 {
+    font-size: 1.1rem;
+  }
+
+  .marquee-container {
+    height: 32px;
+  }
+
+  .marquee-text {
+    font-size: 0.85rem;
+  }
+
+  .table-wrapper {
+    padding: 8px;
+  }
+
+  .table-title {
+    font-size: 0.9rem;
+  }
+
+  .footer-section h4 {
+    font-size: 0.7rem;
+  }
+
+  .footer-section li {
+    font-size: 0.65rem;
+  }
+
+  .footer-section p {
+    font-size: 0.65rem;
+  }
+}
+
+/* Untuk landscape mode pada mobile */
+@media (max-height: 600px) and (orientation: landscape) {
+  :root {
+    --footer-height: 50px;
+    --header-height: 60px;
+  }
+
+  .table-responsive {
+    height: calc(100% - 30px);
+  }
+
+  .price-table th,
+  .price-table td {
+    padding: 4px 3px;
+    font-size: 0.7rem;
+  }
+
+  .table-title {
+    font-size: 0.9rem;
+    margin-bottom: 5px;
+  }
 }
